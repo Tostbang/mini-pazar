@@ -3,9 +3,135 @@
  * Do not edit manually. Run `npm run sync-api` to regenerate.
  *
  * Generated from: https://marketapi20260604105905-ajfqchdfakgbhggm.canadacentral-01.azurewebsites.net/swagger/v1/swagger.json
- * Generated at: 2026-06-16T12:03:57.958Z
+ * Generated at: 2026-07-01T09:11:45.621Z
  */
 export interface paths {
+    "/api/Admin/GetMyProfile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Admin kendi profil bilgilerini getirir. User/Admin ayrımı için kullanılabilir. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetMyProfileResponse"];
+                        "application/json": components["schemas"]["GetMyProfileResponse"];
+                        "text/json": components["schemas"]["GetMyProfileResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Admin/UpdateMyProfile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Admin kendi profilini günceller. Ad, email, telefon, adres bilgileri. */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateProfileRequest"];
+                    "text/json": components["schemas"]["UpdateProfileRequest"];
+                    "application/*+json": components["schemas"]["UpdateProfileRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["UpdateProfileResponse"];
+                        "application/json": components["schemas"]["UpdateProfileResponse"];
+                        "text/json": components["schemas"]["UpdateProfileResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Admin/ChangeMyPassword": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Admin kendi şifresini değiştirir. Mevcut şifre doğrulaması gerekir. */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangeMyPasswordRequest"];
+                    "text/json": components["schemas"]["ChangeMyPasswordRequest"];
+                    "application/*+json": components["schemas"]["ChangeMyPasswordRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ChangeMyPasswordResponse"];
+                        "application/json": components["schemas"]["ChangeMyPasswordResponse"];
+                        "text/json": components["schemas"]["ChangeMyPasswordResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Admin/CreateSlider": {
         parameters: {
             query?: never;
@@ -15,6 +141,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Yeni slider ekler. Görsel URL (Azure Blob) zorunlu, başlık opsiyonel, redirect URL opsiyonel. */
         post: {
             parameters: {
                 query?: never;
@@ -57,6 +184,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Mevcut slider'ı günceller. Görsel URL değişirse eski blob otomatik silinir. */
         put: {
             parameters: {
                 query?: never;
@@ -102,6 +230,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Slider'ı soft-delete yapar (Status=false). İlgili blob da silinir. */
         delete: {
             parameters: {
                 query?: {
@@ -131,7 +260,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/Admin/CreateAbout": {
+    "/api/Admin/SaveAbout": {
         parameters: {
             query?: never;
             header?: never;
@@ -140,6 +269,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Hakkımızda içeriğini oluşturur veya günceller (tek kayıt). Görsel değişirse eski blob silinir. */
         post: {
             parameters: {
                 query?: never;
@@ -149,9 +279,9 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["AboutCreateRequest"];
-                    "text/json": components["schemas"]["AboutCreateRequest"];
-                    "application/*+json": components["schemas"]["AboutCreateRequest"];
+                    "application/json": components["schemas"]["AboutRequest"];
+                    "text/json": components["schemas"]["AboutRequest"];
+                    "application/*+json": components["schemas"]["AboutRequest"];
                 };
             };
             responses: {
@@ -161,307 +291,14 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["AboutCreateResponse"];
-                        "application/json": components["schemas"]["AboutCreateResponse"];
-                        "text/json": components["schemas"]["AboutCreateResponse"];
+                        "text/plain": components["schemas"]["AboutResponse"];
+                        "application/json": components["schemas"]["AboutResponse"];
+                        "text/json": components["schemas"]["AboutResponse"];
                     };
                 };
             };
         };
         delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/UpdateAbout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["AboutUpdateRequest"];
-                    "text/json": components["schemas"]["AboutUpdateRequest"];
-                    "application/*+json": components["schemas"]["AboutUpdateRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["AboutUpdateResponse"];
-                        "application/json": components["schemas"]["AboutUpdateResponse"];
-                        "text/json": components["schemas"]["AboutUpdateResponse"];
-                    };
-                };
-            };
-        };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/CreateContact": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["ContactCreateRequest"];
-                    "text/json": components["schemas"]["ContactCreateRequest"];
-                    "application/*+json": components["schemas"]["ContactCreateRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ContactCreateResponse"];
-                        "application/json": components["schemas"]["ContactCreateResponse"];
-                        "text/json": components["schemas"]["ContactCreateResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/ContactUpdate": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["ContactUpdateRequest"];
-                    "text/json": components["schemas"]["ContactUpdateRequest"];
-                    "application/*+json": components["schemas"]["ContactUpdateRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ContactUpdateResponse"];
-                        "application/json": components["schemas"]["ContactUpdateResponse"];
-                        "text/json": components["schemas"]["ContactUpdateResponse"];
-                    };
-                };
-            };
-        };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/DeleteContact": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: {
-            parameters: {
-                query?: {
-                    contactId?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["DeleteContactResponse"];
-                        "application/json": components["schemas"]["DeleteContactResponse"];
-                        "text/json": components["schemas"]["DeleteContactResponse"];
-                    };
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/CreateLogo": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["LogoCreateRequest"];
-                    "text/json": components["schemas"]["LogoCreateRequest"];
-                    "application/*+json": components["schemas"]["LogoCreateRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["LogoCreateResponse"];
-                        "application/json": components["schemas"]["LogoCreateResponse"];
-                        "text/json": components["schemas"]["LogoCreateResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/UpdateLogo": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["LogoUpdateRequest"];
-                    "text/json": components["schemas"]["LogoUpdateRequest"];
-                    "application/*+json": components["schemas"]["LogoUpdateRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["LogoUpdateResponse"];
-                        "application/json": components["schemas"]["LogoUpdateResponse"];
-                        "text/json": components["schemas"]["LogoUpdateResponse"];
-                    };
-                };
-            };
-        };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/DeleteLogo": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: {
-            parameters: {
-                query?: {
-                    logoId?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["DeleteLogoResponse"];
-                        "application/json": components["schemas"]["DeleteLogoResponse"];
-                        "text/json": components["schemas"]["DeleteLogoResponse"];
-                    };
-                };
-            };
-        };
         options?: never;
         head?: never;
         patch?: never;
@@ -476,6 +313,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Kullanıcıları sayfalı listeler. Status filtresi opsiyonel (true=aktif, false=pasif). Admin hariç hepsi listelenir. */
         post: {
             parameters: {
                 query?: never;
@@ -519,6 +357,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Tek bir kullanıcının tüm detaylarını getirir (ad, email, telefon, adres, rol, email doğrulama, IP, oluşturulma tarihi). */
         post: {
             parameters: {
                 query?: never;
@@ -563,6 +402,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Kullanıcıyı pasife çeker (soft-delete). Admin kullanıcılar silinemez. Aktif oturumlar kapatılır. */
         delete: {
             parameters: {
                 query?: {
@@ -601,6 +441,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Yeni kategori ekler. Aynı mağazada aynı isimde kategori olamaz. Görsel opsiyonel. */
         post: {
             parameters: {
                 query?: never;
@@ -643,6 +484,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Kategoriyi günceller (ad, görsel, aktiflik, sıra). Görsel değişirse eski blob silinir. */
         put: {
             parameters: {
                 query?: never;
@@ -688,6 +530,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Kategoriyi soft-delete yapar. Aktif ürünü olan kategori silinemez (400). Görsel blob'u silinir. */
         delete: {
             parameters: {
                 query?: {
@@ -726,6 +569,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Yeni ürün ekler (kategori, ad, fiyat, stok, görsel, açıklama). Aynı kategoride aynı isimde olamaz. */
         post: {
             parameters: {
                 query?: never;
@@ -768,6 +612,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Ürünü günceller (kategori, ad, fiyat, stok, görsel, açıklama). Görsel değişirse eski blob silinir. */
         put: {
             parameters: {
                 query?: never;
@@ -813,6 +658,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Ürünü soft-delete yapar. Görsel blob'u silinir. */
         delete: {
             parameters: {
                 query?: {
@@ -851,6 +697,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Firma/shop profilini oluşturur veya günceller (tek kayıt). Ad, sektör, adres, telefon, açıklama, IsOpen. */
         post: {
             parameters: {
                 query?: never;
@@ -892,6 +739,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Firma profilini admin paneli için getirir. Public'ten farklı olarak tüm mağazaları (IsOpen=false dahil) gösterir. */
         get: {
             parameters: {
                 query?: never;
@@ -931,6 +779,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Azure Blob'a görsel yükler. multipart/form-data: File (jpg/jpeg/png/webp, max 5MB) + Type (product|category|logo|slider|about). Dönen fileUrl'i create/update'de kullanılır. */
         post: {
             parameters: {
                 query?: never;
@@ -967,6 +816,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Admin/DeleteImage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Azure Blob'dan tek bir görseli (URL ile) siler. DB'yi değil, blob storage'ı temizler. Frontend yeni upload yaptıktan sonra eski URL'i silmek için kullanılır. */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DeleteImageRequest"];
+                    "text/json": components["schemas"]["DeleteImageRequest"];
+                    "application/*+json": components["schemas"]["DeleteImageRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["BaseApiResponse"];
+                        "application/json": components["schemas"]["BaseApiResponse"];
+                        "text/json": components["schemas"]["BaseApiResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Auth/Login": {
         parameters: {
             query?: never;
@@ -976,6 +869,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Email + şifre ile giriş yapar. User ve Admin ortak kullanır. Başarılıysa JWT token döner. */
         post: {
             parameters: {
                 query?: never;
@@ -1019,6 +913,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Yeni User kaydı oluşturur. Email doğrulama kodu gönderir. Admin kaydı bu endpointten yapılamaz. */
         post: {
             parameters: {
                 query?: never;
@@ -1062,6 +957,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Email + 6 haneli doğrulama kodu ile hesabı aktifleştirir. Süresi 5 dakikadır. */
         post: {
             parameters: {
                 query?: never;
@@ -1105,6 +1001,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Aktif kod yoksa yeni email doğrulama kodu gönderir. Mevcut kod geçerliyse kalan süreyi döner. */
         post: {
             parameters: {
                 query?: never;
@@ -1148,6 +1045,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Email adresine şifre sıfırlama kodu gönderir. Süresi 5 dakikadır. */
         post: {
             parameters: {
                 query?: never;
@@ -1191,6 +1089,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Email + kod + yeni şifre ile şifreyi sıfırlar. Tüm aktif oturumları kapatır. */
         post: {
             parameters: {
                 query?: never;
@@ -1234,6 +1133,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Mevcut oturumu kapatır. JWT iptal edilmez ama DB'deki session pasifleşir. */
         post: {
             parameters: {
                 query?: never;
@@ -1269,6 +1169,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Aktif sepetimi getirir. Kalemler, alt toplam, kargo, genel toplam ve para birimi döner. IsPurchasingEnabled=false ise 400 döner. */
         get: {
             parameters: {
                 query?: never;
@@ -1308,6 +1209,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Sepete ürün ekler. Aynı ürün varsa adet üstüne eklenir. Stok kontrolü yapar. */
         post: {
             parameters: {
                 query?: never;
@@ -1350,6 +1252,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Sepet kalemi adedini günceller. Quantity=0 gönderilirse kalem sepetten kaldırılır. */
         put: {
             parameters: {
                 query?: never;
@@ -1395,6 +1298,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Sepetten tek bir kalemi (cartItemId ile) çıkarır. Soft-delete uygular. */
         delete: {
             parameters: {
                 query?: never;
@@ -1438,6 +1342,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Sepetteki tüm aktif kalemleri tek seferde temizler (soft-delete). */
         delete: {
             parameters: {
                 query?: never;
@@ -1465,6 +1370,269 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Home/GetHomeCards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Anasayfa sabit kart alanlarını tek seferde getirir (anonim).
+         * @description Tek büyük kart olan bölümler (MainCard, StayHomeCard) object olarak, birden fazla kart içeren bölümler (FeaturedStoreCards, CampaignCards) List olarak döner. CityAdvantagesSection kendi içinde alt kart listesi (Cards) barındırır.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["HomeCardsResponse"];
+                        "application/json": components["schemas"]["HomeCardsResponse"];
+                        "text/json": components["schemas"]["HomeCardsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Home/CreateHomeCard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Admin: Yeni bir anasayfa kartı ekler.
+         * @description CardType'a göre yeni kart oluşturur. CityAdvantageCard için ParentCardId zorunludur (bağlı olduğu CityAdvantagesSection). Diğer tiplerde ParentCardId null olmalıdır.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CreateHomeCardRequest"];
+                    "text/json": components["schemas"]["CreateHomeCardRequest"];
+                    "application/*+json": components["schemas"]["CreateHomeCardRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["CreateHomeCardResponse"];
+                        "application/json": components["schemas"]["CreateHomeCardResponse"];
+                        "text/json": components["schemas"]["CreateHomeCardResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Home/UpdateHomeCard/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Admin: Mevcut kartı günceller.
+         * @description Route veya body'den gelen Id ile aktif kartı bulur ve bilgilerini günceller.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateHomeCardRequest"];
+                    "text/json": components["schemas"]["UpdateHomeCardRequest"];
+                    "application/*+json": components["schemas"]["UpdateHomeCardRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["UpdateHomeCardResponse"];
+                        "application/json": components["schemas"]["UpdateHomeCardResponse"];
+                        "text/json": components["schemas"]["UpdateHomeCardResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Home/DeleteHomeCard/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Admin: Kartı soft-delete yapar.
+         * @description Route'dan gelen Id ile kartı bulur, Status=false yaparak silinmiş olarak işaretler.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["DeleteHomeCardResponse"];
+                        "application/json": components["schemas"]["DeleteHomeCardResponse"];
+                        "text/json": components["schemas"]["DeleteHomeCardResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Home/GetAllHomeCards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Admin: Tüm anasayfa kartlarını listeler (yönetim paneli için).
+         * @description Opsiyonel ?cardType= ile belirli bir tipe göre filtreler. Tüm aktif/pasif kartlar döner.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    cardType?: components["schemas"]["HomeCardType"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetAllHomeCardsResponse"];
+                        "application/json": components["schemas"]["GetAllHomeCardsResponse"];
+                        "text/json": components["schemas"]["GetAllHomeCardsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Home/GetHomeCardById/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Admin: Belirli bir kartı Id ile getirir (düzenleme formu için). */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetHomeCardByIdResponse"];
+                        "application/json": components["schemas"]["GetHomeCardByIdResponse"];
+                        "text/json": components["schemas"]["GetHomeCardByIdResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/List/GetAllProduct": {
         parameters: {
             query?: never;
@@ -1472,9 +1640,32 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * Aktif ürünleri filtreli + sayfalı listeler. Tüm query parametreleri opsiyoneldir; boş bırakılırsa tüm aktif ürünler döner (default).
+         * @description Query parametreleri:
+         *     • categoryId (long) — belirli bir kategorinin ürünleri
+         *     • search (string, max 100) — ürün adı/açıklamasında case-insensitive contains araması
+         *     • minPrice (decimal) — minimum fiyat (dahil)
+         *     • maxPrice (decimal) — maksimum fiyat (dahil)
+         *     • inStock (bool) — true: sadece stoğu 0'dan büyük ürünler
+         *     • sort (string) — default | price_asc | price_desc | newest | name_asc | name_desc
+         *     • page (int, default 1) — sayfa numarası
+         *     • pageSize (int, default 50, max 100) — sayfa başına kayıt
+         *
+         *     Response: products[] + totalCount + page + pageSize + totalPages.
+         */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    categoryId?: number;
+                    search?: string;
+                    minPrice?: number;
+                    maxPrice?: number;
+                    inStock?: boolean;
+                    sort?: string;
+                    page?: number;
+                    pageSize?: number;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -1502,29 +1693,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/List/GetByIdProduct": {
+    "/api/List/GetByIdProduct/{productId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        post: {
+        /** Tek ürünün detayını getirir (ad, fiyat, stok, açıklama, görsel). Route'tan productId alır. */
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path?: never;
+                path: {
+                    productId: number;
+                };
                 cookie?: never;
             };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["ProductGetByIdRequest"];
-                    "text/json": components["schemas"]["ProductGetByIdRequest"];
-                    "application/*+json": components["schemas"]["ProductGetByIdRequest"];
-                };
-            };
+            requestBody?: never;
             responses: {
                 /** @description OK */
                 200: {
@@ -1539,6 +1725,8 @@ export interface paths {
                 };
             };
         };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1552,6 +1740,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Aktif slider görsellerini listeler. Anasayfa slider'ı için. DisplayOrder'a göre sıralı. */
         get: {
             parameters: {
                 query?: never;
@@ -1582,13 +1771,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/List/GetAllAbout": {
+    "/api/List/GetAbout": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /** Hakkımızda bilgisini (tek kayıt) getirir. Başlık, açıklama, görsel. */
         get: {
             parameters: {
                 query?: never;
@@ -1604,9 +1794,9 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["AboutListResponse"];
-                        "application/json": components["schemas"]["AboutListResponse"];
-                        "text/json": components["schemas"]["AboutListResponse"];
+                        "text/plain": components["schemas"]["AboutResponse"];
+                        "application/json": components["schemas"]["AboutResponse"];
+                        "text/json": components["schemas"]["AboutResponse"];
                     };
                 };
             };
@@ -1626,6 +1816,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Aktif iletişim bilgilerini listeler: telefon, email, adres, harita URL'i. */
         get: {
             parameters: {
                 query?: never;
@@ -1663,6 +1854,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Aktif logoları listeler. Header/footer logo kullanımı için. */
         get: {
             parameters: {
                 query?: never;
@@ -1700,6 +1892,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Onaylı ve açık firma profilini getirir. Public vitrin için. OwnerUserId, shopName, businessType, address, phone, isOpen. */
         get: {
             parameters: {
                 query?: never;
@@ -1737,6 +1930,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Aktif kategorileri listeler (görseliyle). DisplayOrder'a göre sıralı. Ürün kategori filtresi için. */
         get: {
             parameters: {
                 query?: never;
@@ -1767,6 +1961,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/List/GetProductsByCategory/{categoryId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Belirli bir kategorinin aktif ürünlerini getirir. Yanıt: kategori meta bilgisi + ürün listesi.
+         * @description Route'tan categoryId alır. Kategori yoksa 400 + 'Kategori bulunamadı.'. Kategori var ama ürünü yoksa 200 + boş liste. Sıralama: DisplayOrder asc, CreatedDate desc.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    categoryId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ProductListByCategoryResponse"];
+                        "application/json": components["schemas"]["ProductListByCategoryResponse"];
+                        "text/json": components["schemas"]["ProductListByCategoryResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Order/CreateOrder": {
         parameters: {
             query?: never;
@@ -1776,6 +2013,54 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /**
+         * DEPRECATED. Bunun yerine CreateCashOnDeliveryOrder (COD) veya Payment/start-package-payment (Online) kullanın.
+         * @description Geriye dönük uyumluluk için korunuyor. Yeni geliştirmelerde spesifik endpoint'ler tercih edilmelidir.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CreateOrderRequest"];
+                    "text/json": components["schemas"]["CreateOrderRequest"];
+                    "application/*+json": components["schemas"]["CreateOrderRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["CreateOrderResponse"];
+                        "application/json": components["schemas"]["CreateOrderResponse"];
+                        "text/json": components["schemas"]["CreateOrderResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Order/CreateCashOnDeliveryOrder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sepetten kapıda ödeme siparişi oluşturur. Stok anında düşer, sepet temizlenir. Admin onayı ile PAID olur. */
         post: {
             parameters: {
                 query?: never;
@@ -1817,6 +2102,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Kendi tüm siparişlerimi tarihe göre yeniden eskiye listeler. Her siparişin kalemleri de döner. */
         get: {
             parameters: {
                 query?: never;
@@ -1856,6 +2142,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /**
+         * DEPRECATED. Body'de orderId alır. GET /api/Order/GetOrderById/{orderId} kullanın.
+         * @description Geçici endpoint. Frontend yeni GET versiyonuna geçince silinecek.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -1890,6 +2180,126 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Order/GetOrderById/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tek siparişin detayını getirir. User kendi siparişini, admin tüm siparişleri görebilir. Route'tan orderId alır. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    orderId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetOrderByIdResponse"];
+                        "application/json": components["schemas"]["GetOrderByIdResponse"];
+                        "text/json": components["schemas"]["GetOrderByIdResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Order/CancelMyOrder/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Kendi siparişimi iptal eder. Pending/Confirmed/Preparing durumlarında ve sadece PAID olmayan siparişlerde geçerli. COD siparişlerde stok geri döner. */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    orderId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["CancelMyOrderResponse"];
+                        "application/json": components["schemas"]["CancelMyOrderResponse"];
+                        "text/json": components["schemas"]["CancelMyOrderResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Order/AdminGetOrderById/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Admin: herhangi bir siparişin (route'tan orderId ile) detayını getirir. Sadece Admin yetkisi gerekir. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    orderId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetOrderByIdResponse"];
+                        "application/json": components["schemas"]["GetOrderByIdResponse"];
+                        "text/json": components["schemas"]["GetOrderByIdResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Order/AdminGetAllOrders": {
         parameters: {
             query?: never;
@@ -1899,6 +2309,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Admin: tüm siparişleri listeler. OrderState filtresi opsiyonel (Pending/Confirmed/Shipped vb.). */
         post: {
             parameters: {
                 query?: never;
@@ -1941,6 +2352,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Admin: sipariş durumunu günceller (Pending→Confirmed→Preparing→Shipped→Delivered/Cancelled). Cancelled durumunda stok geri döner. */
         put: {
             parameters: {
                 query?: never;
@@ -1976,7 +2388,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/Order/IyzicoCallback": {
+    "/api/Payment/start-package-payment": {
         parameters: {
             query?: never;
             header?: never;
@@ -1985,6 +2397,51 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Online ödeme: sepeti siparişe çevirir, iyzico checkout token ve form içeriği döner. Stok henüz düşmez; ödeme callback'inde düşer. */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["StartPackagePaymentRequest"];
+                    "text/json": components["schemas"]["StartPackagePaymentRequest"];
+                    "application/*+json": components["schemas"]["StartPackagePaymentRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["StartPackagePaymentResponse"];
+                        "application/json": components["schemas"]["StartPackagePaymentResponse"];
+                        "text/json": components["schemas"]["StartPackagePaymentResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Payment/iyzico-callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** iyzico'nun ödeme sonucu webhook'u. Token ile iyzico'dan ödemeyi doğrular. Başarılıysa order PAID olur, stok düşer, sepet temizlenir. */
         post: {
             parameters: {
                 query?: never;
@@ -2019,29 +2476,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/Order/IyzicoCallbackForm": {
+    "/api/Payment/get-payment-status/{orderId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        post: {
+        /** Siparişin güncel ödeme durumunu döner (frontend polling için). PaymentStatus: WAITING_PAYMENT/PAID/FAILED/REFUND_REQUIRED/TIMEOUT. User kendi, admin her siparişi sorgulayabilir. */
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path?: never;
+                path: {
+                    orderId: number;
+                };
                 cookie?: never;
             };
-            requestBody?: {
-                content: {
-                    "application/x-www-form-urlencoded": {
-                        token?: string;
-                    };
-                };
-            };
+            requestBody?: never;
             responses: {
                 /** @description OK */
                 200: {
@@ -2049,13 +2501,104 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["IyzicoCallbackResponse"];
-                        "application/json": components["schemas"]["IyzicoCallbackResponse"];
-                        "text/json": components["schemas"]["IyzicoCallbackResponse"];
+                        "text/plain": components["schemas"]["GetPaymentStatusResponse"];
+                        "application/json": components["schemas"]["GetPaymentStatusResponse"];
+                        "text/json": components["schemas"]["GetPaymentStatusResponse"];
                     };
                 };
             };
         };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Product/GetBestSellingProducts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * En çok satan ürünleri döneme göre getirir (anonim).
+         * @description Query: period=weekly|monthly|yearly (zorunlu), categoryId, limit.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    Period?: components["schemas"]["BestSellingPeriod"];
+                    CategoryId?: number;
+                    Limit?: number;
+                    UserId?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetBestSellingProductsResponse"];
+                        "application/json": components["schemas"]["GetBestSellingProductsResponse"];
+                        "text/json": components["schemas"]["GetBestSellingProductsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Product/GetRecommendedProducts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Sizin için önerilen ürünleri getirir (anonim kullanıcıya da açık).
+         * @description Query: limit (default 10, max 100). UserId token claim'inden alınır. Sıralama: (1) kullanıcının aynı üründen aldığı toplam adet, (2) kullanıcının ürünün kategorisinden aldığı toplam adet, (3) son 30 günlük genel satış adedi, (4) en son satılma tarihi.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetRecommendedProductsResponse"];
+                        "application/json": components["schemas"]["GetRecommendedProductsResponse"];
+                        "text/json": components["schemas"]["GetRecommendedProductsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -2069,6 +2612,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Public site ayarlarını (anonim) getirir. Tema renkleri, logo, e-ticaret flag'leri, bölüm sırası. Frontend bootstrap için kullanılır. */
         get: {
             parameters: {
                 query?: never;
@@ -2106,6 +2650,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Admin: tüm site ayarlarını getirir. Yönetim paneli için (UpdateSettings ile birlikte kullanılır). */
         get: {
             parameters: {
                 query?: never;
@@ -2144,6 +2689,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Admin: site ayarlarını günceller. Tema renkleri, logo, e-ticaret flag'leri, kargo, bölüm sırası, footer. Logo değişirse eski blob silinir. */
         put: {
             parameters: {
                 query?: never;
@@ -2179,6 +2725,272 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/Statistics/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Dashboard özet bilgileri
+         * @description Toplam visitor, üye, sipariş ve gelir gibi özet metrikleri tek seferde döner. Admin dashboard'un üst kısmındaki kartlar için kullanılır.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["OverviewResponse"];
+                        "application/json": components["schemas"]["OverviewResponse"];
+                        "text/json": components["schemas"]["OverviewResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Statistics/visitors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Ziyaretçi istatistikleri
+         * @description Anonim + authenticated ziyaretçi sayıları, unique visitor, time series grafiği ve en çok ziyaret edilen sayfalar.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    period?: components["schemas"]["StatsPeriod"];
+                    from?: string;
+                    to?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["VisitorStatsResponse"];
+                        "application/json": components["schemas"]["VisitorStatsResponse"];
+                        "text/json": components["schemas"]["VisitorStatsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Statistics/registrations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Kullanıcı kayıt istatistikleri
+         * @description Belirtilen periyotta kaç kullanıcı kayıt olmuş, email onay durumları ve time series.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    period?: components["schemas"]["StatsPeriod"];
+                    from?: string;
+                    to?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["RegistrationStatsResponse"];
+                        "application/json": components["schemas"]["RegistrationStatsResponse"];
+                        "text/json": components["schemas"]["RegistrationStatsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Statistics/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Sipariş ve gelir istatistikleri
+         * @description Toplam sipariş, gelir, ortalama sepet tutarı, ödeme yöntemi dağılımı ve time series.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    period?: components["schemas"]["StatsPeriod"];
+                    from?: string;
+                    to?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["OrderStatsResponse"];
+                        "application/json": components["schemas"]["OrderStatsResponse"];
+                        "text/json": components["schemas"]["OrderStatsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Statistics/top-products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * En çok satan ürünler
+         * @description Belirtilen tarih aralığında en çok satan N ürünü döner (toplam adet + ciro).
+         */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    from?: string;
+                    to?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TopProductsResponse"];
+                        "application/json": components["schemas"]["TopProductsResponse"];
+                        "text/json": components["schemas"]["TopProductsResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Statistics/top-categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * En çok satan kategoriler
+         * @description Belirtilen tarih aralığında en çok satan N kategoriyi döner.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    from?: string;
+                    to?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TopCategoriesResponse"];
+                        "application/json": components["schemas"]["TopCategoriesResponse"];
+                        "text/json": components["schemas"]["TopCategoriesResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/Support/GetActiveSupport": {
         parameters: {
             query?: never;
@@ -2186,6 +2998,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Aktif SSS kayıtlarını getirir (anonim). Sıkça sorulan sorular sayfası için. DisplayOrder'a göre sıralı. */
         get: {
             parameters: {
                 query?: never;
@@ -2223,6 +3036,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Admin: tüm destek kayıtlarını (aktif + pasif) listeler. Yönetim paneli için. */
         get: {
             parameters: {
                 query?: never;
@@ -2262,6 +3076,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Admin: yeni SSS kaydı oluşturur. Kategori, soru, cevap, sıra, aktiflik bilgileriyle. */
         post: {
             parameters: {
                 query?: never;
@@ -2304,6 +3119,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Admin: mevcut bir SSS kaydını günceller. Tüm alanlar yenilenebilir. */
         put: {
             parameters: {
                 query?: never;
@@ -2349,6 +3165,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Admin: SSS kaydını soft-delete yapar. Veritabanından silinmez, Status=false olur. */
         delete: {
             parameters: {
                 query?: never;
@@ -2389,6 +3206,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Kendi profil bilgilerimi getirir: ad, soyad, email, telefon, adres, rol, email doğrulama durumu. */
         get: {
             parameters: {
                 query?: never;
@@ -2427,6 +3245,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Ad, soyad, email, telefon, adres, şehir, ülke bilgilerimi günceller. Email başka kullanıcıda varsa 400. */
         put: {
             parameters: {
                 query?: never;
@@ -2470,6 +3289,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** Mevcut şifre doğrulandıktan sonra yeni şifre ile değiştirir. Aktif oturumları kapatmaz. */
         put: {
             parameters: {
                 query?: never;
@@ -2515,6 +3335,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** Hesabımı pasife çeker (soft-delete). Tüm aktif oturumlar kapatılır. Geri alma yoktur. */
         delete: {
             parameters: {
                 query?: never;
@@ -2549,6 +3370,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Açık oturumlarımı listeler: IP, UserAgent, ExpireAt, CreatedDate. */
         get: {
             parameters: {
                 query?: never;
@@ -2588,6 +3410,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Belirli bir oturumu (sessionId ile) kapatır. Diğer oturumlar etkilenmez. */
         post: {
             parameters: {
                 query?: never;
@@ -2622,29 +3445,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/Payment/iyzico-initialize": {
+    "/api/User/GetMyAddress": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        post: {
+        /** Yalnız adres bilgilerimi getirir: address, city, postalCode, country. Profil/şifre bilgisi dönmez. */
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["IyzicoInitializeRequest"];
-                    "text/json": components["schemas"]["IyzicoInitializeRequest"];
-                    "application/*+json": components["schemas"]["IyzicoInitializeRequest"];
-                };
-            };
+            requestBody?: never;
             responses: {
                 /** @description OK */
                 200: {
@@ -2652,20 +3468,22 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["IyzicoInitializeResponse"];
-                        "application/json": components["schemas"]["IyzicoInitializeResponse"];
-                        "text/json": components["schemas"]["IyzicoInitializeResponse"];
+                        "text/plain": components["schemas"]["GetMyAddressResponse"];
+                        "application/json": components["schemas"]["GetMyAddressResponse"];
+                        "text/json": components["schemas"]["GetMyAddressResponse"];
                     };
                 };
             };
         };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/Payment/iyzico-callback": {
+    "/api/User/UpdateMyAddress": {
         parameters: {
             query?: never;
             header?: never;
@@ -2673,8 +3491,8 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
-        post: {
+        /** Yalnız adres bilgilerimi günceller. Profil (ad/email/telefon) ve şifre gerektirmez. Address girildiyse City ve Country zorunludur. */
+        put: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -2683,9 +3501,9 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["IyzicoCallbackRequest"];
-                    "text/json": components["schemas"]["IyzicoCallbackRequest"];
-                    "application/*+json": components["schemas"]["IyzicoCallbackRequest"];
+                    "application/json": components["schemas"]["UpdateMyAddressRequest"];
+                    "text/json": components["schemas"]["UpdateMyAddressRequest"];
+                    "application/*+json": components["schemas"]["UpdateMyAddressRequest"];
                 };
             };
             responses: {
@@ -2695,13 +3513,14 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["IyzicoCallbackResponse"];
-                        "application/json": components["schemas"]["IyzicoCallbackResponse"];
-                        "text/json": components["schemas"]["IyzicoCallbackResponse"];
+                        "text/plain": components["schemas"]["UpdateMyAddressResponse"];
+                        "application/json": components["schemas"]["UpdateMyAddressResponse"];
+                        "text/json": components["schemas"]["UpdateMyAddressResponse"];
                     };
                 };
             };
         };
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -2712,46 +3531,23 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AboutCreateRequest: {
+        AboutModel: {
             title: string | null;
             description: string | null;
             imageUrl: string | null;
             isActive: boolean;
         };
-        AboutCreateResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            aboutId: number;
-        };
-        AboutListItem: {
-            /** Format: int64 */
-            aboutId: number;
-            title: string | null;
-            description: string | null;
-            imageUrl: string | null;
-        };
-        AboutListResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            abouts: components["schemas"]["AboutListItem"][] | null;
-        };
-        AboutUpdateRequest: {
-            /** Format: int64 */
-            aboutId: number;
+        AboutRequest: {
             title: string | null;
             description: string | null;
             imageUrl: string | null;
             isActive: boolean;
         };
-        AboutUpdateResponse: {
+        AboutResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
-            /** Format: int64 */
-            aboutId: number;
+            about: components["schemas"]["AboutModel"];
         };
         AddCartItemRequest: {
             /** Format: int64 */
@@ -2772,10 +3568,10 @@ export interface components {
         };
         AddCategoryRequest: {
             categoryName: string | null;
-            imageUrl: string | null;
             /** Format: int32 */
             displayOrder: number;
             isActive: boolean;
+            imageUrl: string | null;
         };
         AddCategoryResponse: {
             code: string | null;
@@ -2868,6 +3664,35 @@ export interface components {
             /** Format: date-time */
             deletedDate: string | null;
         };
+        BaseApiResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+        };
+        /**
+         * Format: int32
+         * @enum {integer}
+         */
+        BestSellingPeriod: 1 | 2 | 3;
+        BestSellingProductDto: {
+            /** Format: int64 */
+            productId: number;
+            name: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            /** Format: double */
+            price: number;
+            /** Format: int32 */
+            stock: number;
+            /** Format: int64 */
+            categoryId: number;
+            categoryName: string | null;
+            /** Format: int64 */
+            shopId: number;
+            shopName: string | null;
+            /** Format: int32 */
+            totalSold: number;
+        };
         BusinessProfileModel: {
             /** Format: int64 */
             shopId: number;
@@ -2883,6 +3708,21 @@ export interface components {
             message: string | null;
             errors: string[] | null;
             profile: components["schemas"]["BusinessProfileModel"];
+        };
+        CancelMyOrderResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int64 */
+            orderId: number;
+            orderState: components["schemas"]["OrderStatus"];
+            paymentStatus: string | null;
+        };
+        CardDto: {
+            title: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            buttonName: string | null;
         };
         CartItemModel: {
             /** Format: int64 */
@@ -2936,26 +3776,17 @@ export interface components {
             message: string | null;
             errors: string[] | null;
         };
+        CityAdvantagesSectionDto: {
+            title: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            buttonName: string | null;
+            cards: components["schemas"]["CardDto"][] | null;
+        };
         ClearCartResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
-        };
-        ContactCreateRequest: {
-            title: string | null;
-            content: string | null;
-            phone: string | null;
-            email: string | null;
-            address: string | null;
-            mapUrl: string | null;
-            isActive: boolean;
-        };
-        ContactCreateResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            contactId: number;
         };
         ContactListItem: {
             title: string | null;
@@ -2971,23 +3802,24 @@ export interface components {
             errors: string[] | null;
             contacts: components["schemas"]["ContactListItem"][] | null;
         };
-        ContactUpdateRequest: {
+        CreateHomeCardRequest: {
+            cardType: components["schemas"]["HomeCardType"];
             /** Format: int64 */
-            contactId: number;
+            parentCardId: number | null;
             title: string | null;
-            content: string | null;
-            phone: string | null;
-            email: string | null;
-            address: string | null;
-            mapUrl: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            buttonName: string | null;
+            /** Format: int32 */
+            displayOrder: number;
             isActive: boolean;
         };
-        ContactUpdateResponse: {
+        CreateHomeCardResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
             /** Format: int64 */
-            contactId: number;
+            homeCardId: number;
         };
         CreateOrUpdateBusinessProfileRequest: {
             shopName: string | null;
@@ -3006,6 +3838,7 @@ export interface components {
         };
         CreateOrderRequest: {
             paymentMethod: components["schemas"]["PaymentMethod"];
+            callbackUrl: string | null;
             shippingFullName: string | null;
             shippingPhone: string | null;
             shippingAddress: string | null;
@@ -3014,6 +3847,7 @@ export interface components {
             shippingCountry: string | null;
             billingAddress: string | null;
             notes: string | null;
+            clientIp: string | null;
         };
         CreateOrderResponse: {
             code: string | null;
@@ -3053,15 +3887,13 @@ export interface components {
             message: string | null;
             errors: string[] | null;
         };
-        DeleteContactResponse: {
+        DeleteHomeCardResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
         };
-        DeleteLogoResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
+        DeleteImageRequest: {
+            fileUrl: string | null;
         };
         DeleteMyAccountResponse: {
             code: string | null;
@@ -3099,42 +3931,6 @@ export interface components {
             /** Format: int64 */
             fileSize: number | null;
         };
-        IyzicoInitializeRequest: {
-            /** Format: double */
-            totalAmount: number;
-            currency: string | null;
-            items: components["schemas"]["IyzicoInitializeItem"][] | null;
-            callbackUrl: string | null;
-        };
-        IyzicoInitializeItem: {
-            /** Format: int64 */
-            productId: number;
-            productName: string | null;
-            /** Format: int32 */
-            quantity: number;
-            /** Format: double */
-            unitPrice: number;
-        };
-        IyzicoInitializeResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Iyzico tarafından dönen ödeme formu içeriği (HTML/JS) */
-            checkoutFormContent: string | null;
-            /** Iyzico tarafından dönen token */
-            token: string | null;
-        };
-        IyzicoCallbackRequest: {
-            token: string | null;
-        };
-        IyzicoCallbackResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            orderId: number | null;
-            status: string | null;
-        };
         ForgotPasswordRequest: {
             email: string | null;
         };
@@ -3145,11 +3941,37 @@ export interface components {
             /** Format: int32 */
             remainingSeconds: number | null;
         };
+        GetAllHomeCardsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            cards: components["schemas"]["HomeCardAdminItem"][] | null;
+        };
         GetAllSupportResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
             items: components["schemas"]["SupportItemModel"][] | null;
+        };
+        GetBestSellingProductsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            selectedPeriod: components["schemas"]["BestSellingPeriod"];
+            isFallback: boolean;
+            products: components["schemas"]["BestSellingProductDto"][] | null;
+        };
+        GetHomeCardByIdResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            card: components["schemas"]["HomeCardAdminItem"];
+        };
+        GetMyAddressResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            address: components["schemas"]["UserAddressModel"];
         };
         GetMyCartResponse: {
             code: string | null;
@@ -3178,6 +4000,7 @@ export interface components {
         GetOrderByIdRequest: {
             /** Format: int64 */
             orderId: number;
+            isAdmin: boolean;
         };
         GetOrderByIdResponse: {
             code: string | null;
@@ -3185,11 +4008,61 @@ export interface components {
             errors: string[] | null;
             order: components["schemas"]["OrderModel"];
         };
+        GetPaymentStatusResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int64 */
+            orderId: number;
+            orderNumber: string | null;
+            paymentStatus: string | null;
+            orderState: components["schemas"]["OrderStatus"];
+            paymentMethod: components["schemas"]["PaymentMethod"];
+            /** Format: date-time */
+            paidDate: string | null;
+            cancelledReason: string | null;
+        };
+        GetRecommendedProductsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            isPersonalized: boolean;
+            products: components["schemas"]["RecommendedProductDto"][] | null;
+        };
         GetSiteSettingsResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
             settings: components["schemas"]["SiteSettingsModel"];
+        };
+        HomeCardAdminItem: {
+            /** Format: int64 */
+            id: number;
+            cardType: components["schemas"]["HomeCardType"];
+            /** Format: int64 */
+            parentCardId: number | null;
+            title: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            buttonName: string | null;
+            /** Format: int32 */
+            displayOrder: number;
+            isActive: boolean;
+        };
+        /**
+         * Format: int32
+         * @enum {integer}
+         */
+        HomeCardType: 1 | 2 | 3 | 4 | 5 | 6;
+        HomeCardsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            mainCard: components["schemas"]["CardDto"];
+            featuredStoreCards: components["schemas"]["CardDto"][] | null;
+            stayHomeCard: components["schemas"]["CardDto"];
+            campaignCards: components["schemas"]["CardDto"][] | null;
+            cityAdvantagesSection: components["schemas"]["CityAdvantagesSectionDto"];
         };
         IyzicoCallbackRequest: {
             token: string | null;
@@ -3203,18 +4076,7 @@ export interface components {
             orderNumber: string | null;
             orderState: components["schemas"]["OrderStatus"];
             paymentStatus: string | null;
-        };
-        LogoCreateRequest: {
-            title: string | null;
-            imageUrl: string | null;
-            isActive: boolean;
-        };
-        LogoCreateResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            logoId: number;
+            paymentSuccess: boolean;
         };
         LogoListItem: {
             /** Format: int64 */
@@ -3228,20 +4090,6 @@ export interface components {
             message: string | null;
             errors: string[] | null;
             logos: components["schemas"]["LogoListItem"][] | null;
-        };
-        LogoUpdateRequest: {
-            /** Format: int64 */
-            logoId: number;
-            title: string | null;
-            imageUrl: string | null;
-            isActive: boolean;
-        };
-        LogoUpdateResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            logoId: number;
         };
         LogoutResponse: {
             code: string | null;
@@ -3301,11 +4149,55 @@ export interface components {
             createdDate: string;
             items: components["schemas"]["OrderItemModel"][] | null;
         };
+        OrderStatsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int32 */
+            totalOrders: number;
+            /** Format: int32 */
+            cancelledOrders: number;
+            /** Format: double */
+            totalRevenue: number;
+            /** Format: double */
+            averageOrderValue: number;
+            /** Format: int32 */
+            cashOnDeliveryOrders: number;
+            /** Format: int32 */
+            onlinePaymentOrders: number;
+            series: components["schemas"]["TimeSeriesPoint"][] | null;
+        };
         /**
          * Format: int32
          * @enum {integer}
          */
         OrderStatus: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+        OverviewResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int32 */
+            totalUniqueVisitors: number;
+            /** Format: int32 */
+            todayVisits: number;
+            /** Format: int32 */
+            totalUsers: number;
+            /** Format: int32 */
+            newUsersLast30Days: number;
+            /** Format: int32 */
+            totalOrders: number;
+            /** Format: int32 */
+            pendingOrders: number;
+            /** Format: double */
+            totalRevenue: number;
+            /** Format: double */
+            revenueLast30Days: number;
+        };
+        PageVisitStat: {
+            path: string | null;
+            /** Format: int32 */
+            count: number;
+        };
         /**
          * Format: int32
          * @enum {integer}
@@ -3331,34 +4223,61 @@ export interface components {
             /** Format: int64 */
             productId: number;
         };
-        ProductGetByIdRequest: {
-            /** Format: int64 */
-            productId: number;
-        };
         ProductGetByIdResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
             /** Format: int64 */
             productId: number;
+            /** Format: int64 */
+            categoryId: number;
             name: string | null;
+            description: string | null;
             /** Format: double */
             price: number;
+            /** Format: int32 */
+            stock: number;
             imageUrl: string | null;
+            isActive: boolean;
+            /** Format: int32 */
+            displayOrder: number;
+        };
+        ProductListByCategoryResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            category: components["schemas"]["CategoryListItem"];
+            products: components["schemas"]["ProductListItem"][] | null;
         };
         ProductListItem: {
             /** Format: int64 */
             productId: number;
+            /** Format: int64 */
+            categoryId: number;
             name: string | null;
+            description: string | null;
             /** Format: double */
             price: number;
+            /** Format: int32 */
+            stock: number;
             imageUrl: string | null;
+            isActive: boolean;
+            /** Format: int32 */
+            displayOrder: number;
         };
         ProductListResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
             products: components["schemas"]["ProductListItem"][] | null;
+            /** Format: int32 */
+            totalCount: number;
+            /** Format: int32 */
+            page: number;
+            /** Format: int32 */
+            pageSize: number;
+            /** Format: int32 */
+            totalPages: number;
         };
         ProductUpdateRequest: {
             /** Format: int64 */
@@ -3390,6 +4309,8 @@ export interface components {
             siteTagline: string | null;
             primaryColor: string | null;
             secondaryColor: string | null;
+            primaryColorForeground: string | null;
+            secondaryColorForeground: string | null;
             accentColor: string | null;
             backgroundColor: string | null;
             textColor: string | null;
@@ -3425,6 +4346,37 @@ export interface components {
             message: string | null;
             errors: string[] | null;
             items: components["schemas"]["SupportItemModel"][] | null;
+        };
+        RecommendedProductDto: {
+            /** Format: int64 */
+            productId: number;
+            name: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            /** Format: double */
+            price: number;
+            /** Format: int32 */
+            stock: number;
+            /** Format: int64 */
+            categoryId: number;
+            categoryName: string | null;
+            /** Format: int64 */
+            shopId: number;
+            shopName: string | null;
+            /** Format: int32 */
+            totalSold: number;
+        };
+        RegistrationStatsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int32 */
+            totalRegistrations: number;
+            /** Format: int32 */
+            emailConfirmedCount: number;
+            /** Format: int32 */
+            emailPendingCount: number;
+            series: components["schemas"]["TimeSeriesPoint"][] | null;
         };
         RemoveCartItemRequest: {
             /** Format: int64 */
@@ -3462,6 +4414,8 @@ export interface components {
             siteTagline: string | null;
             primaryColor: string | null;
             secondaryColor: string | null;
+            primaryColorForeground: string | null;
+            secondaryColorForeground: string | null;
             accentColor: string | null;
             backgroundColor: string | null;
             textColor: string | null;
@@ -3537,6 +4491,30 @@ export interface components {
             /** Format: int64 */
             sliderId: number;
         };
+        StartPackagePaymentRequest: {
+            callbackUrl: string | null;
+            idempotencyKey: string | null;
+            notes: string | null;
+            clientIp: string | null;
+        };
+        StartPackagePaymentResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            token: string | null;
+            conversationId: string | null;
+            checkoutFormContent: string | null;
+            /** Format: int64 */
+            orderId: number;
+            orderNumber: string | null;
+            /** Format: double */
+            totalAmount: number;
+        };
+        /**
+         * Format: int32
+         * @enum {integer}
+         */
+        StatsPeriod: 1 | 2 | 3 | 4;
         SupportItemModel: {
             /** Format: int64 */
             supportId: number;
@@ -3546,6 +4524,48 @@ export interface components {
             /** Format: int32 */
             displayOrder: number;
             isActive: boolean;
+        };
+        TimeSeriesPoint: {
+            /** Format: date-time */
+            date: string;
+            /** Format: int32 */
+            count: number;
+            /** Format: double */
+            amount: number | null;
+            label: string | null;
+        };
+        TopCategoriesResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            categories: components["schemas"]["TopCategoryItem"][] | null;
+        };
+        TopCategoryItem: {
+            /** Format: int64 */
+            categoryId: number;
+            categoryName: string | null;
+            /** Format: int32 */
+            totalQuantitySold: number;
+            /** Format: double */
+            totalRevenue: number;
+        };
+        TopProductItem: {
+            /** Format: int64 */
+            productId: number;
+            productName: string | null;
+            imageUrl: string | null;
+            /** Format: int32 */
+            totalQuantitySold: number;
+            /** Format: double */
+            totalRevenue: number;
+            /** Format: int32 */
+            orderCount: number;
+        };
+        TopProductsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            products: components["schemas"]["TopProductItem"][] | null;
         };
         UpdateCartItemRequest: {
             /** Format: int64 */
@@ -3566,10 +4586,10 @@ export interface components {
             /** Format: int64 */
             categoryId: number;
             categoryName: string | null;
-            imageUrl: string | null;
             /** Format: int32 */
             displayOrder: number;
             isActive: boolean;
+            imageUrl: string | null;
         };
         UpdateCategoryResponse: {
             code: string | null;
@@ -3577,6 +4597,35 @@ export interface components {
             errors: string[] | null;
             /** Format: int64 */
             categoryId: number;
+        };
+        UpdateHomeCardRequest: {
+            /** Format: int64 */
+            id: number;
+            title: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            buttonName: string | null;
+            /** Format: int32 */
+            displayOrder: number;
+            isActive: boolean;
+        };
+        UpdateHomeCardResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+        };
+        UpdateMyAddressRequest: {
+            address: string | null;
+            city: string | null;
+            postalCode: string | null;
+            country: string | null;
+        };
+        UpdateMyAddressResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int64 */
+            userId: number;
         };
         UpdateOrderStatusRequest: {
             /** Format: int64 */
@@ -3597,6 +4646,10 @@ export interface components {
             lastName: string | null;
             email: string | null;
             phone: string | null;
+            address: string | null;
+            city: string | null;
+            postalCode: string | null;
+            country: string | null;
         };
         UpdateProfileResponse: {
             code: string | null;
@@ -3606,10 +4659,11 @@ export interface components {
             userId: number;
         };
         UpdateSiteSettingsRequest: {
-            siteName: string | null;
             siteTagline: string | null;
             primaryColor: string | null;
             secondaryColor: string | null;
+            primaryColorForeground: string | null;
+            secondaryColorForeground: string | null;
             accentColor: string | null;
             backgroundColor: string | null;
             textColor: string | null;
@@ -3662,6 +4716,12 @@ export interface components {
             /** Format: int64 */
             supportId: number;
         };
+        UserAddressModel: {
+            address: string | null;
+            city: string | null;
+            postalCode: string | null;
+            country: string | null;
+        };
         UserLoginRequest: {
             email: string | null;
             password: string | null;
@@ -3689,6 +4749,10 @@ export interface components {
             lastName: string | null;
             email: string | null;
             phone: string | null;
+            address: string | null;
+            city: string | null;
+            postalCode: string | null;
+            country: string | null;
             /** Format: int64 */
             roleId: number;
             emailConfirmed: boolean;
@@ -3728,6 +4792,21 @@ export interface components {
             code: string | null;
             message: string | null;
             errors: string[] | null;
+        };
+        VisitorStatsResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int32 */
+            totalVisits: number;
+            /** Format: int32 */
+            uniqueVisitors: number;
+            /** Format: int32 */
+            authenticatedVisits: number;
+            /** Format: int32 */
+            anonymousVisits: number;
+            series: components["schemas"]["TimeSeriesPoint"][] | null;
+            topPaths: components["schemas"]["PageVisitStat"][] | null;
         };
     };
     responses: never;

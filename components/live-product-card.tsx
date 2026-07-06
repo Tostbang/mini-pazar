@@ -12,6 +12,8 @@ import {
   useUpdateCartItem,
 } from "@/lib/cart";
 import { cn } from "@/lib/utils";
+const CREAM_BG = "#eef3e3";
+const LIME_BG = "#bbea71";
 
 const currencyFormatter = new Intl.NumberFormat("tr-TR", {
   style: "currency",
@@ -105,7 +107,7 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl bg-card pt-4 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.25)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card p-3 shadow-[0_10px_30px_-22px_rgba(0,0,0,0.18)]"
     >
       <Link
         href={`/product/${product.productId}`}
@@ -149,10 +151,13 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
         >
           <path
             d="M0 0 C30 18, 70 18, 100 0 L100 24 L0 24 Z"
-            className="fill-muted"
+            fill={qty === 0 ? CREAM_BG : LIME_BG}
           />
         </svg>
-        <div className="flex h-12 items-end justify-center bg-muted px-4 pb-3">
+        <div
+          className="flex h-11 items-center justify-center  px-3 pb-2 rounded-b-2xl"
+          style={{ backgroundColor: qty === 0 ? CREAM_BG : LIME_BG }}
+        >
           <AnimatePresence mode="wait" initial={false}>
             {qty === 0 ? (
               <motion.button
@@ -180,15 +185,15 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
                   aria-label="Azalt"
                   onClick={handleDecrement}
                   disabled={isPending}
-                  className="grid size-8 place-items-center rounded-full bg-white/30 transition-colors hover:bg-white/50 disabled:opacity-50"
+                  className="grid size-8 place-items-center rounded-full border-2 border-brand transition-colors disabled:opacity-50"
                 >
-                  <Minus className="size-4" strokeWidth={3} />
+                  <Minus className="size-6 text-brand" strokeWidth={3}  />
                 </button>
                 <motion.span
                   key={qty}
                   initial={{ scale: 0.6, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="font-heading text-lg font-bold tabular-nums"
+                  className="font-heading text-2xl font-bold tabular-nums text-brand"
                 >
                   {qty}
                 </motion.span>
@@ -196,9 +201,9 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
                   aria-label="Arttır"
                   onClick={handleIncrement}
                   disabled={isPending}
-                  className="grid size-8 place-items-center rounded-full bg-white/30 transition-colors hover:bg-white/50 disabled:opacity-50"
+                  className="grid size-8 place-items-center rounded-full border-2 border-brand transition-colors disabled:opacity-50"
                 >
-                  <Plus className="size-4" strokeWidth={3} />
+                  <Plus className="size-6 text-brand" strokeWidth={3} />
                 </button>
               </motion.div>
             )}

@@ -3,8 +3,19 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Section } from "@/components/section";
+import { useSiteSettingsStore } from "@/lib/store/site-settings-store";
+
+const FALLBACK_HEADING = "Marketi ayağiniza getiriyoruz";
 
 export function Hero() {
+  // Hero copy is driven by `siteTagline` so the configured brand speaks
+  // for itself. The subheading intentionally stays generic — those
+  // marketing claims belong in a future "hero blocks" feature, not in
+  // the global settings form.
+  const tagline =
+    useSiteSettingsStore((state) => state.settings?.siteTagline?.trim()) ||
+    FALLBACK_HEADING;
+
   return (
     <Section className="pt-5">
       <div className="relative rounded-1.5xl bg-brand text-brand-foreground ">
@@ -20,12 +31,10 @@ export function Hero() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl font-intro font-semibold leading-[1.05] text-balance sm:text-5xl lg:text-[3.65rem]">
-                Marketi ayaginiza
-                <br />
-                getiriyoruz
+              <h1 className="text-4xl text-[#f9efde] font-intro font-semibold leading-[1.05] text-balance sm:text-5xl lg:text-[3.65rem] ">
+                {tagline}
               </h1>
-              <p className="mt-4 max-w-md text-pretty leading-relaxed text-brand-foreground/80">
+              <p className="mt-4 max-w-md text-lg text-pretty leading-relaxed text-brand-foreground/80">
                 Organik ürünler ve sürdürülebilir kaynakli
                 <br className="hidden sm:block" />
                 market teslimati, %4'e varan indirimle.
@@ -33,7 +42,7 @@ export function Hero() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-7 rounded-lg bg-lime px-9 py-3.5 font-heading text-lg font-semibold text-lime-foreground shadow-lg"
+                className="mt-7 rounded-lg bg-secondary px-9 py-3.5 font-heading text-lg font-semibold text-brand"
               >
                 Şimdi incele
               </motion.button>
@@ -43,7 +52,7 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="relative mx-auto h-56 w-full max-w-md sm:h-72 md:h-80 "
+              className="relative mx-auto h-56 w-full max-w-md sm:h-72 md:h-90 top-11"
             >
               <Image
                 src="/products/grocery-bag.png"

@@ -1,17 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ArrowRight, Package, RefreshCcw } from "lucide-react";
 import { motion } from "motion/react";
 import { useQueryOP } from "@/lib/fetch";
 import { useGetMyCart } from "@/lib/cart";
-import type { paths } from "@/lib/types/api";
 import { LiveProductCard, type LiveProduct } from "./live-product-card";
 import { Section } from "@/components/section";
 import SectionTitle from "./SectionTitle";
-
-type ProductListResponse =
-  paths["/api/List/GetAllProduct"]["get"]["responses"]["200"]["content"]["application/json"];
 
 const DEFAULT_LIMIT = 10;
 const COLUMNS_DESKTOP = 5;
@@ -28,6 +25,14 @@ export function LiveProductsSection({
   const productsQuery = useQueryOP("get", "/api/List/GetAllProduct", {});
   // Subscribe to the cart so the cards re-render with up-to-date quantities.
   useGetMyCart();
+
+  // `isLoading` is `true` on the server (no cache) but `false` on the
+  // client as soon as `getSharedQueryClient` rehydrates the persisted
+  // query cache from sessionStorage (see lib/query-persist.ts). Without
+  // this gate, the server renders the skeleton and the client renders
+  // the populated grid — React throws a hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const products = (productsQuery.data?.products ?? [])
     .filter((p): p is NonNullable<typeof p> => Boolean(p))
@@ -53,7 +58,7 @@ export function LiveProductsSection({
         </Link>
       </div>
 
-      {productsQuery.isLoading ? (
+      {!mounted || productsQuery.isLoading ? (
         <ProductsGridSkeleton />
       ) : productsQuery.isError ? (
         <ErrorState />

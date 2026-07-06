@@ -3,34 +3,59 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   LogIn,
   LogOut,
   Menu,
-  Search,
   Settings,
   ShoppingBag,
   ShoppingBasket,
-  ChevronDown,
   Mail,
   CheckCircle2,
   CircleAlert,
   User as UserIcon,
+  ShoppingCart,
 } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { HeaderSearch } from "@/components/header-search";
 import { useGetMyCart } from "@/lib/cart";
 import { useQueryOP, useMutationOP } from "@/lib/fetch";
 import { deleteToken } from "@/lib/helpers";
+import { clearPersistedCache } from "@/lib/query-persist";
+import { useProfileStore } from "@/lib/store/profile-store";
+import { useSiteSettingsStore } from "@/lib/store/site-settings-store";
 import { useHasToken } from "@/hooks/use-has-token";
 import { Role, RoleLabels } from "@/lib/types";
 import { toast } from "sonner";
 
+const FALLBACK_TAGLINE = "Şimdi sipariş ver, 15 dk içinde kapında!";
+const FALLBACK_SITE_NAME = "Mini Pazar";
+
 export function Header() {
   const cartQuery = useGetMyCart();
   const totalItems = cartQuery.data?.cart.totalItems ?? 0;
+
+  // The cart query can hydrate from sessionStorage before the first React
+  // render completes (see lib/query-persist.ts). If we render the badge
+  // from that pre-hydration value, the server-rendered HTML (no badge)
+  // will mismatch the client tree (badge present) and React will throw a
+  // hydration error. Defer the badge until after mount so the first paint
+  // matches what SSR produced; subsequent updates flow normally.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  // Site settings live in the store, populated by SiteSettingsProvider.
+  // We never hit `useGetPublicSiteSettings` here directly because every
+  // storefront surface would otherwise re-subscribe — the provider is
+  // the single subscriber.
+  const settings = useSiteSettingsStore((state) => state.settings);
+  const siteName = settings?.siteName?.trim() || FALLBACK_SITE_NAME;
+  const logoUrl = settings?.logoUrl?.trim() || "";
+  const tagline = settings?.siteTagline?.trim() || FALLBACK_TAGLINE;
+
   return (
     <header className="sticky top-0 z-50 px-3 pt-3   sm:px-6 sm:pt-4">
-      <div className=" flex items-center gap-3  rounded-1.5xl bg-brand px-4 py-3 text-brand-foreground shadow-lg sm:gap-5 sm:px-6 sm:py-5">
+      <div className=" flex flex-wrap items-center gap-3  rounded-1.5xl bg-brand px-4 py-3 text-brand-foreground shadow-lg sm:gap-5 sm:px-6 sm:py-5">
         <button
           aria-label="Menüyü aç"
           className="grid size-9 shrink-0 place-items-center rounded-full transition-colors hover:bg-white/10"
@@ -39,21 +64,35 @@ export function Header() {
         </button>
 
         <Link href="/" className="flex shrink-0 items-center gap-2">
-          <span className="grid size-8 place-items-center rounded-lg bg-lime text-lime-foreground">
-            <ShoppingBasket className="size-5" />
-          </span>
-          <span className="font-intro text-2xl font-semibold tracking-tight ">
-            Mini-Pazar
-          </span>
+          {logoUrl ? (
+            // Plain <img> because logo URLs come from the dashboard's
+            // upload pipeline and we cannot guarantee a Next/Image loader
+            // is configured for the absolute origin.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logoUrl}
+              alt={siteName}
+              className="h-8 max-w-[180px] object-contain"
+            />
+          ) : (
+            <>
+              <span className="grid size-8 place-items-center rounded-lg bg-lime text-lime-foreground">
+                <ShoppingBasket className="size-5" />
+              </span>
+              <span className="font-intro text-2xl font-semibold tracking-tight ">
+                {siteName}
+              </span>
+            </>
+          )}
         </Link>
 
-        <div className="relative ml-1 hidden flex-1 items-center md:flex max-w-[440px]">
-          <input
-            type="text"
-            placeholder="Market, mağaza, sebze veya et arayın"
-            className="h-11 w-full rounded-full bg-card pl-11 pr-5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-lime"
-          />
-          <Search className="absolute right-4 size-4 text-muted-foreground" />
+        {/* Tek bir HeaderSearch örneği. Mobilde `w-full` flex-wrap ile
+            kendi satırına sarar; md+ üzerinde `flex-1 max-w-[440px]` ile
+            satır içi orta alanı doldurur. Önceki çift-kopyalı düzende iki
+            ayrı örnek aynı anda DOM'a giriyor, kontrol listesinde çift
+            buton olarak görünüyordu. */}
+        <div className="flex w-full  md:w-auto md:flex-1 md:max-w-[440px]">
+          <HeaderSearch className="w-full" />
         </div>
 
         <div className="ml-auto hidden items-center gap-5 text-sm lg:flex">
@@ -67,43 +106,27 @@ export function Header() {
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
               </svg>
             </span>
-            <span>Şimdi sipariş ver, 15 dk içinde kapında!</span>
+            <span>{tagline}</span>
           </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-2.5">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           <Link
             href="/cart"
             aria-label="Sepet"
             className="relative grid size-10 place-items-center rounded-full bg-card text-foreground"
           >
             <div className="relative">
-              <ShoppingBasket className="size-5" />
-              {totalItems > 0 && (
-                <span className="absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-black text-[11px] font-bold text-white">
+              <ShoppingCart className="size-5" />
+              {mounted && totalItems > 0 && (
+                <span className="absolute -right-3 -top-3 flex size-5 items-center justify-center rounded-full bg-black text-[11px] font-bold text-white">
                   {totalItems > 99 ? "99+" : totalItems}
                 </span>
               )}
             </div>
           </Link>
           <UserMenu />
-        </div>
-      </div>
-
-      <div className="mx-auto mt-3 flex max-w-[1320px] items-center md:hidden">
-        <div className="relative flex w-full items-center">
-          <input
-            type="text"
-            placeholder="Market, mağaza, sebze veya et arayın"
-            className="h-11 w-full rounded-full bg-card pl-5 pr-12 text-sm text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-lime"
-          />
-          <button
-            aria-label="Ara"
-            className="absolute right-1.5 grid size-8 place-items-center rounded-full text-muted-foreground"
-          >
-            <Search className="size-4" />
-          </button>
         </div>
       </div>
     </header>
@@ -132,6 +155,8 @@ function UserMenuDropdown() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const queryClient = useQueryClient();
+  const setProfile = useProfileStore((state) => state.setProfile);
 
   const profileQuery = useQueryOP("get", "/api/User/GetMyProfile");
   const logoutMutation = useMutationOP("post", "/api/Auth/Logout");
@@ -168,6 +193,11 @@ function UserMenuDropdown() {
       // Global onError in providers shows a toast for non-401 errors.
       // We still continue with local logout so the user is not stuck.
     }
+    // Wipe every user-specific piece of state so the next account that logs
+    // in on this tab cannot see this user's profile, cart, or query results.
+    queryClient.clear();
+    clearPersistedCache();
+    setProfile(null);
     deleteToken();
     setOpen(false);
     toast.success("Çıkış yapıldı.");
@@ -234,7 +264,7 @@ function UserMenuDropdown() {
 
           <div className="p-1">
             <Link
-              href="/profile"
+              href="/account/profile"
               role="menuitem"
               onClick={() => setOpen(false)}
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted"
@@ -243,7 +273,7 @@ function UserMenuDropdown() {
               Profilim
             </Link>
             <Link
-              href="/orders"
+              href="/account/orders"
               role="menuitem"
               onClick={() => setOpen(false)}
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted"
@@ -252,7 +282,7 @@ function UserMenuDropdown() {
               Siparişlerim
             </Link>
             <Link
-              href="/settings"
+              href="/account/settings"
               role="menuitem"
               onClick={() => setOpen(false)}
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted"
@@ -277,10 +307,10 @@ function UserMenuDropdown() {
             </button>
           </div>
 
-          <div className="flex items-center justify-end gap-1 border-t border-border bg-muted/40 px-3 py-1.5 text-[11px] text-muted-foreground">
-            <ChevronDown className="size-3 -rotate-90" />
-            Mini-Pazar hesabı
-          </div>
+          {/* <div className="flex items-center justify-end gap-1 border-t border-border bg-muted/40 px-3 py-1.5 text-[11px] text-muted-foreground"> */}
+          {/*   <ChevronDown className="size-3 -rotate-90" /> */}
+          {/*   Mini-Pazar hesabı */}
+          {/* </div> */}
         </div>
       )}
     </div>

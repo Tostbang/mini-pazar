@@ -3,15 +3,33 @@
 import { Ticket, Gift, Smartphone, Package } from "lucide-react"
 import { motion } from "motion/react"
 import { Section } from "@/components/section"
+import { useSiteSettingsStore } from "@/lib/store/site-settings-store"
+
+const FALLBACK_SITE_NAME = "Mağaza"
 
 const cards = [
-  { title: "Gromuse\nHediye çeki.", Icon: Ticket },
-  { title: "Hediye kartı\nverin", Icon: Gift },
-  { title: "Tabby faturanızı\nödeyin", Icon: Smartphone },
-  { title: "Sipariş ver\nmağazadan al", Icon: Package },
+  { id: "gift", title: "Hediye çeki", Icon: Ticket },
+  { id: "card", title: "Hediye kartı\nverin", Icon: Gift },
+  { id: "tabby", title: "Tabby faturanızı\nödeyin", Icon: Smartphone },
+  { id: "pickup", title: "Sipariş ver\nmağazadan al", Icon: Package },
 ]
 
 export function BestInTown() {
+  // Pulled from the dashboard so the first card adapts to the shop's brand.
+  // We keep the static copy ("Hediye çeki") generic by default and only
+  // prefix the siteName when it's been configured to a real label.
+  const siteName =
+    useSiteSettingsStore((state) => state.settings?.siteName?.trim()) ||
+    FALLBACK_SITE_NAME
+
+  const renderedCards = cards.map((card) => ({
+    ...card,
+    title:
+      card.id === "gift" && siteName !== FALLBACK_SITE_NAME
+        ? `${siteName}\n${card.title}`
+        : card.title,
+  }))
+
   return (
     <Section className="py-8">
       <div className="relative overflow-hidden rounded-[2rem] bg-lime pb-0 pt-12 text-lime-foreground sm:pt-16">
@@ -42,7 +60,7 @@ export function BestInTown() {
         </div>
 
         <div className="mt-10 grid grid-cols-2 gap-px bg-brand/15 lg:grid-cols-4">
-          {cards.map(({ title, Icon }, i) => (
+          {renderedCards.map(({ title, Icon }, i) => (
             <motion.div
               key={title}
               initial={{ opacity: 0, y: 30 }}
