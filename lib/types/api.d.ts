@@ -3723,6 +3723,23 @@ export interface components {
             description: string | null;
             imageUrl: string | null;
             buttonName: string | null;
+            /**
+             * Admin can disable a card without deleting it. `null` is
+             * treated as enabled (true) by the storefront so responses from
+             * an older backend that doesn't carry the field still render
+             * the card. Used on every card type: mainCard, featuredStore
+             * Cards, stayHomeCard, campaignCards, cityAdvantagesSection,
+             * and the inner cards under cityAdvantagesSection.
+             */
+            enabled: boolean | null;
+            /**
+             * Background color override for cards that the admin can theme
+             * (featuredStoreCards and stayHomeCard). `null` falls back to
+             * the storefront's hardcoded color for that slot (#083e74,
+             * #a9411e, #6c1143 respectively). Other card types leave
+             * this null and use the existing brand CSS variables.
+             */
+            backgroundColor: string | null;
         };
         CartItemModel: {
             /** Format: int64 */
@@ -3781,6 +3798,11 @@ export interface components {
             description: string | null;
             imageUrl: string | null;
             buttonName: string | null;
+            /**
+             * Admin can hide the whole "şehrin en iyisi" block without
+             * deleting its inner cards. `null` is treated as enabled.
+             */
+            enabled: boolean | null;
             cards: components["schemas"]["CardDto"][] | null;
         };
         ClearCartResponse: {

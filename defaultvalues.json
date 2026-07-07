@@ -1,0 +1,58 @@
+{
+    code: "200",
+    message: null,
+    errors: null,
+
+    mainCard: {
+      title: "Marketi ayağiniza getiriyoruz",
+      description:
+        "Organik ürünler ve sürdürülebilir kaynakli\nmarket teslimati, %4'e varan indirimle.",
+      imageUrl: null,
+      buttonName: "Şimdi incele",
+      enabled: true
+    },
+
+    featuredStoreCards: [
+      {
+        title:
+          "%50'ye varan indirim 12:15'e kadar teslimat Hızlı ve ücretsiz",
+        imageUrl: null,
+        label: "Ücretsiz teslimat",
+	labelIcon: null,
+        enabled: true,
+        backgroundColor: "#083e74",
+      },
+      {
+        title: "Sağlık kartımızı kullanarak %5 indirim kazanabilirsiniz",
+        imageUrl: null,
+        label: "Üyelik kartı",
+        labelIcon: null,
+        enabled: true,
+        backgroundColor: "#a9411e",
+      },
+    ],
+
+    stayHomeCard: {
+      title: "Evde Kalın, Tüm İhtiyaçlarınızı Marketimizden Alın!",
+      description: "App Store veya Google Play'den uygulamayı indirin",
+      imageUrl: null,
+      appDwonloadButton: true,
+      enabled: true,
+      backgroundColor: "#6c1143",
+    },
+
+    campaignCards: [],
+
+    cityAdvantagesSection: {
+      title: "Size her zaman\nşehrin en iyisini sunuyoruz",
+      description:
+        "2007'den beri ürün geliştirme, destek ve\ngüncellemelerde mükemmelliği sorunsuz alışveriş deneyimi için sunuyoruz.",
+      enabled: true,
+      cards: [
+        { title: "Hediye çeki",              imageUrl: null,  },
+        { title: "Hediye kartı\nverin",       imageUrl: null,   },
+        { title: "Tabby faturanızı\nödeyin",  imageUrl: null,   },
+        { title: "Sipariş ver\nmağazadan al", imageUrl: null,   },
+      ],
+    },
+  };

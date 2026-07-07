@@ -34,17 +34,17 @@ export function BestInTown() {
     <Section className="py-8">
       <div className="relative overflow-hidden rounded-[2rem] bg-lime pb-0 pt-12 text-lime-foreground sm:pt-16">
         {/* Curved top edge - white "lens" cuts the lime top */}
-        <svg
-          viewBox="0 0 100 14"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute -top-px left-0 h-7 w-full text-background"
-          aria-hidden
-        >
-          <path
-            d="M0 0 L100 0 L100 14 Q50 28 0 14 Z"
-            fill="currentColor"
-          />
-        </svg>
+        {/* <svg */}
+        {/*   viewBox="0 0 100 14" */}
+        {/*   preserveAspectRatio="none" */}
+        {/*   className="pointer-events-none absolute -top-px left-0 h-7 w-full text-background" */}
+        {/*   aria-hidden */}
+        {/* > */}
+        {/*   <path */}
+        {/*     d="M0 0 L100 0 L100 14 Q50 28 0 14 Z" */}
+        {/*     fill="currentColor" */}
+        {/*   /> */}
+        {/* </svg> */}
 
         <div className="relative px-6 pt-2 text-center">
           <h2 className="font-heading text-3xl font-semibold leading-tight text-brand text-balance sm:text-[44px] sm:leading-[1.1]">

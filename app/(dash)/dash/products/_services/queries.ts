@@ -27,9 +27,9 @@ export function useGetCategories() {
 }
 
 export function useGetProductById(productId: number, enabled = true) {
-  return useQueryOP("post", "/api/List/GetByIdProduct", {
-    body: { productId },
-    enabled: enabled && productId > 0,
+  return useQueryOP("get", "/api/List/GetByIdProduct/{productId}", {
+    params: { path: { productId } },
+    enabled: enabled && Number.isFinite(productId) && productId > 0,
   });
 }
 

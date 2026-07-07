@@ -32,13 +32,14 @@ import { ColorField } from "./color-field";
 import { ImageUploadField } from "./image-upload-field";
 
 const settingsSchema = z.object({
-  siteName: z.string().trim().max(120, "Site adı en fazla 120 karakter olabilir."),
   siteTagline: z
     .string()
     .trim()
     .max(160, "Slogan en fazla 160 karakter olabilir."),
   primaryColor: z.string().trim(),
   secondaryColor: z.string().trim(),
+  primaryColorForeground: z.string().trim(),
+  secondaryColorForeground: z.string().trim(),
   accentColor: z.string().trim(),
   backgroundColor: z.string().trim(),
   textColor: z.string().trim(),
@@ -67,7 +68,7 @@ const settingsSchema = z.object({
     .trim()
     .max(160)
     .refine(
-      (value) => value === "" || z.string().email().safeParse(value).success,
+      (value) => value === "" || z.email().safeParse(value).success,
       "Geçerli bir e-posta adresi girin.",
     ),
   contactPhone: z.string().trim().max(40),
@@ -77,10 +78,11 @@ type FormValues = z.infer<typeof settingsSchema>;
 
 function buildDefaults(settings: SiteSettings | undefined): FormValues {
   return {
-    siteName: settings?.siteName ?? "",
     siteTagline: settings?.siteTagline ?? "",
     primaryColor: settings?.primaryColor ?? "",
     secondaryColor: settings?.secondaryColor ?? "",
+    primaryColorForeground: settings?.primaryColorForeground ?? "",
+    secondaryColorForeground: settings?.secondaryColorForeground ?? "",
     accentColor: settings?.accentColor ?? "",
     backgroundColor: settings?.backgroundColor ?? "",
     textColor: settings?.textColor ?? "",
@@ -107,10 +109,11 @@ function buildDefaults(settings: SiteSettings | undefined): FormValues {
 
 function toPayload(values: FormValues): SiteSettingsFormValues {
   return {
-    siteName: values.siteName.trim() || null,
     siteTagline: values.siteTagline.trim() || null,
     primaryColor: values.primaryColor.trim() || null,
     secondaryColor: values.secondaryColor.trim() || null,
+    primaryColorForeground: values.primaryColorForeground.trim() || null,
+    secondaryColorForeground: values.secondaryColorForeground.trim() || null,
     accentColor: values.accentColor.trim() || null,
     backgroundColor: values.backgroundColor.trim() || null,
     textColor: values.textColor.trim() || null,
@@ -195,19 +198,6 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
             description="Ziyaretçilere ve müşterilere gösterilen temel bilgileri buradan yönetin."
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Controller
-              control={control}
-              name="siteName"
-              render={({ field, fieldState }) => (
-                <Field label="Site adı" error={fieldState.error?.message}>
-                  <Input
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Mini Pazar"
-                  />
-                </Field>
-              )}
-            />
             <Controller
               control={control}
               name="currency"

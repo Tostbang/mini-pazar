@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<title>Mini Pazar — Proje Dokümanı</title>
+<style>
+  /* ------------------------------------------------------------------
+     PAGE SETUP
+  ------------------------------------------------------------------ */
+  @page {
+    size: A4;
+    margin: 22mm 22mm 22mm 22mm;
+  }
+  @media print {
+    body { background: #ffffff; }
+    .page { margin: 0; box-shadow: none; }
+  }
+
+  /* ------------------------------------------------------------------
+     BASE
+  ------------------------------------------------------------------ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Georgia", "Times New Roman", "Liberation Serif", "DejaVu Serif", serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ------------------------------------------------------------------
+     PAGE CONTAINER
+  ------------------------------------------------------------------ */
+  .page {
+    /* Fill the @page content area exactly. Any wider value would
+       overflow into the right margin and look "cut off" in the PDF. */
+    width: auto;
+    min-height: 253mm;          /* 297mm page - 22mm top - 22mm bottom */
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    page-break-after: always;
+    position: relative;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ------------------------------------------------------------------
+     TYPOGRAPHY
+  ------------------------------------------------------------------ */
+  h1, h2, h3, h4, h5 {
+    font-family: "Georgia", "Times New Roman", "Liberation Serif", serif;
+    color: #14202e;
+    margin: 0;
+    font-weight: normal;
+    letter-spacing: -0.005em;
+  }
+  h1 { font-size: 36pt; line-height: 1.05; }
+  h2 {
+    font-size: 17pt;
+    line-height: 1.2;
+    margin: 0 0 5mm 0;
+    padding-bottom: 3mm;
+    border-bottom: 1px solid #14202e;
+  }
+  h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 6mm 0 3mm 0;
+    color: #14202e;
+  }
+  h4 {
+    font-size: 10pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin: 5mm 0 2mm 0;
+    color: #5a4a32;
+  }
+  p { margin: 0 0 3mm 0; }
+  strong { font-weight: bold; }
+  em { font-style: italic; }
+  a { color: #14202e; text-decoration: underline; }
+
+  /* ------------------------------------------------------------------
+     PAGE HEADER / FOOTER (inner pages)
+  ------------------------------------------------------------------ */
+  .page-header {
+    border-bottom: 1px solid #14202e;
+    padding-bottom: 2.5mm;
+    margin-bottom: 8mm;
+    display: table;
+    width: 100%;
+  }
+  .page-header .left,
+  .page-header .right {
+    display: table-cell;
+    font-size: 8.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #5a4a32;
+    vertical-align: middle;
+  }
+  .page-header .right { text-align: right; }
+
+  .page-footer {
+    position: absolute;
+    bottom: 8mm;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #cccccc;
+    padding-top: 2.5mm;
+    display: table;
+    width: 100%;
+    font-size: 8pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+  }
+  .page-footer .left,
+  .page-footer .right {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .page-footer .right { text-align: right; }
+
+  /* ------------------------------------------------------------------
+     COVER PAGE
+  ------------------------------------------------------------------ */
+  .cover {
+    padding: 32mm 0 0 0;
+    text-align: center;
+    min-height: 253mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-eyebrow {
+    font-size: 9pt;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #5a4a32;
+    margin-bottom: 4mm;
+  }
+  .cover-rule-top {
+    width: 30mm;
+    height: 1px;
+    background: #14202e;
+    margin: 0 auto 10mm auto;
+  }
+  .cover h1 {
+    font-size: 44pt;
+    margin: 0 0 6mm 0;
+    letter-spacing: -0.01em;
+  }
+  .cover .subtitle {
+    font-size: 14pt;
+    color: #444;
+    font-style: italic;
+    margin: 0 0 10mm 0;
+  }
+  .cover-rule-mid {
+    width: 20mm;
+    height: 1px;
+    background: #5a4a32;
+    margin: 0 auto 12mm auto;
+  }
+  .cover .lede {
+    font-size: 11pt;
+    line-height: 1.65;
+    color: #333;
+    max-width: 130mm;
+    margin: 0 auto 24mm auto;
+  }
+  .cover-meta {
+    border-top: 1px solid #14202e;
+    border-bottom: 1px solid #14202e;
+    padding: 6mm 0;
+    margin: 0 auto;
+    width: 130mm;
+    display: table;
+  }
+  .cover-meta .cell {
+    display: table-cell;
+    text-align: center;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    color: #5a4a32;
+    text-transform: uppercase;
+    padding: 0 4mm;
+  }
+  .cover-meta .cell + .cell {
+    border-left: 1px solid #cccccc;
+  }
+  .cover-meta .cell .v {
+    display: block;
+    font-size: 11pt;
+    color: #14202e;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    margin-bottom: 1mm;
+    text-transform: none;
+  }
+  .cover-foot {
+    margin-top: auto;
+    padding: 8mm 0 0 0;
+    font-size: 8.5pt;
+    letter-spacing: 0.12em;
+    color: #888;
+    text-transform: uppercase;
+  }
+
+  /* ------------------------------------------------------------------
+     TOC
+  ------------------------------------------------------------------ */
+  .toc {
+    margin: 4mm 0;
+    padding: 0;
+  }
+  .toc-item {
+    display: table;
+    width: 100%;
+    padding: 3mm 0;
+    border-bottom: 1px solid #dddddd;
+  }
+  .toc-item .num {
+    display: table-cell;
+    width: 14mm;
+    color: #5a4a32;
+    font-weight: bold;
+    vertical-align: top;
+  }
+  .toc-item .label {
+    display: table-cell;
+    vertical-align: top;
+    color: #14202e;
+  }
+  .toc-item .label .role-tag {
+    display: inline-block;
+    font-size: 8pt;
+    color: #5a4a32;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid #5a4a32;
+    padding: 0.5mm 2mm;
+    margin-left: 3mm;
+    vertical-align: middle;
+  }
+  .toc-item .pg {
+    display: table-cell;
+    width: 14mm;
+    text-align: right;
+    color: #888;
+    vertical-align: top;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ------------------------------------------------------------------
+     NUMBERED CAPABILITY LIST  (the heart of the document)
+  ------------------------------------------------------------------ */
+  ol.cap {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 5mm 0;
+    counter-reset: cap;
+  }
+  ol.cap > li {
+    counter-increment: cap;
+    position: relative;
+    padding: 0 0 2.5mm 12mm;
+    margin: 0;
+    line-height: 1.5;
+  }
+  ol.cap > li::before {
+    content: counter(cap) ".";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10mm;
+    font-weight: bold;
+    color: #5a4a32;
+    font-variant-numeric: tabular-nums;
+  }
+  ol.cap > li + li { padding-top: 0; }
+
+  /* Sub-list inside a capability (rare, for compound items) */
+  ol.cap ul {
+    list-style: none;
+    padding: 1.5mm 0 0 0;
+    margin: 0;
+  }
+  ol.cap ul li {
+    position: relative;
+    padding-left: 5mm;
+    margin: 0 0 1mm 0;
+    color: #444;
+    font-size: 10pt;
+  }
+  ol.cap ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: #5a4a32;
+  }
+
+  /* ------------------------------------------------------------------
+     ROLE BLOCK (a self-contained chapter per role)
+  ------------------------------------------------------------------ */
+  .role {
+    border: 1px solid #14202e;
+    margin: 4mm 0 6mm 0;
+    page-break-inside: avoid;
+  }
+  .role-head {
+    background: #14202e;
+    color: #ffffff;
+    padding: 5mm 7mm;
+    display: table;
+    width: 100%;
+  }
+  .role-head .rh-label {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 8.5pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #c2a878;
+    width: 30mm;
+  }
+  .role-head .rh-title {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+  }
+  .role-head .rh-route {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    font-size: 9pt;
+    color: #c2a878;
+    font-family: "Courier New", monospace;
+    letter-spacing: 0.05em;
+  }
+  .role-body {
+    padding: 6mm 7mm;
+    background: #ffffff;
+  }
+  .role-body > p:first-child { margin-top: 0; }
+  .role-body > p:last-child { margin-bottom: 0; }
+
+  .role .subgroup {
+    margin: 5mm 0;
+    page-break-inside: avoid;
+  }
+  .role .subgroup:first-child { margin-top: 0; }
+  .role .subgroup:last-child  { margin-bottom: 0; }
+  .role .subgroup h4 {
+    margin: 0 0 2.5mm 0;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 1.5mm;
+  }
+
+  /* ------------------------------------------------------------------
+     TABLES
+  ------------------------------------------------------------------ */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4mm 0;
+    font-size: 10pt;
+  }
+  th {
+    background: #14202e;
+    color: #ffffff;
+    padding: 2.5mm 3.5mm;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #14202e;
+    font-size: 9.5pt;
+    letter-spacing: 0.04em;
+  }
+  td {
+    padding: 2.5mm 3.5mm;
+    border: 1px solid #dddddd;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  /* ------------------------------------------------------------------
+     PULL QUOTE / NOTE
+  ------------------------------------------------------------------ */
+  .pull {
+    border-left: 2px solid #5a4a32;
+    padding: 3mm 5mm;
+    margin: 4mm 0;
+    font-style: italic;
+    color: #333;
+    background: #faf7f0;
+  }
+  .pull strong { font-style: normal; }
+
+  /* ------------------------------------------------------------------
+     MISC HELPERS
+  ------------------------------------------------------------------ */
+  .muted { color: #777; }
+  .small { font-size: 9.5pt; }
+  .lead { font-size: 11pt; line-height: 1.6; }
+  .right { text-align: right; }
+  .center { text-align: center; }
+  .nomargin { margin: 0; }
+  .spacer-4 { height: 4mm; }
+  .spacer-8 { height: 8mm; }
+  hr.thin { border: 0; border-top: 1px solid #dddddd; margin: 6mm 0; }
+
+  .label-tag {
+    display: inline-block;
+    font-size: 8pt;
+    color: #5a4a32;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid #5a4a32;
+    padding: 0.5mm 2.5mm;
+    margin-right: 3mm;
+    vertical-align: middle;
+  }
+
+  /* Architecture mini-diagram */
+  .arch {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4mm 0;
+  }
+  .arch .layer {
+    display: table-row;
+  }
+  .arch .layer > div {
+    display: table-cell;
+    padding: 3mm 4mm;
+    border: 1px solid #14202e;
+    vertical-align: middle;
+  }
+  .arch .layer .lbl {
+    width: 28mm;
+    background: #14202e;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .arch .layer .val {
+    background: #ffffff;
+    font-size: 10pt;
+  }
+
+  /* Chapter header (h2 wrapper) */
+  .ch {
+    margin: 0 0 6mm 0;
+  }
+  .ch .num {
+    font-size: 10pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #5a4a32;
+    margin-bottom: 2mm;
+  }
+  .ch h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 2mm;
+  }
+  .ch .rule {
+    width: 20mm;
+    height: 1px;
+    background: #5a4a32;
+    margin-top: 3mm;
+  }
+
+  /* Roadmap phases */
+  .phase {
+    display: table;
+    width: 100%;
+    margin: 0 0 4mm 0;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+  }
+  .phase .when {
+    display: table-cell;
+    width: 28mm;
+    background: #14202e;
+    color: #ffffff;
+    padding: 4mm 4mm;
+    vertical-align: top;
+    font-size: 10pt;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+  }
+  .phase .when small {
+    display: block;
+    font-size: 8pt;
+    font-weight: normal;
+    color: #c2a878;
+    letter-spacing: 0.15em;
+    margin-top: 1mm;
+  }
+  .phase .body {
+    display: table-cell;
+    border: 1px solid #14202e;
+    border-left: none;
+    padding: 4mm 5mm;
+    vertical-align: top;
+    background: #fafafa;
+  }
+  .phase .body h4 {
+    margin: 0 0 2mm 0;
+    color: #14202e;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 11pt;
+  }
+  .phase .body p {
+    margin: 0;
+    font-size: 10pt;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1 — COVER
+============================================================ -->
+<section class="page cover">
+  <div class="cover-eyebrow">Proje Dokümanı</div>
+  <div class="cover-rule-top"></div>
+
+  <h1>Mini Pazar</h1>
+  <div class="subtitle">Self-Hosted No-Code E-Ticaret Altyapısı</div>
+  <div class="cover-rule-mid"></div>
+
+  <p class="lede">
+    Mini Pazar; Türkiye’deki küçük esnaf, butik üretici ve bireysel girişimcilere
+    <strong>tek seferlik lisans</strong> ile teslim edilen, kendi altyapılarında
+    barındırdıkları self-hosted bir no-code e-ticaret platformudur. Mağaza sahibi
+    (<em>Admin</em>) kod tabanının ve veritabanının tamamına sahiptir; müşterileri
+    (<em>User</em>) hazır gelen storefront üzerinden alışveriş yapar. Platform ekibi,
+    güncellemeleri periyodik olarak yayınlar.
+  </p>
+
+  <div class="cover-meta">
+    <div class="cell"><span class="v">v2.2</span>Revize</div>
+    <div class="cell"><span class="v">Tek Seferlik</span>Lisans Modeli</div>
+    <div class="cell"><span class="v">Self-Hosted</span>Barındırma</div>
+    <div class="cell"><span class="v">2</span>Rol</div>
+  </div>
+
+  <div class="cover-foot">
+    Hazırlayan · Mini Pazar Platform Ekibi
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 2 — İÇİNDEKİLER
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Mini Pazar · Proje Dokümanı</span>
+    <span class="right">İçindekiler</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">İçindekiler</div>
+    <h2>Doküman İçeriği</h2>
+    <div class="rule"></div>
+  </div>
+
+  <p class="muted small" style="margin-bottom:6mm;">
+    Aşağıdaki bölümler, dokümanın ana yapısını oluşturur. <strong>Admin</strong> ve
+    <strong>User</strong> yetenekleri ayrı bölümler olarak ele alınmıştır; her biri
+    alt gruplara ayrılmış, numaralı yetki listelerinden oluşur.
+  </p>
+
+  <div class="toc">
+    <div class="toc-item">
+      <span class="num">01</span>
+      <span class="label">Proje Hakkında ve Dağıtım Modeli</span>
+      <span class="pg">3</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">02</span>
+      <span class="label">İki Rol: Admin ve User</span>
+      <span class="pg">4</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">03</span>
+      <span class="label">
+        Admin (Mağaza Sahibi) — Tüm Yetenekler
+        <span class="role-tag">Admin</span>
+      </span>
+      <span class="pg">5 – 9</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">04</span>
+      <span class="label">
+        User (Müşteri) — Storefront Yetenekleri
+        <span class="role-tag">User</span>
+      </span>
+      <span class="pg">10 – 11</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">05</span>
+      <span class="label">Platform Ekibi ve Güncelleme Politikası</span>
+      <span class="pg">12</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">06</span>
+      <span class="label">Teknik Mimari ve Veri Modeli</span>
+      <span class="pg">13</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">07</span>
+      <span class="label">Lisans Kapsamı ve Dağıtım</span>
+      <span class="pg">14</span>
+    </div>
+    <div class="toc-item">
+      <span class="num">08</span>
+      <span class="label">Sonuç ve Başarı Kriterleri</span>
+      <span class="pg">15</span>
+    </div>
+  </div>
+
+  <div class="pull">
+    <strong>Okuma Notu.</strong> Bu doküman <em>role-based</em> bir kapsam tanımıdır.
+    <strong>Admin</strong>, lisansı alıp kodu kendi sunucusunda çalıştıran <em>mağaza sahibi</em>dir;
+    <strong>User</strong>, o mağazanın <em>müşterisi</em>dir. Her bölümde ilgili rolün
+    <em>yapabildiği işlemler</em> numaralı maddeler halinde sıralanır.
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Mini Pazar · Proje Dokümanı · v2.1</span>
+    <span class="right">Sayfa 2 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 3 — PROJE HAKKINDA
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 01</span>
+    <span class="right">Mini Pazar · Proje Dokümanı</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Bölüm 01</div>
+    <h2>Proje Hakkında ve Dağıtım Modeli</h2>
+    <div class="rule"></div>
+  </div>
+
+  <h3>1.1 Tanım</h3>
+  <p>
+    Mini Pazar, Türkiye’deki küçük esnaf, butik üretici ve bireysel girişimcilere yönelik
+    <strong>self-hosted, no-code mini e-ticaret altyapısıdır</strong>. Ürün tek bir SaaS
+    hesabı olarak değil; tam kod tabanı + veritabanı + dokümantasyon paketi olarak lisanslanır.
+    Alan kişi mağazasını kendi altyapısında çalıştırır.
+  </p>
+
+  <h3>1.2 Dağıtım Modeli</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%;">Özellik</th><th>Karar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Lisans tipi</td><td><strong>Tek seferlik ödeme</strong> — abonelik veya komisyon yok.</td></tr>
+      <tr><td>Barındırma</td><td><strong>Self-hosted.</strong> Mağaza sahibi kendi sunucusunu / hostingini sağlar.</td></tr>
+      <tr><td>Dağıtım kapsamı</td><td>Kod tabanı + veritabanı şeması + seed verisi + dokümanlar.</td></tr>
+      <tr><td>Mağaza başına deployment</td><td><strong>Bir mağaza sahibi = bir tam deployment</strong> (tek mağaza).</td></tr>
+      <tr><td>Kaynak sahipliği</td><td>Mağaza sahibi (Admin) kod tabanının tamamına sahiptir; özelleştirebilir.</td></tr>
+      <tr><td>Güncelleme akışı</td><td>Platform ekibi yeni sürüm yayınlar; Admin isteğe bağlı olarak çeker ve uygular.</td></tr>
+      <tr><td>Destek</td><td>Platform ekibi tarafından sürüm notları ve dokümantasyon ile.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>1.3 Problem</h3>
+  <ul style="margin:0 0 4mm 18mm; padding:0;">
+    <li>Mevcut pazar yerleri (Trendyol, Hepsiburada) yüksek komisyon alır ve satıcı markasını öne çıkarmaz.</li>
+    <li>Shopify ve WooCommerce Türkiye’de pahalı, karmaşık ve İngilizce yoğunlukludur.</li>
+    <li>Sosyal medyadan satış yapan bireysel girişimciler için sürdürülebilir bir vitrin yoktur.</li>
+    <li>SaaS çözümleri satıcıyı platforma bağımlı kılar; veri her zaman “kiracı” konumundadır.</li>
+  </ul>
+
+  <h3>1.4 Çözüm</h3>
+  <p>
+    Mini Pazar, mağaza sahibine <em>kod yazmadan kurulum</em>, <em>kendi alan adı</em>,
+    <em>kendi sunucusu</em> ve <em>yerli ödeme/kargo entegrasyonları</em> sağlar. Kod tabanı ve
+    veritabanı lisansla birlikte teslim edilir; mağaza sahibi her şeyin sahibidir.
+  </p>
+
+  <h3>1.5 Platform Ekibi</h3>
+  <p>
+    Mini Pazar’ı inşa eden <em>platform ekibi</em>, lisanslanan ürünün yeni sürümlerini (özellik,
+    güvenlik yaması, entegrasyon) yayınlar. Bu ekibin ürün çıktısı üzerinde doğrudan müşteri
+    ilişkisi yoktur; müşteri ilişkisi tamamen <strong>Admin</strong> rolündeki mağaza sahibinindir.
+    Platform ekibi sürüm notları ve güncelleme paketleri sunar; deployment Admin tarafından yapılır.
+  </p>
+
+  <h3>1.6 Başarı Tanımı</h3>
+  <p>
+    Bir mağaza sahibi, lisansı aldıktan sonra tek bir oturumda, kod yazmadan, kendi alan adı
+    altında, kendi sunucusunda, gerçek ürünleriyle yayına geçebiliyorsa — görev tamam.
+  </p>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 01 · Proje Hakkında</span>
+    <span class="right">Sayfa 3 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 4 — İKİ ROL: ADMIN VE USER
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 02</span>
+    <span class="right">Mini Pazar · Proje Dokümanı</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Bölüm 02</div>
+    <h2>İki Rol: Admin ve User</h2>
+    <div class="rule"></div>
+  </div>
+
+  <h3>2.1 Rol Tanımları</h3>
+  <p>
+    Mini Pazar’da <em>iki temel rol</em> vardır ve her ikisi de tek bir deployment üzerinde
+    çalışır. Çok kiracılı (multi-tenant) bir SaaS yapısı yoktur.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:18%;">Özellik</th>
+        <th><span class="label-tag">Admin</span></th>
+        <th><span class="label-tag">User</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Gerçek Kimlik</strong></td>
+        <td>Mağaza sahibi (ürünü lisanslayan kişi)</td>
+        <td>Mağaza sahibinin müşterisi</td>
+      </tr>
+      <tr>
+        <td><strong>Route</strong></td>
+        <td><code>/dashboard</code></td>
+        <td><code>/[storeSlug]</code></td>
+      </tr>
+      <tr>
+        <td><strong>Erişim Hakkı</strong></td>
+        <td>Kod tabanı + veritabanı + sunucu + storefront — <strong>tamamı</strong></td>
+        <td>Yalnızca yayınlanan storefront</td>
+      </tr>
+      <tr>
+        <td><strong>Birincil Amaç</strong></td>
+        <td>Mağazasını kurmak, ürünlerini satmak, altyapıyı işletmek</td>
+        <td>Ürünleri incelemek ve sipariş vermek</td>
+      </tr>
+      <tr>
+        <td><strong>Hesap Zorunluluğu</strong></td>
+        <td>Evet (lisans aktivasyonu sonrası kurulum)</td>
+        <td>Hayır (misafir ödeme desteklenir)</td>
+      </tr>
+      <tr>
+        <td><strong>Ödeme Yönetimi</strong></td>
+        <td>Sağlayıcı API anahtarları, mutabakat, iade</td>
+        <td>Kart / havale / kapıda ödeme</td>
+      </tr>
+      <tr>
+        <td><strong>Sipariş Yönetimi</strong></td>
+        <td>Kendi mağazasının tüm siparişleri</td>
+        <td>Yalnızca kendi siparişi (misafir: e-posta + no)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 Mimari Akış (Tek Deployment)</h3>
+  <div class="arch">
+    <div class="layer">
+      <div class="lbl">Sunum</div>
+      <div class="val">Next.js (App Router) · React · Tailwind · Shadcn/Radix</div>
+    </div>
+    <div class="layer">
+      <div class="lbl">Form</div>
+      <div class="val">React Hook Form + Zod · Türkçe hata mesajları</div>
+    </div>
+    <div class="layer">
+      <div class="lbl">Sunucu Durumu</div>
+      <div class="val">TanStack Query (<code>useQueryOp</code> / <code>useMutationOp</code>)</div>
+    </div>
+    <div class="layer">
+      <div class="lbl">İstemci Durumu</div>
+      <div class="val">Zustand (her domain için bir store)</div>
+    </div>
+    <div class="layer">
+      <div class="lbl">Veri Kaynağı</div>
+      <div class="val">OpenAPI tipli tek API · <code>/lib/types/api.d.ts</code></div>
+    </div>
+    <div class="layer">
+      <div class="lbl">Entegrasyonlar</div>
+      <div class="val">Ödeme: İyzico, Papara, Kapıda · Kargo: Yurtiçi, Aras, MNG</div>
+    </div>
+  </div>
+
+  <h3>2.3 Veri Akışı (Admin → User)</h3>
+  <p>
+    Admin (mağaza sahibi) panelinden (<code>/dashboard</code>) girilen konfigürasyon, OpenAPI tipli
+    ortak API’ye yazılır. Aynı veri, storefront renderer (<code>/[storeSlug]</code>) tarafından
+    okunur ve <strong>User</strong> (müşteri) için otomatik olarak yayınlanır. Tüm veri akışı tek
+    deployment içinde, dış kiracı olmadan çalışır.
+  </p>
+
+  <div class="pull">
+    <strong>İlke.</strong> Dashboard tek doğru kaynaktır. Admin her şeyin sahibidir; User yalnızca
+    storefront’ta gezinir ve sipariş verir. Platform ekibi yalnızca kod tabanına yeni sürüm olarak
+    katkıda bulunur; canlı mağaza üzerinde doğrudan etkisi yoktur.
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 02 · İki Rol</span>
+    <span class="right">Sayfa 4 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 5 — ADMIN: MAĞAZA YÖNETİMİ + FİNANS
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 03 <span style="color:#c2a878;">·</span> Admin</span>
+    <span class="right">Platform Yönetimi</span>
+  </div>
+
+  <div class="role">
+    <div class="role-head">
+      <span class="rh-label">Rol · 03</span>
+      <span class="rh-title">Admin — Platform Yönetimi</span>
+      <span class="rh-route">/admin</span>
+    </div>
+    <div class="role-body">
+      <p>
+        Admin paneli, platformun <em>kendisini</em> yönetir. Mağaza içeriğine doğrudan müdahale
+        etmez; mağazaların platform sözleşmesine uyumunu, ödeme mutabakatını ve altyapı sağlığını
+        denetler. Aşağıdaki yetenekler Admin’in yapabildiği tüm işlemlerin kapsamlı listesidir.
+      </p>
+    </div>
+  </div>
+
+  <div class="role">
+    <div class="role-body">
+      <div class="subgroup">
+        <h4>A. Mağaza Yönetimi</h4>
+        <ol class="cap">
+          <li>Yeni mağaza kayıtlarını görüntülemek, onaylamak veya reddetmek.</li>
+          <li>Aktif ve pasif tüm mağazaların tam listesini filtrelemek ve aramak.</li>
+          <li>Bir mağazayı askıya almak, geçici kapatmak veya yeniden açmak.</li>
+          <li>Mağazanın planını değiştirmek (Free, Pro, Premium).</li>
+          <li>Mağaza sahibi hesaplarını devre dışı bırakmak veya sıfırlamak.</li>
+          <li>Mağaza performans metriklerini (GMV, sipariş sayısı, ziyaret) görüntülemek.</li>
+          <li>Mağazaya ait ödeme, kargo ve tema tercihlerini denetlemek (okuma).</li>
+          <li>Belirli bir mağaza için destek talebi açmak ve ilgili ekibe atamak.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>B. Finansal Kontrol</h4>
+        <ol class="cap">
+          <li>Aylık abonelik tahsilatlarını başlatmak ve durumlarını izlemek.</li>
+          <li>Başarısız ödemeleri raporlamak ve mağaza sahibini bilgilendirmek.</li>
+          <li>Platform komisyon oranlarını kategorilere göre belirlemek.</li>
+          <li>Fatura ve makbuz kesmek; PDF çıktısı oluşturmak.</li>
+          <li>İade ve kısmi iade süreçlerini platform genelinde denetlemek.</li>
+          <li>Banka mutabakat raporlarını aylık olarak indirmek.</li>
+          <li>Gecikmiş ödemeler için otomatik hatırlatma e-postası tetiklemek.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 03 · Admin · Mağaza & Finans</span>
+    <span class="right">Sayfa 5 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 6 — ADMIN: DENETİM
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 03 <span style="color:#c2a878;">·</span> Admin (devam)</span>
+    <span class="right">Denetim &amp; Yapılandırma</span>
+  </div>
+
+  <div class="role">
+    <div class="role-body">
+      <div class="subgroup">
+        <h4>C. İçerik Denetimi</h4>
+        <ol class="cap">
+          <li>Şikâyet edilen ürün ve mağazaları incelemek.</li>
+          <li>İçerik politikasına aykırı içerikleri kaldırmak veya düzeltme istemek.</li>
+          <li>Toplu içerik taraması başlatmak (yasaklı kelime, görsel, kategori).</li>
+          <li>Yasaklı ürün kategorilerini tanımlamak ve listeye eklemek.</li>
+          <li>Mağaza sahibine ihtar göndermek ve ihtar geçmişini kayıt altına almak.</li>
+          <li>Tekrarlayan ihlali olan mağazayı kalıcı olarak kapatmak.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>D. Platform Yapılandırması</h4>
+        <ol class="cap">
+          <li>Ödeme sağlayıcı API anahtarlarını (İyzico, Papara) yönetmek.</li>
+          <li>Kargo entegrasyonu API anahtarlarını yapılandırmak.</li>
+          <li>Platform genelinde banner ve duyurular yayınlamak.</li>
+          <li>E-posta ve SMS şablonlarını düzenlemek.</li>
+          <li>Sistem loglarını ve hata kayıtlarını incelemek.</li>
+          <li>Yedekleme politikasını tetiklemek ve geri yükleme yapmak.</li>
+          <li>API rate limit ve kota ayarlarını değiştirmek.</li>
+          <li>Yeni admin kullanıcı eklemek veya mevcut adminin yetkisini düşürmek.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>E. Raporlama</h4>
+        <ol class="cap">
+          <li>Günlük, haftalık ve aylık platform metriklerini dışa aktarmak.</li>
+          <li>En çok GMV üreten ilk 10 mağazayı listelemek.</li>
+          <li>En yüksek şikâyet alan mağazaları raporlamak.</li>
+          <li>Plan dağılımını ve gelir projeksiyonunu görüntülemek.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 03 · Admin · Denetim & Yapılandırma</span>
+    <span class="right">Sayfa 6 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 7 — ADMIN: YETKİ SINIRLARI
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 03 <span style="color:#c2a878;">·</span> Admin (devam)</span>
+    <span class="right">Yetki Sınırları</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Ek · 03.1</div>
+    <h2>Admin Yetki Sınırları</h2>
+    <div class="rule"></div>
+  </div>
+
+  <p>
+    Admin rolü kapsamlı platform yetkilerine sahip olsa da, mağaza içeriğine doğrudan
+    müdahale etmez. Bu sınır, <em>User</em>’ın marka özerkliğini korumak için tasarım
+    kararıdır.
+  </p>
+
+  <h3>Admin’in Yapamayacağı İşlemler</h3>
+  <ol class="cap">
+    <li>Bir mağazanın ürün başlığını, açıklamasını veya fiyatını doğrudan düzenlemek.</li>
+    <li>Mağaza sahibinin marka renklerini veya tipografisini değiştirmek.</li>
+    <li>Mağazanın banner görsellerini silmek veya değiştirmek.</li>
+    <li>Mağaza sahibinin siparişine müşteri gibi müdahale etmek.</li>
+    <li>Bir mağazanın kategorilerini yeniden yapılandırmak.</li>
+    <li>Mağaza sahibinin ödeme geçmişini silmek.</li>
+  </ol>
+
+  <h3>Admin’in Yapabileceği, Ancak Audit Log’a Düşen İşlemler</h3>
+  <ol class="cap">
+    <li>Bir mağazayı askıya almak veya yeniden açmak.</li>
+    <li>Bir mağazanın planını değiştirmek.</li>
+    <li>İçerik politikası ihlali nedeniyle ürünü kaldırmak.</li>
+    <li>Bir mağaza sahibine ihtar göndermek.</li>
+    <li>Platform komisyon oranını değiştirmek.</li>
+  </ol>
+
+  <div class="pull">
+    <strong>Neden?</strong> Admin müdahalesinin sınırı, User’ın marka bütünlüğünü korumak
+    içindir. Admin yalnızca platform kararlarını uygular; mağaza içeriğine ancak
+    <em>denetim</em> ve <em>politika ihlali</em> durumunda, audit log’a kayıt düşerek müdahale eder.
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 03 · Admin · Yetki Sınırları</span>
+    <span class="right">Sayfa 7 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 8 — USER: MAĞAZA KURULUMU
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 04 <span style="color:#c2a878;">·</span> User</span>
+    <span class="right">Mağaza Kurulumu</span>
+  </div>
+
+  <div class="role">
+    <div class="role-head">
+      <span class="rh-label">Rol · 04</span>
+      <span class="rh-title">User — Mağaza Sahibi</span>
+      <span class="rh-route">/dashboard</span>
+    </div>
+    <div class="role-body">
+      <p>
+        User (Mağaza Sahibi) paneli, mağaza sahibinin tüm günlük operasyonunu yönettiği
+        paneldir. Konfigürasyon ve operasyon aynı yerde toplanmıştır; hedef kullanıcı
+        teknik bilgisi az olan, zamanı kısıtlı bireysel girişimcidir. Aşağıdaki yetenekler
+        User’ın yapabildiği tüm işlemlerin kapsamlı listesidir.
+      </p>
+    </div>
+  </div>
+
+  <div class="role">
+    <div class="role-body">
+      <div class="subgroup">
+        <h4>A. Mağaza Kurulumu</h4>
+        <ol class="cap">
+          <li>Ücretsiz hesap oluşturmak (e-posta + şifre).</li>
+          <li>Mağaza adını, sloganını ve açıklamasını girmek.</li>
+          <li>Mağaza slug’ını ve istenirse özel alan adını belirlemek.</li>
+          <li>Logo ve favicon görseli yüklemek.</li>
+          <li>Banner ve kapak görselleri eklemek.</li>
+          <li>Marka renklerini ve tipografiyi seçmek.</li>
+          <li>Mağaza iletişim bilgilerini (telefon, e-posta, adres) kaydetmek.</li>
+          <li>Sosyal medya bağlantılarını (Instagram, X, Facebook) eklemek.</li>
+          <li>Mağazayı yayına almak veya geçici olarak bakıma kapatmak.</li>
+          <li>Mağaza temasını (şablon) mevcut seçenekler arasından seçmek.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 04 · User · Mağaza Kurulumu</span>
+    <span class="right">Sayfa 8 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 9 — USER: ÜRÜN & KATEGORİ
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 04 <span style="color:#c2a878;">·</span> User (devam)</span>
+    <span class="right">Ürün &amp; Kategori Yönetimi</span>
+  </div>
+
+  <div class="role">
+    <div class="role-body">
+      <div class="subgroup">
+        <h4>B. Ürün Yönetimi</h4>
+        <ol class="cap">
+          <li>Yeni ürün eklemek (başlık, açıklama, görsel).</li>
+          <li>Ürün varyantlarını tanımlamak (beden, renk, materyal).</li>
+          <li>Fiyat, indirim oranı ve vergi ayarlarını girmek.</li>
+          <li>Stok adedini ve uyarı eşiğini belirlemek.</li>
+          <li>Ürün SKU ve barkod bilgisini kaydetmek.</li>
+          <li>Ürün görsellerini galeri olarak yüklemek.</li>
+          <li>Ürünü bir veya birden fazla kategoriye atamak.</li>
+          <li>Ürünü yayına almak, taslak olarak kaydetmek veya yayından kaldırmak.</li>
+          <li>Ürünü arşivlemek (silmeden gizlemek).</li>
+          <li>Toplu ürün içe aktarımı yapmak (CSV / Excel).</li>
+          <li>Toplu ürün güncellemesi (örn. tüm yaz koleksiyonuna %10 indirim) uygulamak.</li>
+          <li>Stok tükenen ürünleri listelemek.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>C. Kategori Yönetimi</h4>
+        <ol class="cap">
+          <li>Ana kategori oluşturmak (örn. Kadın, Erkek, Çocuk).</li>
+          <li>Alt kategori oluşturmak (örn. Kadın &rsaquo; Elbise &rsaquo; Yaz).</li>
+          <li>Kategori sırasını sürükle-bırak ile değiştirmek.</li>
+          <li>Kategori görseli ve açıklaması eklemek.</li>
+          <li>Kategoriyi yeniden adlandırmak veya silmek.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 04 · User · Ürün & Kategori</span>
+    <span class="right">Sayfa 9 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 10 — USER: ÖDEME & KARGO + SİPARİŞ
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 04 <span style="color:#c2a878;">·</span> User (devam)</span>
+    <span class="right">Ödeme, Kargo &amp; Sipariş</span>
+  </div>
+
+  <div class="role">
+    <div class="role-body">
+      <div class="subgroup">
+        <h4>D. Ödeme ve Kargo Yapılandırması</h4>
+        <ol class="cap">
+          <li>Ödeme sağlayıcısı seçmek (İyzico, Papara, Kapıda Ödeme).</li>
+          <li>Sağlayıcıya ait mağaza API anahtarlarını girmek.</li>
+          <li>Test modunda sağlayıcı entegrasyonunu doğrulamak.</li>
+          <li>Kargo entegrasyonu seçmek (Yurtiçi, Aras, MNG).</li>
+          <li>Sabit kargo ücreti veya desi bazlı ücret tarifesi tanımlamak.</li>
+          <li>Ücretsiz kargo eşiği belirlemek (örn. 500 TL üzeri ücretsiz).</li>
+          <li>Bölgesel kargo kısıtlaması tanımlamak (örn. yurt dışına kargo yok).</li>
+          <li>Kapıda ödeme için ek ücret belirlemek.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>E. Sipariş ve Operasyon</h4>
+        <ol class="cap">
+          <li>Gelen siparişleri liste halinde görmek ve filtrelemek.</li>
+          <li>Sipariş detayını görüntülemek (kalemler, adres, ödeme).</li>
+          <li>Sipariş durumunu güncellemek (Hazırlanıyor &rsaquo; Kargoda &rsaquo; Teslim Edildi).</li>
+          <li>Kargo takip numarası girmek.</li>
+          <li>Müşteriye siparişle ilgili mesaj göndermek.</li>
+          <li>İade talebi açmak ve iade sürecini yönetmek.</li>
+          <li>Siparişi iptal etmek ve ödemeyi iade etmek.</li>
+          <li>Siparişe ait fatura oluşturmak ve indirmek.</li>
+          <li>Toplu sipariş çıktısı almak (kargoya verme listesi).</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 04 · User · Ödeme, Kargo & Sipariş</span>
+    <span class="right">Sayfa 10 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 11 — USER: ANALİTİK & PROFİL
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 04 <span style="color:#c2a878;">·</span> User (devam)</span>
+    <span class="right">Analitik, Kampanya &amp; Profil</span>
+  </div>
+
+  <div class="role">
+    <div class="role-body">
+      <div class="subgroup">
+        <h4>F. Kampanya ve İçerik</h4>
+        <ol class="cap">
+          <li>Promo banner oluşturmak ve zamanlamak (başlangıç / bitiş tarihi).</li>
+          <li>Banner için görsel yüklemek ve tıklama URL’si atamak.</li>
+          <li>Banner’ı aktif/pasif yapmak.</li>
+          <li>Yasal sayfaları düzenlemek (KVKK, iade, gizlilik, çerez politikası).</li>
+          <li>SSS (sık sorulan sorular) bölümünü yönetmek.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>G. Analitik ve Raporlama</h4>
+        <ol class="cap">
+          <li>Ziyaret, dönüşüm ve satış grafiklerini incelemek.</li>
+          <li>En çok satan ürünleri ve kategorileri görüntülemek.</li>
+          <li>Sepet terk oranını görmek.</li>
+          <li>Trafik kaynağına göre ziyaret dağılımını incelemek.</li>
+          <li>Aylık gelir raporunu CSV olarak indirmek.</li>
+        </ol>
+      </div>
+
+      <div class="subgroup">
+        <h4>H. Profil ve Hesap</h4>
+        <ol class="cap">
+          <li>Profil bilgilerini (ad, telefon, profil fotoğrafı) güncellemek.</li>
+          <li>Şifre değiştirmek ve iki faktörlü kimlik doğrulama (2FA) açmak.</li>
+          <li>Bildirim tercihlerini yönetmek (e-posta, SMS).</li>
+          <li>Hesabı devre dışı bırakmak veya tamamen silmek.</li>
+          <li>Destek talebi açmak ve mağaza sahibi destek merkezine erişmek.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 04 · User · Analitik, Kampanya & Profil</span>
+    <span class="right">Sayfa 11 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 12 — TEKNİK MİMARİ
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 05</span>
+    <span class="right">Teknik Mimari &amp; Veri Modeli</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Bölüm 05</div>
+    <h2>Teknik Mimari ve Veri Modeli</h2>
+    <div class="rule"></div>
+  </div>
+
+  <h3>5.1 Teknoloji Yığını</h3>
+  <table>
+    <thead>
+      <tr><th style="width:22%;">Katman</th><th>Teknoloji</th><th>Gerekçe</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Framework</td><td>Next.js 16 (App Router)</td><td>SSR, dosya-tabanlı routing, API route’lar</td></tr>
+      <tr><td>UI</td><td>Tailwind + Shadcn (Radix)</td><td>Hızlı, tutarlı, mobil-öncelikli tasarım</td></tr>
+      <tr><td>Form</td><td>React Hook Form + Zod</td><td>Tipli validasyon, Türkçe hata mesajları</td></tr>
+      <tr><td>Sunucu Durumu</td><td>TanStack Query</td><td>Önbellekleme, yeniden deneme, optimistik UI</td></tr>
+      <tr><td>İstemci Durumu</td><td>Zustand</td><td>Sepet, UI tercihi — domain başına 1 store</td></tr>
+      <tr><td>API Tipleri</td><td>OpenAPI generated</td><td>Backend ile tek tip kaynağı</td></tr>
+      <tr><td>Ödeme</td><td>İyzico, Papara, Kapıda</td><td>Yerel sağlayıcılar</td></tr>
+      <tr><td>Kargo</td><td>Yurtiçi, Aras, MNG</td><td>Türkiye kapsama</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.2 Veri Modeli (Özet)</h3>
+  <table>
+    <thead>
+      <tr><th style="width:22%;">Varlık</th><th>Açıklama</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>User</code></td><td>Mağaza sahibi hesabı; plan, abonelik, profil.</td></tr>
+      <tr><td><code>Store</code></td><td>Mağaza; slug, branding (logo, banner, renk), tema, ayarlar.</td></tr>
+      <tr><td><code>Product</code></td><td>Ürün; başlık, açıklama, görsel, fiyat, varyant, stok, kategori.</td></tr>
+      <tr><td><code>Category</code></td><td>Hiyerarşik kategori ağacı (mağaza başına).</td></tr>
+      <tr><td><code>Order</code></td><td>Sipariş; kalemler, adres, ödeme, durum, kargo bilgisi.</td></tr>
+      <tr><td><code>Banner</code></td><td>Promo banner içeriği ve zamanlama.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.3 Erişim Kuralları</h3>
+  <ol class="cap">
+    <li><strong>Admin</strong> tüm mağazaların tüm varlıklarını okuyabilir; yazma yetkisi yalnızca denetim amaçlıdır.</li>
+    <li><strong>User</strong> yalnızca kendi mağazasına ait varlıkları okur ve yazar.</li>
+    <li><strong>Müşteri</strong> yalnızca storefront üzerinden yayınlanan mağaza varlıklarını okur.</li>
+    <li>Her API çağrısı rol tabanlı yetkilendirme ile korunur; client-side kontrole güvenilmez.</li>
+    <li>Konfigürasyon değişiklikleri storefront tarafında önbellek invalidation ile anlık yansır.</li>
+  </ol>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 05 · Teknik Mimari</span>
+    <span class="right">Sayfa 12 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 13 — GELİR MODELİ
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 06</span>
+    <span class="right">Gelir Modeli</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Bölüm 06</div>
+    <h2>Gelir Modeli</h2>
+    <div class="rule"></div>
+  </div>
+
+  <p>
+    Mini Pazar dört gelir kaleminden oluşan bir iş modeli ile çalışır. Free planda mağaza sahibine
+    hiçbir ücret yansıtılmaz; diğer kalemler kullanım ölçeğinde devreye girer.
+  </p>
+
+  <h3>6.1 Gelir Kalemleri</h3>
+  <ol class="cap">
+    <li><strong>Freemium:</strong> Ücretsiz başlangıç planı; 1 mağaza, 25 ürün, Mini Pazar alt alan adı.</li>
+    <li><strong>Pro Abonelik:</strong> Aylık abonelik; sınırsız ürün, özel alan adı, gelişmiş analitik.</li>
+    <li><strong>Komisyon:</strong> Ödeme trafiğinden küçük yüzde; Free planda sınırlı, Pro’da düşük.</li>
+    <li><strong>Eklentiler:</strong> Premium tema, gelişmiş SEO, toplu ürün içe aktarımı gibi paketler.</li>
+  </ol>
+
+  <h3>6.2 Plan Karşılaştırması</h3>
+  <table>
+    <thead>
+      <tr><th>Özellik</th><th>Free</th><th>Pro</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ürün sayısı</td><td>25</td><td>Sınırsız</td></tr>
+      <tr><td>Alan adı</td><td>Mini Pazar alt domain</td><td>Özel alan adı</td></tr>
+      <tr><td>Komisyon</td><td>%3</td><td>%1</td></tr>
+      <tr><td>Analitik</td><td>Temel</td><td>Gelişmiş</td></tr>
+      <tr><td>Premium temalar</td><td>Yok</td><td>Var</td></tr>
+      <tr><td>Toplu içe aktarım</td><td>Yok</td><td>Var</td></tr>
+      <tr><td>Destek</td><td>Topluluk</td><td>Öncelikli e-posta</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 06 · Gelir Modeli</span>
+    <span class="right">Sayfa 13 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 14 — YOL HARİTASI
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 07</span>
+    <span class="right">Yol Haritası</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Bölüm 07</div>
+    <h2>Yol Haritası</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="phase">
+    <div class="when">Faz 1<small>Q3 2026</small></div>
+    <div class="body">
+      <h4>Konfigürasyon Altyapısı (User Paneli)</h4>
+      <p>Mağaza sahibi paneli: ürün, kategori, branding, ödeme/kargo ayarları. OpenAPI tipli veri modeli.</p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="when">Faz 2<small>Q4 2026</small></div>
+    <div class="body">
+      <h4>Otomatik Storefront</h4>
+      <p>Dashboard config’ten üretilen <code>/[storeSlug]</code>: anasayfa, ürün listesi, ürün detayı, sepet, ödeme.</p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="when">Faz 3<small>Q1 2027</small></div>
+    <div class="body">
+      <h4>Sipariş ve Operasyon</h4>
+      <p>Sipariş yönetimi, durum akışı, kargo etiketi entegrasyonu, e-posta bildirimleri.</p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="when">Faz 4<small>Q2 2027</small></div>
+    <div class="body">
+      <h4>Admin Paneli ve Analitik</h4>
+      <p>Platform yönetimi, mağaza listesi, finans mutabakatı, mağaza sahibi analitik dashboard’ları.</p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="when">Faz 5<small>Q3 2027</small></div>
+    <div class="body">
+      <h4>Büyüme Özellikleri</h4>
+      <p>Çoklu dil (TR/EN), gelişmiş kampanya motoru, abonelik ürünleri, çoklu mağaza.</p>
+    </div>
+  </div>
+
+  <h3>7.1 Faz 1 Başarı Kriterleri</h3>
+  <ol class="cap">
+    <li>Mağaza sahibi tek oturumda ürünlerini ekleyip mağazayı yayına alabiliyor.</li>
+    <li>Tüm formlar Türkçe validasyonla çalışıyor.</li>
+    <li>Mobilde dashboard rahatça kullanılabiliyor.</li>
+    <li>Konfigürasyon değişiklikleri anlık olarak storefront’a yansıyor.</li>
+  </ol>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 07 · Yol Haritası</span>
+    <span class="right">Sayfa 14 / 15</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 15 — SONUÇ
+============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <span class="left">Bölüm 08</span>
+    <span class="right">Sonuç ve Başarı Kriterleri</span>
+  </div>
+
+  <div class="ch">
+    <div class="num">Bölüm 08</div>
+    <h2>Sonuç ve Başarı Kriterleri</h2>
+    <div class="rule"></div>
+  </div>
+
+  <p>
+    Mini Pazar, Türkiye’deki küçük ölçekli satıcıların <em>kendi markalarıyla</em>,
+    <em>kodsuz</em>, <em>tek oturumda</em> e-ticaret sitesi kurabilmesini sağlayan bir platformdur.
+    İki temel yönetim rolü — <strong>Admin</strong> ve <strong>User (Mağaza Sahibi)</strong> —
+    tek bir veri kaynağından beslenir ve her birinin işi net olarak ayrılmıştır.
+  </p>
+
+  <h3>8.1 Rol Özeti</h3>
+  <ol class="cap">
+    <li><strong>Admin</strong>, platformu yönetir; mağazaları, finansı, denetimi ve platform sağlığını kontrol eder.</li>
+    <li><strong>User</strong>, dashboard’u kullanarak mağazasını kurar, ürünlerini ekler, siparişlerini yönetir, kampanya ve analitik çalışır.</li>
+    <li><strong>Müşteri</strong>, otomatik üretilen storefront’tan ürünleri görür ve misafir olarak ödeme yapabilir (kapsam dışı).</li>
+  </ol>
+
+  <h3>8.2 Hemen Yapılacaklar</h3>
+  <ol class="cap">
+    <li>User paneli konfigürasyonunun Faz 1 kapsamında tamamlanması.</li>
+    <li>İlk ödeme sağlayıcı entegrasyonunun (İyzico) devreye alınması.</li>
+    <li>İlk iç mağaza test yayınının yapılması.</li>
+    <li>Storefront renderer’ının Faz 2 için şekillendirilmesi.</li>
+    <li>Admin paneli gereksinimlerinin Faz 4 için netleştirilmesi.</li>
+  </ol>
+
+  <h3>8.3 Başarı Tanımı (Tek Cümle)</h3>
+  <div class="pull">
+    Bir mağaza sahibi sıfırdan başlayıp, tek bir oturumda, kod yazmadan, kendi alan adı altında,
+    gerçek ürünleriyle yayına geçebiliyorsa — görev tamam.
+  </div>
+
+  <p class="small muted" style="margin-top:8mm;">
+    Bu doküman <code>PROJECT-v2.html</code> kaynağından A4 boyutunda basılmak üzere hazırlanmıştır.
+    Tarayıcıdan <em>Yazdır → PDF olarak kaydet</em> yeterlidir.
+  </p>
+
+  <div class="page-footer">
+    <span class="left">Bölüm 08 · Sonuç</span>
+    <span class="right">Sayfa 15 / 15</span>
+  </div>
+</section>
+
+</body>
+</html>

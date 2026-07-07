@@ -1,0 +1,25 @@
+  1. /checkout sends no shipping fields. useStartCheckout only ships callbackUrl / idempotencyKey / notes / clientIp. The backend requires ShippingFullName / ShippingPhone /
+  ShippingAddress / ShippingCity / ShippingPostalCode / ShippingCountry. It will 400 every order. No form exists in /checkout/page.tsx to capture these. Same gap in
+  CreateCashOnDeliveryOrder.
+    - Fix shape: add a ShippingForm step before payment-method selection, capture the seven fields (Turkish, RHF + Zod, pulled from useProfileStore as defaults), pass them
+  into both useStartCheckout and CreateCashOnDeliveryOrder bodies.
+
+
+  1. /checkout sends no shipping fields. useStartCheckout only ships callbackUrl / idempotencyKey / notes / clientIp. The backend requires ShippingFullName / ShippingPhone /
+  ShippingAddress / ShippingCity / ShippingPostalCode / ShippingCountry. It will 400 every order. No form exists in /checkout/page.tsx to capture these. Same gap in
+  CreateCashOnDeliveryOrder.
+    - Fix shape: add a ShippingForm step before payment-method selection, capture the seven fields (Turkish, RHF + Zod, pulled from useProfileStore as defaults), pass them
+  into both useStartCheckout and CreateCashOnDeliveryOrder bodies.
+
+  4. Payment-method radios don't do anything. Three radios (card / wallet / Klarna) on /checkout; only card (Iyzico) is wired. Klarna and wallet are info copy. Either remove
+  the radios or branch the call.
+    - Klarna doesn't exist in the backend — only Iyzico. If you keep the option, mark it disabled with "Yakında" or remove.
+    - Kapıda Nakit / Kapıda POS in the cart sidebar are not wired either; the correct call would be POST /api/Order/CreateCashOnDeliveryOrder (different endpoint, no Iyzico).
+  5. Promo code input is decorative. No Apply handler, no mutation, no endpoint exposed. Either wire it or hide it
+
+
+  4. Payment-method radios don't do anything. Three radios (card / wallet / Klarna) on /checkout; only card (Iyzico) is wired. Klarna and wallet are info copy. Either remove
+  the radios or branch the call.
+    - Klarna doesn't exist in the backend — only Iyzico. If you keep the option, mark it disabled with "Yakında" or remove.
+    - Kapıda Nakit / Kapıda POS in the cart sidebar are not wired either; the correct call would be POST /api/Order/CreateCashOnDeliveryOrder (different endpoint, no Iyzico).
+  5. Promo code input is decorative. No Apply handler, no mutation, no endpoint exposed. Either wire it or hide it

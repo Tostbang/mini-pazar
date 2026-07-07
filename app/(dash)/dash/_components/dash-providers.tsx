@@ -9,12 +9,16 @@ export function DashProviders({ children }: { children: React.ReactNode }) {
   const setProfile = useProfileStore((state) => state.setProfile);
   const profileQuery = useQueryOP("get", "/api/User/GetMyProfile");
 
+  // Depend only on the query's `dataUpdatedAt` timestamp (a primitive that
+  // only changes on a successful refetch) rather than the `user` object
+  // reference, which TanStack Query may rebuild on every render and would
+  // re-trigger `setProfile` — and thus every subscriber — unnecessarily.
   useEffect(() => {
     const user = profileQuery.data?.user;
     if (user) {
       setProfile(user);
     }
-  }, [profileQuery.data?.user, setProfile]);
+  }, [profileQuery.dataUpdatedAt, setProfile]);
 
   // Scope the neutral (zinc) override to the dashboard. Setting the attribute
   // on the root element so portals (dialog/sheet/popover/dropdown/toast)
