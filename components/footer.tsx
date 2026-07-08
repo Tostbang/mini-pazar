@@ -46,42 +46,17 @@ export function Footer({
   const email = settings.contactEmail?.trim() ?? "";
   const logoUrl = settings.logoUrl?.trim() ?? "";
 
-  const cols = [
+  // Yalnızca gerçek rotalara bağlı linkleri göster — geri kalan tüm
+  // "Yakında" / placeholder bağlantılar kaldırıldı. "Hakkımızda" yalnızca
+  // sunucu tarafında `/api/List/GetAbout` dolu döndüğünde görünür.
+  const linkColumns: { title: string; links: { label: string; href: string }[] }[] = [
     {
       title: "Şirket",
-      links: [
-        ...(hasAbout ? [{ label: "Hakkımızda", href: "/about" }] : []),
-        { label: "Kariyer", href: "#" },
-        { label: "Basın", href: "#" },
-        { label: "Yorumlar", href: "#" },
-      ],
+      links: hasAbout ? [{ label: "Hakkımızda", href: "/about" }] : [],
     },
     {
-      title: "Alışveriş",
-      links: [
-        { label: "Sebze", href: "#" },
-        { label: "Meyve", href: "#" },
-        { label: "Et & Balık", href: "#" },
-        { label: "Dondurulmuş gıda", href: "#" },
-      ],
-    },
-    {
-      title: "Destek",
-      links: [
-        { label: "Yardım merkezi", href: "#" },
-        { label: "Sipariş takibi", href: "#" },
-        { label: "İadeler", href: "#" },
-        { label: "İletişim", href: "#" },
-      ],
-    },
-    {
-      title: "Yasal",
-      links: [
-        { label: "Gizlilik politikası", href: "#" },
-        { label: "Koşullar", href: "#" },
-        { label: "Çerezler", href: "#" },
-        { label: "Lisanslar", href: "#" },
-      ],
+      title: "Hesabım",
+      links: [{ label: "Siparişlerim", href: "/account/orders" }],
     },
   ];
 
@@ -92,7 +67,7 @@ export function Footer({
   return (
     <footer className="px-4 pb-10 pt-6 sm:px-6 bg-background pb-16  max-w-[1320px] mx-auto">
       <div className="rounded-[2rem] bg-brand px-6 py-12 text-brand-foreground sm:px-10">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(4,1fr)]">
+        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>
             <Link
               href="/"
@@ -149,23 +124,25 @@ export function Footer({
               </ul>
             ) : null}
           </div>
-          {cols.map((col) => (
+          {linkColumns.map((col) => (
             <div key={col.title}>
               <h4 className="font-heading text-base font-semibold">
                 {col.title}
               </h4>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((l) => (
-                  <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-sm text-brand-foreground/70 transition-colors hover:text-lime"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {col.links.length > 0 ? (
+                <ul className="mt-4 space-y-2.5">
+                  {col.links.map((l) => (
+                    <li key={l.label}>
+                      <Link
+                        href={l.href}
+                        className="text-sm text-brand-foreground/70 transition-colors hover:text-lime"
+                      >
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           ))}
         </div>

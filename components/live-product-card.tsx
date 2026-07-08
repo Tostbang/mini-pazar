@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Minus, Plus, ImageOff } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
+import { FavoriteButton } from "@/components/favorite-button";
 import {
   useAddCartItem,
   useGetMyCart,
@@ -109,6 +110,17 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
       className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card p-3 shadow-[0_10px_30px_-22px_rgba(0,0,0,0.18)]"
     >
+      {/* Heart overlay — sits above the image so the user can favorite
+          without leaving the grid. `absolute right-3 top-3` keeps it
+          inside the card padding, away from the cart stepper at the
+          bottom. */}
+      <div className="absolute right-3 top-3 z-10">
+        <FavoriteButton
+          productId={product.productId}
+          productName={product.name}
+          variant="card"
+        />
+      </div>
       <Link
         href={`/product/${product.productId}`}
         className="flex flex-col items-center px-4"

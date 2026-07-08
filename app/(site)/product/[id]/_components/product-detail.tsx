@@ -7,7 +7,6 @@ import { motion } from "motion/react";
 import {
   ArrowLeft,
   BadgePercent,
-  Heart,
   RefreshCcw,
   Truck,
 } from "lucide-react";
@@ -16,6 +15,7 @@ import { Header } from "@/components/header";
 import { Section } from "@/components/section";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCategories, type CategoryListItem } from "@/app/(site)/category/_services/queries";
+import { FavoriteButton } from "@/components/favorite-button";
 import { cn } from "@/lib/utils";
 import { useGetProductById } from "../../_services/queries";
 import { AddToCartButton } from "./add-to-cart-button";
@@ -92,9 +92,10 @@ export function ProductDetailView({ productId }: { productId: number }) {
 
   return (
     <main className="min-h-screen bg-[#f4f4f1] px-3 pb-10 pt-3 sm:px-5 sm:pt-4">
-      <div className="mx-auto max-w-[1320px]">
-        <Header />
-      </div>
+      {/* <div className="mx-auto max-w-[1320px]"> */}
+
+      {/*   <Header /> */}
+      {/* </div> */}
 
       <Section className="mx-auto max-w-[1320px]">
         <Link
@@ -132,14 +133,11 @@ export function ProductDetailView({ productId }: { productId: number }) {
                 <Divider />
 
                 <div className="flex flex-wrap gap-3">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="min-w-48 rounded-full border border-brand/20 bg-card px-6 text-lg font-semibold text-brand hover:bg-brand/5"
-                  >
-                    <Heart className="size-5" />
-                    Favorilere ekle
-                  </Button>
+                  <FavoriteButton
+                    productId={product.productId}
+                    productName={product.name}
+                    variant="detail"
+                  />
                   <AddToCartButton
                     productId={product.productId}
                     name={product.name}
@@ -373,9 +371,9 @@ function ErrorState({
 function InvalidProductState() {
   return (
     <main className="min-h-screen bg-[#f4f4f1] px-3 pb-10 pt-3 sm:px-5 sm:pt-4">
-      <div className="mx-auto max-w-[1320px]">
-        <Header />
-      </div>
+      {/* <div className="mx-auto max-w-[1320px]"> */}
+      {/*   <Header /> */}
+      {/* </div> */}
       <Section className="mx-auto max-w-[1320px]">
         <Link
           href="/"

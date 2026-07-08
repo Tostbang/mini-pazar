@@ -3,7 +3,7 @@
  * Do not edit manually. Run `npm run sync-api` to regenerate.
  *
  * Generated from: https://marketapi20260604105905-ajfqchdfakgbhggm.canadacentral-01.azurewebsites.net/swagger/v1/swagger.json
- * Generated at: 2026-07-01T09:11:45.621Z
+ * Generated at: 2026-07-08T12:27:07.661Z
  */
 export interface paths {
     "/api/Admin/GetMyProfile": {
@@ -1370,7 +1370,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/Home/GetHomeCards": {
+    "/api/Favorites/GetMyFavorites": {
         parameters: {
             query?: never;
             header?: never;
@@ -1378,9 +1378,137 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Anasayfa sabit kart alanlarını tek seferde getirir (anonim).
-         * @description Tek büyük kart olan bölümler (MainCard, StayHomeCard) object olarak, birden fazla kart içeren bölümler (FeaturedStoreCards, CampaignCards) List olarak döner. CityAdvantagesSection kendi içinde alt kart listesi (Cards) barındırır.
+         * Favori ürünlerimi getirir (yetkili kullanıcı).
+         * @description Favori olarak eklenmiş aktif ürünleri ürün kartı formatında döner. Her üründe IsFavorite=true olur.
          */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ListFavoritesResponse"];
+                        "application/json": components["schemas"]["ListFavoritesResponse"];
+                        "text/json": components["schemas"]["ListFavoritesResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Favorites/AddFavorite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ürünü favorilere ekler.
+         * @description Body: { productId }. Aynı ürün zaten favorideyse 200 + 'Ürün zaten favorilerinizde.'. Ürün yoksa veya aktif değilse 400.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["AddFavoriteRequest"];
+                    "text/json": components["schemas"]["AddFavoriteRequest"];
+                    "application/*+json": components["schemas"]["AddFavoriteRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["AddFavoriteResponse"];
+                        "application/json": components["schemas"]["AddFavoriteResponse"];
+                        "text/json": components["schemas"]["AddFavoriteResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Favorites/RemoveFavorite/{productId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Ürünü favorilerden kaldırır (soft-delete).
+         * @description Route'tan productId alır. Ürün favorilerde yoksa da 200 döner (idempotent).
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    productId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["RemoveFavoriteResponse"];
+                        "application/json": components["schemas"]["RemoveFavoriteResponse"];
+                        "text/json": components["schemas"]["RemoveFavoriteResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/Home/GetHomeCards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Anasayfa sabit kart alanlarını tek seferde getirir (anonim). */
         get: {
             parameters: {
                 query?: never;
@@ -1411,54 +1539,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/Home/CreateHomeCard": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Admin: Yeni bir anasayfa kartı ekler.
-         * @description CardType'a göre yeni kart oluşturur. CityAdvantageCard için ParentCardId zorunludur (bağlı olduğu CityAdvantagesSection). Diğer tiplerde ParentCardId null olmalıdır.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["CreateHomeCardRequest"];
-                    "text/json": components["schemas"]["CreateHomeCardRequest"];
-                    "application/*+json": components["schemas"]["CreateHomeCardRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["CreateHomeCardResponse"];
-                        "application/json": components["schemas"]["CreateHomeCardResponse"];
-                        "text/json": components["schemas"]["CreateHomeCardResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Home/UpdateHomeCard/{id}": {
+    "/api/Home/UpdateHomeCard": {
         parameters: {
             query?: never;
             header?: never;
@@ -1467,16 +1548,14 @@ export interface paths {
         };
         get?: never;
         /**
-         * Admin: Mevcut kartı günceller.
-         * @description Route veya body'den gelen Id ile aktif kartı bulur ve bilgilerini günceller.
+         * Admin: Anasayfa sabit kart alanlarını günceller (singleton).
+         * @description Tüm bölümler (MainCard, FeaturedStoreCards, StayHomeCard, CampaignCards, CityAdvantagesSection) tek istekle güncellenir. Tablodaki tek satır güncellenir.
          */
         put: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    id: number;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: {
@@ -1500,132 +1579,6 @@ export interface paths {
                 };
             };
         };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Home/DeleteHomeCard/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Admin: Kartı soft-delete yapar.
-         * @description Route'dan gelen Id ile kartı bulur, Status=false yaparak silinmiş olarak işaretler.
-         */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["DeleteHomeCardResponse"];
-                        "application/json": components["schemas"]["DeleteHomeCardResponse"];
-                        "text/json": components["schemas"]["DeleteHomeCardResponse"];
-                    };
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Home/GetAllHomeCards": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Admin: Tüm anasayfa kartlarını listeler (yönetim paneli için).
-         * @description Opsiyonel ?cardType= ile belirli bir tipe göre filtreler. Tüm aktif/pasif kartlar döner.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    cardType?: components["schemas"]["HomeCardType"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["GetAllHomeCardsResponse"];
-                        "application/json": components["schemas"]["GetAllHomeCardsResponse"];
-                        "text/json": components["schemas"]["GetAllHomeCardsResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Home/GetHomeCardById/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Admin: Belirli bir kartı Id ile getirir (düzenleme formu için). */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["GetHomeCardByIdResponse"];
-                        "application/json": components["schemas"]["GetHomeCardByIdResponse"];
-                        "text/json": components["schemas"]["GetHomeCardByIdResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -3580,6 +3533,19 @@ export interface components {
             /** Format: int64 */
             categoryId: number;
         };
+        AddFavoriteRequest: {
+            /** Format: int64 */
+            productId: number;
+        };
+        AddFavoriteResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int64 */
+            favoriteId: number;
+            /** Format: int64 */
+            productId: number;
+        };
         AdminDeleteUserResponse: {
             code: string | null;
             message: string | null;
@@ -3692,6 +3658,7 @@ export interface components {
             shopName: string | null;
             /** Format: int32 */
             totalSold: number;
+            isFavorite: boolean;
         };
         BusinessProfileModel: {
             /** Format: int64 */
@@ -3709,6 +3676,14 @@ export interface components {
             errors: string[] | null;
             profile: components["schemas"]["BusinessProfileModel"];
         };
+        CampaignCardDto: {
+            title: string | null;
+            imageUrl: string | null;
+            label: string | null;
+            labelIcon: string | null;
+            enabled: boolean;
+            backgroundColor: string | null;
+        };
         CancelMyOrderResponse: {
             code: string | null;
             message: string | null;
@@ -3717,29 +3692,6 @@ export interface components {
             orderId: number;
             orderState: components["schemas"]["OrderStatus"];
             paymentStatus: string | null;
-        };
-        CardDto: {
-            title: string | null;
-            description: string | null;
-            imageUrl: string | null;
-            buttonName: string | null;
-            /**
-             * Admin can disable a card without deleting it. `null` is
-             * treated as enabled (true) by the storefront so responses from
-             * an older backend that doesn't carry the field still render
-             * the card. Used on every card type: mainCard, featuredStore
-             * Cards, stayHomeCard, campaignCards, cityAdvantagesSection,
-             * and the inner cards under cityAdvantagesSection.
-             */
-            enabled: boolean | null;
-            /**
-             * Background color override for cards that the admin can theme
-             * (featuredStoreCards and stayHomeCard). `null` falls back to
-             * the storefront's hardcoded color for that slot (#083e74,
-             * #a9411e, #6c1143 respectively). Other card types leave
-             * this null and use the existing brand CSS variables.
-             */
-            backgroundColor: string | null;
         };
         CartItemModel: {
             /** Format: int64 */
@@ -3793,17 +3745,15 @@ export interface components {
             message: string | null;
             errors: string[] | null;
         };
+        CityAdvantageCardDto: {
+            title: string | null;
+            imageUrl: string | null;
+        };
         CityAdvantagesSectionDto: {
             title: string | null;
             description: string | null;
-            imageUrl: string | null;
-            buttonName: string | null;
-            /**
-             * Admin can hide the whole "şehrin en iyisi" block without
-             * deleting its inner cards. `null` is treated as enabled.
-             */
-            enabled: boolean | null;
-            cards: components["schemas"]["CardDto"][] | null;
+            enabled: boolean;
+            cards: components["schemas"]["CityAdvantageCardDto"][] | null;
         };
         ClearCartResponse: {
             code: string | null;
@@ -3823,25 +3773,6 @@ export interface components {
             message: string | null;
             errors: string[] | null;
             contacts: components["schemas"]["ContactListItem"][] | null;
-        };
-        CreateHomeCardRequest: {
-            cardType: components["schemas"]["HomeCardType"];
-            /** Format: int64 */
-            parentCardId: number | null;
-            title: string | null;
-            description: string | null;
-            imageUrl: string | null;
-            buttonName: string | null;
-            /** Format: int32 */
-            displayOrder: number;
-            isActive: boolean;
-        };
-        CreateHomeCardResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            homeCardId: number;
         };
         CreateOrUpdateBusinessProfileRequest: {
             shopName: string | null;
@@ -3909,11 +3840,6 @@ export interface components {
             message: string | null;
             errors: string[] | null;
         };
-        DeleteHomeCardResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-        };
         DeleteImageRequest: {
             fileUrl: string | null;
         };
@@ -3943,6 +3869,14 @@ export interface components {
             message: string | null;
             errors: string[] | null;
         };
+        FeaturedStoreCardDto: {
+            title: string | null;
+            imageUrl: string | null;
+            label: string | null;
+            labelIcon: string | null;
+            enabled: boolean;
+            backgroundColor: string | null;
+        };
         FileUploadResponse: {
             code: string | null;
             message: string | null;
@@ -3963,12 +3897,6 @@ export interface components {
             /** Format: int32 */
             remainingSeconds: number | null;
         };
-        GetAllHomeCardsResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            cards: components["schemas"]["HomeCardAdminItem"][] | null;
-        };
         GetAllSupportResponse: {
             code: string | null;
             message: string | null;
@@ -3982,12 +3910,6 @@ export interface components {
             selectedPeriod: components["schemas"]["BestSellingPeriod"];
             isFallback: boolean;
             products: components["schemas"]["BestSellingProductDto"][] | null;
-        };
-        GetHomeCardByIdResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            card: components["schemas"]["HomeCardAdminItem"];
         };
         GetMyAddressResponse: {
             code: string | null;
@@ -4057,33 +3979,14 @@ export interface components {
             errors: string[] | null;
             settings: components["schemas"]["SiteSettingsModel"];
         };
-        HomeCardAdminItem: {
-            /** Format: int64 */
-            id: number;
-            cardType: components["schemas"]["HomeCardType"];
-            /** Format: int64 */
-            parentCardId: number | null;
-            title: string | null;
-            description: string | null;
-            imageUrl: string | null;
-            buttonName: string | null;
-            /** Format: int32 */
-            displayOrder: number;
-            isActive: boolean;
-        };
-        /**
-         * Format: int32
-         * @enum {integer}
-         */
-        HomeCardType: 1 | 2 | 3 | 4 | 5 | 6;
         HomeCardsResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
-            mainCard: components["schemas"]["CardDto"];
-            featuredStoreCards: components["schemas"]["CardDto"][] | null;
-            stayHomeCard: components["schemas"]["CardDto"];
-            campaignCards: components["schemas"]["CardDto"][] | null;
+            mainCard: components["schemas"]["MainCardDto"];
+            featuredStoreCards: components["schemas"]["FeaturedStoreCardDto"][] | null;
+            stayHomeCard: components["schemas"]["StayHomeCardDto"];
+            campaignCards: components["schemas"]["CampaignCardDto"][] | null;
             cityAdvantagesSection: components["schemas"]["CityAdvantagesSectionDto"];
         };
         IyzicoCallbackRequest: {
@@ -4099,6 +4002,14 @@ export interface components {
             orderState: components["schemas"]["OrderStatus"];
             paymentStatus: string | null;
             paymentSuccess: boolean;
+        };
+        ListFavoritesResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            products: components["schemas"]["ProductListItem"][] | null;
+            /** Format: int32 */
+            totalCount: number;
         };
         LogoListItem: {
             /** Format: int64 */
@@ -4128,6 +4039,13 @@ export interface components {
             errors: string[] | null;
             /** Format: int64 */
             sessionId: number;
+        };
+        MainCardDto: {
+            title: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            buttonName: string | null;
+            enabled: boolean;
         };
         OrderItemModel: {
             /** Format: int64 */
@@ -4263,6 +4181,7 @@ export interface components {
             isActive: boolean;
             /** Format: int32 */
             displayOrder: number;
+            isFavorite: boolean;
         };
         ProductListByCategoryResponse: {
             code: string | null;
@@ -4286,6 +4205,7 @@ export interface components {
             isActive: boolean;
             /** Format: int32 */
             displayOrder: number;
+            isFavorite: boolean;
         };
         ProductListResponse: {
             code: string | null;
@@ -4387,6 +4307,7 @@ export interface components {
             shopName: string | null;
             /** Format: int32 */
             totalSold: number;
+            isFavorite: boolean;
         };
         RegistrationStatsResponse: {
             code: string | null;
@@ -4405,6 +4326,11 @@ export interface components {
             cartItemId: number;
         };
         RemoveCartItemResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+        };
+        RemoveFavoriteResponse: {
             code: string | null;
             message: string | null;
             errors: string[] | null;
@@ -4537,6 +4463,14 @@ export interface components {
          * @enum {integer}
          */
         StatsPeriod: 1 | 2 | 3 | 4;
+        StayHomeCardDto: {
+            title: string | null;
+            description: string | null;
+            imageUrl: string | null;
+            appDwonloadButton: boolean;
+            enabled: boolean;
+            backgroundColor: string | null;
+        };
         SupportItemModel: {
             /** Format: int64 */
             supportId: number;
@@ -4621,15 +4555,11 @@ export interface components {
             categoryId: number;
         };
         UpdateHomeCardRequest: {
-            /** Format: int64 */
-            id: number;
-            title: string | null;
-            description: string | null;
-            imageUrl: string | null;
-            buttonName: string | null;
-            /** Format: int32 */
-            displayOrder: number;
-            isActive: boolean;
+            mainCard: components["schemas"]["MainCardDto"];
+            featuredStoreCards: components["schemas"]["FeaturedStoreCardDto"][] | null;
+            stayHomeCard: components["schemas"]["StayHomeCardDto"];
+            campaignCards: components["schemas"]["CampaignCardDto"][] | null;
+            cityAdvantagesSection: components["schemas"]["CityAdvantagesSectionDto"];
         };
         UpdateHomeCardResponse: {
             code: string | null;

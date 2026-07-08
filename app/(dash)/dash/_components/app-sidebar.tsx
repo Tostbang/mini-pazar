@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BarChart3,
   BookOpen,
+  CircleHelp,
   FolderTree,
   LayoutDashboard,
   Package,
@@ -39,6 +40,7 @@ const mainNav: NavItem[] = [
   { title: "Ürünler", href: "/dash/products", icon: Package },
   { title: "Kategoriler", href: "/dash/categories", icon: FolderTree },
   { title: "Hakkımızda", href: "/dash/about", icon: BookOpen },
+  { title: "SSS", href: "/dash/sss", icon: CircleHelp },
   { title: "Mağaza Profili", href: "/dash/business-profile", icon: Store },
   { title: "Mağaza", href: "/dash/store", icon: Settings },
   { title: "Siparişler", href: "/dash/orders", icon: ShoppingCart },

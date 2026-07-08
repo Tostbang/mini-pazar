@@ -1,3 +1,6 @@
+"use client";
+
+import { useQueryOP } from "@/lib/fetch";
 import type { paths } from "@/lib/types/api";
 
 /**
@@ -7,6 +10,27 @@ import type { paths } from "@/lib/types/api";
  */
 export type HomeCards =
   paths["/api/Home/GetHomeCards"]["get"]["responses"]["200"]["content"]["application/json"];
+
+type MainCard = HomeCards["mainCard"];
+type FeaturedStoreCard = NonNullable<HomeCards["featuredStoreCards"]>[number];
+type StayHomeCard = HomeCards["stayHomeCard"];
+type CityAdvantageCard = NonNullable<
+  NonNullable<HomeCards["cityAdvantagesSection"]>["cards"]
+>[number];
+
+export type { MainCard, FeaturedStoreCard, StayHomeCard, CityAdvantageCard };
+
+/**
+ * Anasayfa sabit kart bölümlerini tek istekle getirir. refetchOnMount: true
+ * ile sayfa her ziyaret edildiğinde taze veri çekilir; admin tarafında
+ * yapılan bir güncelleme sonraki ziyarette anında yansır (sayfa yenilemeye
+ * gerek kalmadan).
+ */
+export function useGetHomeCards() {
+  return useQueryOP("get", "/api/Home/GetHomeCards", {
+    refetchOnMount: true,
+  });
+}
 
 /**
  * Seed values used when the API returns no rows (cold database, no admin
@@ -38,23 +62,22 @@ export const DEFAULT_HOME_CARDS: HomeCards = {
     imageUrl: null,
     buttonName: "Şimdi incele",
     enabled: true,
-    backgroundColor: null,
   },
   featuredStoreCards: [
     {
       title:
         "%50'ye varan indirim 12:15'e kadar teslimat Hızlı ve ücretsiz",
-      description: null,
       imageUrl: null,
-      buttonName: "Ücretsiz teslimat",
+      label: "Ücretsiz teslimat",
+      labelIcon: "Gift",
       enabled: true,
       backgroundColor: "#083e74",
     },
     {
       title: "Sağlık kartımızı kullanarak %5 indirim kazanabilirsiniz",
-      description: null,
       imageUrl: null,
-      buttonName: "Üyelik kartı",
+      label: "Üyelik kartı",
+      labelIcon: "CreditCard",
       enabled: true,
       backgroundColor: "#a9411e",
     },
@@ -63,7 +86,7 @@ export const DEFAULT_HOME_CARDS: HomeCards = {
     title: "Evde Kalın, Tüm İhtiyaçlarınızı Marketimizden Alın!",
     description: "App Store veya Google Play'den uygulamayı indirin",
     imageUrl: null,
-    buttonName: null,
+    appDwonloadButton: true,
     enabled: true,
     backgroundColor: "#6c1143",
   },
@@ -72,41 +95,23 @@ export const DEFAULT_HOME_CARDS: HomeCards = {
     title: "Size her zaman\nşehrin en iyisini sunuyoruz",
     description:
       "2007'den beri ürün geliştirme, destek ve\ngüncellemelerde mükemmelliği sorunsuz alışveriş deneyimi için sunuyoruz.",
-    imageUrl: null,
-    buttonName: null,
     enabled: true,
     cards: [
       {
         title: "Hediye çeki",
-        description: null,
         imageUrl: null,
-        buttonName: null,
-        enabled: true,
-        backgroundColor: null,
       },
       {
         title: "Hediye kartı\nverin",
-        description: null,
         imageUrl: null,
-        buttonName: null,
-        enabled: true,
-        backgroundColor: null,
       },
       {
         title: "Tabby faturanızı\nödeyin",
-        description: null,
         imageUrl: null,
-        buttonName: null,
-        enabled: true,
-        backgroundColor: null,
       },
       {
         title: "Sipariş ver\nmağazadan al",
-        description: null,
         imageUrl: null,
-        buttonName: null,
-        enabled: true,
-        backgroundColor: null,
       },
     ],
   },

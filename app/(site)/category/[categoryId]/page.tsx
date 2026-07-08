@@ -49,7 +49,6 @@ function CategoryPageContent({ categoryId }: { categoryId: number }) {
   return (
     <main className="min-h-screen bg-background pb-16">
       <div className="max-w-[1320px] mx-auto">
-        <Header />
 
         <Section>
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

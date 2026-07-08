@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, Settings as SettingsIcon, User } from "lucide-react";
+import {
+  Heart,
+  MapPin,
+  Package,
+  Settings as SettingsIcon,
+  User,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -24,6 +30,18 @@ const NAV_ITEMS: NavItem[] = [
     label: "Siparişlerim",
     description: "Geçmiş ve güncel siparişleriniz",
     icon: Package,
+  },
+  {
+    href: "/account/favorites",
+    label: "Favorilerim",
+    description: "Beğendiğiniz ürünler",
+    icon: Heart,
+  },
+  {
+    href: "/account/address",
+    label: "Adres",
+    description: "Teslimat adres bilgileriniz",
+    icon: MapPin,
   },
   {
     href: "/account/settings",

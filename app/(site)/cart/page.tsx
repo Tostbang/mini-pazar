@@ -102,7 +102,6 @@ export default function CartPage() {
 
   return (
     <main className="min-h-screen bg-background pb-16 max-w-[1320px] mx-auto">
-      <Header />
 
       <Section className="pt-6">
         <Link

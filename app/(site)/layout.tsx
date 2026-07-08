@@ -3,6 +3,7 @@ import "../globals.css";
 import localFont from "next/font/local";
 import { AppProviders } from "@/components/providers";
 import { AsyncFooter } from "@/components/footer";
+import { SiteFavoritesSync } from "@/components/site-favorites-sync";
 import { SiteSettingsProvider } from "@/components/site-settings-provider";
 import {
   DEFAULT_PUBLIC_SETTINGS,
@@ -11,6 +12,7 @@ import {
   type PublicSiteSettings,
 } from "@/lib/site-settings";
 import { fetchPublicSettings } from "@/lib/site-settings-server";
+import { Header } from "@/components/header";
 
 const intro = localFont({
   src: [
@@ -103,7 +105,6 @@ function buildRootCss(settings: PublicSiteSettings | null): string {
   const accentFg = pickForeground(accent, "#0a0a0a", "#000");
   const custom = s.customCss?.trim() ?? "";
 
-
   const rootRule = `:root{--brand:${primary};--brand-foreground:${primaryFg};--lime:${accent};--lime-foreground:${accentFg};--price:${primary};--secondary:${secondary};--background:${background};--foreground:${text};--primary:${primary}}`;
 
   return custom ? `${rootRule}\n${custom}` : rootRule;
@@ -117,9 +118,7 @@ function buildRootCss(settings: PublicSiteSettings | null): string {
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchPublicSettings();
   const name =
-    settings.siteName?.trim() ||
-    DEFAULT_PUBLIC_SETTINGS.siteName ||
-    "Mağaza";
+    settings.siteName?.trim() || DEFAULT_PUBLIC_SETTINGS.siteName || "Mağaza";
   const tagline = settings.siteTagline?.trim();
   const title = tagline ? `${name} — ${tagline}` : name;
   const faviconUrl = settings.faviconUrl?.trim();
@@ -176,6 +175,8 @@ export default async function RootLayout({
           {/* initialSettings hydrates the Zustand store synchronously
               on mount via useLayoutEffect — see SiteSettingsProvider. */}
           <SiteSettingsProvider initialSettings={settings}>
+            <SiteFavoritesSync />
+            <Header />
             {children}
           </SiteSettingsProvider>
         </AppProviders>
