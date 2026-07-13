@@ -6,6 +6,7 @@ import { ImagePlus, Loader2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { resolveImageUrl } from "@/lib/image-url";
 import { useUploadImage } from "@/lib/upload";
 
 interface ImageUploadFieldProps {
@@ -15,6 +16,12 @@ interface ImageUploadFieldProps {
   onChange: (value: string) => void;
   type: string;
   aspect?: "square" | "wide";
+  /**
+   * Preview-container size. `default` fills the parent width; `sm` constrains
+   * the preview to ~60px so small icons (city advantages, etc.) don't
+   * dominate the form.
+   */
+  size?: "default" | "sm";
   className?: string;
 }
 
@@ -25,6 +32,7 @@ export function ImageUploadField({
   onChange,
   type,
   aspect = "square",
+  size = "default",
   className,
 }: ImageUploadFieldProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -60,6 +68,13 @@ export function ImageUploadField({
 
   const uploading = uploadMutation.isPending;
 
+  // API can return relative paths like "/defaults/mainCard.png" — the
+  // storefront's `resolveImageUrl` prepends the API origin so the image
+  // loads from the backend's CDN instead of the Next.js dev origin. We
+  // keep `value` itself untouched so the form round-trips whatever the
+  // API sent (relative paths included).
+  const displayUrl = resolveImageUrl(value);
+
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       <span className="text-sm font-medium text-foreground">{label}</span>
@@ -81,6 +96,7 @@ export function ImageUploadField({
         className={cn(
           "group relative grid w-full cursor-pointer place-items-center overflow-hidden rounded-2xl border border-dashed border-border bg-muted/40 text-center text-xs text-muted-foreground outline-none transition-colors hover:border-foreground/30 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40",
           aspect === "square" ? "aspect-square" : "aspect-[3/1]",
+          size === "sm" && "w-[60px] shrink-0",
           uploading && "cursor-wait opacity-70",
         )}
       >
@@ -94,13 +110,13 @@ export function ImageUploadField({
               </span>
             </div>
           </>
-        ) : value ? (
+        ) : displayUrl ? (
           <>
             <Image
-              src={value}
+              src={displayUrl}
               alt={label}
               fill
-              sizes={aspect === "square" ? "180px" : "360px"}
+              sizes={aspect === "square" ? (size === "sm" ? "60px" : "180px") : "360px"}
               className="object-contain p-3"
             />
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-foreground/40 opacity-0 transition-opacity group-hover:opacity-100">
@@ -122,12 +138,26 @@ export function ImageUploadField({
             </button>
           </>
         ) : (
-          <div className="flex flex-col items-center gap-1.5 px-3 py-6">
-            <ImagePlus className="size-6 text-muted-foreground/70" />
-            <span className="font-medium">Görsel yüklemek için tıklayın</span>
-            <span className="text-[11px] text-muted-foreground/70">
-              PNG, JPG, WEBP, SVG
-            </span>
+          <div
+            className={cn(
+              "flex flex-col items-center justify-center text-center",
+              size === "sm" ? "gap-0 p-1" : "gap-1.5 px-3 py-6",
+            )}
+          >
+            <ImagePlus
+              className={cn(
+                "text-muted-foreground/70",
+                size === "sm" ? "size-4" : "size-6",
+              )}
+            />
+            {size !== "sm" && (
+              <>
+                <span className="font-medium">Görsel yüklemek için tıklayın</span>
+                <span className="text-[11px] text-muted-foreground/70">
+                  PNG, JPG, WEBP, SVG
+                </span>
+              </>
+            )}
           </div>
         )}
       </div>

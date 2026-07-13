@@ -4,9 +4,20 @@ import { useEffect, useMemo, useState } from "react";
 import { ImageOff, MapPin } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { RemoteSvg } from "@/components/remote-svg";
 import { Section } from "@/components/section";
 import { useGetHomeCards, type CityAdvantageCard } from "@/lib/home-cards";
 import { resolveImageUrl } from "@/lib/image-url";
+
+/**
+ * Treat URLs ending in .svg as vector assets so we can inline them and let
+ * a parent `text-*` class drive the color via `currentColor`. Anything
+ * else (png/jpg/webp) keeps going through next/image.
+ */
+function isSvgUrl(url: string): boolean {
+  const path = url.split("?")[0].split("#")[0].toLowerCase();
+  return path.endsWith(".svg");
+}
 
 const FALLBACK_TITLE = "Size her zaman\nşehrin en iyisini sunuyoruz";
 const FALLBACK_DESCRIPTION =
@@ -36,14 +47,7 @@ export function BestInTown() {
       <div className="relative overflow-hidden rounded-[2rem] bg-lime pb-0 pt-12 text-lime-foreground sm:pt-16">
         {/* Curved top edge — a "lens" of background color that bites into the
             lime, separating this section from the one above. */}
-        <svg
-          viewBox="0 0 100 14"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute -top-px left-0 h-7 w-full text-background"
-          aria-hidden
-        >
-          <path d="M0 0 L100 0 L100 14 Q50 28 0 14 Z" fill="currentColor" />
-        </svg>
+        
         <div className="relative px-6 pt-2 text-center">
           <h2 className="whitespace-pre-line font-heading text-3xl font-semibold leading-tight text-brand text-balance sm:text-[44px] sm:leading-[1.1]">
             {title}
@@ -82,16 +86,26 @@ function AdvantageCard({
         {card.title ?? ""}
       </h3>
       {imageUrl ? (
-        <div className="relative size-16 overflow-hidden rounded-xl bg-lime/10">
-          <Image
-            src={imageUrl}
-            alt={card.title ?? "Avantaj görseli"}
-            fill
-            sizes="64px"
-            unoptimized
-            className="object-contain p-2"
-          />
-        </div>
+        isSvgUrl(imageUrl) ? (
+          <div className="relative size-16 overflow-hidden rounded-xl bg-lime/10 text-lime">
+            <RemoteSvg
+              src={imageUrl}
+              className="absolute inset-0 p-2"
+              ariaLabel={card.title ?? undefined}
+            />
+          </div>
+        ) : (
+          <div className="relative size-16 overflow-hidden rounded-xl bg-lime/10 text-lime">
+            <Image
+              src={imageUrl}
+              alt={card.title ?? "Avantaj görseli"}
+              fill
+              sizes="64px"
+              unoptimized
+              className="object-contain p-2 text-lime"
+            />
+          </div>
+        )
       ) : (
         <div className="grid size-16 place-items-center rounded-xl bg-lime/10 text-lime/60">
           {card.imageUrl ? (

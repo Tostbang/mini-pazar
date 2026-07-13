@@ -11,7 +11,6 @@ import {
   Package,
   RefreshCcw,
 } from "lucide-react";
-import { Header } from "@/components/header";
 import {
   LiveProductCard,
   type LiveProduct,
@@ -270,7 +269,6 @@ function InvalidCategoryState() {
   return (
     <main className="min-h-screen bg-background pb-16">
       <div className="max-w-[1320px] mx-auto">
-        <Header />
         <Section>
           <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/50 px-6 py-12 text-center">
             <p className="text-sm font-semibold text-foreground">

@@ -6,7 +6,6 @@ import {
   Heart,
   MapPin,
   Package,
-  Settings as SettingsIcon,
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -42,12 +41,6 @@ const NAV_ITEMS: NavItem[] = [
     label: "Adres",
     description: "Teslimat adres bilgileriniz",
     icon: MapPin,
-  },
-  {
-    href: "/account/settings",
-    label: "Ayarlar",
-    description: "Hesap ve bildirim tercihleri",
-    icon: SettingsIcon,
   },
 ];
 

@@ -29,11 +29,11 @@ import {
   OrderStatus,
   getOrderStatusLabel,
   getPaymentMethodLabel,
-  getPaymentStatusLabel,
 } from "@/lib/types/enums";
 import { OrderStatusBadge } from "../_components/order-status-badge";
 import { OrderStatusForm } from "./_components/order-status-form";
 import { useGetAdminOrderById } from "../_services/queries";
+import { PaymentStatusBadge } from "@/components/payment-status-badge";
 
 const dateFormatter = new Intl.DateTimeFormat("tr-TR", {
   day: "2-digit",
@@ -163,6 +163,7 @@ export default function OrderDetailPage() {
                 Sipariş #{order.orderNumber ?? order.orderId}
               </h1>
               <OrderStatusBadge status={order.orderState} />
+              <PaymentStatusBadge status={order.paymentStatus} />
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
               Sipariş detaylarını görüntüleyin ve durumunu güncelleyin.
@@ -322,7 +323,12 @@ export default function OrderDetailPage() {
               />
               <SummaryRow
                 label="Ödeme Durumu"
-                value={getPaymentStatusLabel(order.paymentStatus)}
+                value={
+                  <PaymentStatusBadge
+                    status={order.paymentStatus}
+                    className="self-start"
+                  />
+                }
               />
               <SummaryRow
                 label="Mevcut Durum"
@@ -389,7 +395,9 @@ function SummaryRow({
   emphasis,
 }: {
   label: string;
-  value: string;
+  // Accept ReactNode so summary rows can host rich content (badges, etc.)
+  // alongside plain strings. Most callers still pass a string.
+  value: React.ReactNode;
   emphasis?: boolean;
 }) {
   return (

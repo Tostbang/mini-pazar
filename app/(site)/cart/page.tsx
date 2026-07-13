@@ -7,29 +7,90 @@ import {
   ArrowLeft,
   ChevronDown,
   ChevronUp,
+  FolderTree,
   MapPin,
   Minus,
   Pencil,
   Plus,
-  RefreshCcw,
   Trash2,
 } from "lucide-react"
-import { Header } from "@/components/header"
 import { Section } from "@/components/section"
 import { motion, AnimatePresence } from "motion/react"
 import { toast } from "sonner"
 import {
+  flattenCartItems,
+  type CartCategoryGroup,
   useClearCart,
   useGetMyCart,
   useRemoveCartItem,
   useUpdateCartItem,
 } from "@/lib/cart"
+import { useQueryOP } from "@/lib/fetch"
+import { useGetMyAddress } from "@/app/(site)/account/address/_services/queries"
 
-const paymentOptions = [
-  { id: "online", label: "Online Ödeme" },
-  { id: "cod", label: "Kapıda Nakit" },
-  { id: "pod", label: "Kapıda POS" },
-] as const
+// TRY için Intl desteği olmayan ortamlarda "TRY 100.00" gibi basit bir
+// fallback göster — locale formatlamasının başarısız olması kullanıcıyı
+// fiyatsız bırakmamalı.
+function formatPrice(amount: number, currency: string | null | undefined): string {
+  const code = (currency?.trim() || "TRY").toUpperCase()
+  try {
+    return new Intl.NumberFormat("tr-TR", {
+      style: "currency",
+      currency: code,
+    }).format(amount)
+  } catch {
+    return `${code} ${amount.toFixed(2)}`
+  }
+}
+
+const emojiUrl = (emoji: string) =>
+  `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/${[...emoji]
+    .map((char) => char.codePointAt(0)?.toString(16))
+    .filter(Boolean)
+    .join("-")}.png`
+
+function isEmojiCharacter(value: string): boolean {
+  const trimmed = value.trim()
+  if (!trimmed) return false
+  if (trimmed.length > 8) return false
+  if (/\s/.test(trimmed)) return false
+  if (/[\/\\?#]/.test(trimmed)) return false
+  return true
+}
+
+function CategoryIcon({
+  value,
+  alt,
+  size = 18,
+}: {
+  value?: string | null
+  alt: string
+  size?: number
+}) {
+  if (!value) {
+    return (
+      <span
+        className="grid place-items-center rounded-md bg-muted text-muted-foreground"
+        style={{ width: size, height: size }}
+        aria-hidden
+      >
+        <FolderTree style={{ width: size - 6, height: size - 6 }} />
+      </span>
+    )
+  }
+  const src = isEmojiCharacter(value) ? emojiUrl(value) : value
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={size}
+      height={size}
+      unoptimized
+      className="object-contain"
+      style={{ width: size, height: size }}
+    />
+  )
+}
 
 export default function CartPage() {
   const cartQuery = useGetMyCart()
@@ -37,21 +98,37 @@ export default function CartPage() {
   const removeMutation = useRemoveCartItem()
   const clearMutation = useClearCart()
 
-  const [payment, setPayment] = useState<(typeof paymentOptions)[number]["id"]>("online")
-  const [promo, setPromo] = useState("")
+  // Gerçek kullanıcı adresi ve telefonu için hesap/ürün sorguları.
+  // useGetMyAddress() açık adres/şehir/ülke döner; telefon profile
+  // response'unda yaşadığı için ayrıca profil sorgusu çekiyoruz.
+  const addressQuery = useGetMyAddress()
+  const profileQuery = useQueryOP("get", "/api/User/GetMyProfile")
+
+  // Backend artık sepeti kategori grupları halinde döndürüyor — her
+  // grubun kendi adı, ikonu ve içindeki ürünleri var. Bu yüzden artık
+  // ayrı bir kategori listesi ya da ürün→kategori eşlemesi çekmemize
+  // gerek yok.
   const [storeOpen, setStoreOpen] = useState<Record<string, boolean>>({})
 
   const cart = cartQuery.data?.cart
-  const items = useMemo(() => cart?.items ?? [], [cart?.items])
+  const groups = useMemo<CartCategoryGroup[]>(
+    () => cart?.categoryGroups ?? [],
+    [cart?.categoryGroups],
+  )
+  const items = useMemo(() => flattenCartItems(cart), [cart])
 
-  const grouped = useMemo(() => {
-    return items.reduce<Record<string, typeof items>>((acc, it) => {
-      const key = it.productName ?? `Ürün #${it.productId}`
-      if (!acc[key]) acc[key] = []
-      acc[key].push(it)
-      return acc
-    }, {})
-  }, [items])
+  const address = addressQuery.data?.address ?? null
+  const profile = profileQuery.data?.user ?? null
+  const fullName = [profile?.firstName, profile?.lastName]
+    .filter(Boolean)
+    .join(" ")
+    .trim()
+  const phone = profile?.phone?.trim() ?? ""
+  const addressLine = address?.address?.trim() ?? ""
+  const city = address?.city?.trim() ?? ""
+  const postalCode = address?.postalCode?.trim() ?? ""
+  const country = address?.country?.trim() ?? ""
+  const hasRealAddress = Boolean(addressLine || city || country)
 
   const subtotal = cart?.subTotal ?? 0
   const shippingFee = cart?.shippingFee ?? 0
@@ -135,28 +212,50 @@ export default function CartPage() {
                 <h2 className="font-heading text-2xl font-semibold text-brand">
                   Teslimat bilgisi
                 </h2>
-                <button className="inline-flex items-center gap-1.5 text-sm font-semibold text-price hover:text-brand">
+                <Link
+                  href="/account/address"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-price transition-colors hover:text-brand"
+                >
                   <Pencil className="size-4" />
                   Düzenle
-                </button>
+                </Link>
               </div>
               <div className="mt-5 flex items-start gap-4">
                 <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-muted">
                   <MapPin className="size-7 text-brand" fill="#bbea70" strokeWidth={1.5} />
                 </span>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="font-heading text-lg font-semibold text-brand">
-                    Teslimat adresi
+                    {fullName || "Teslimat adresi"}
                   </p>
-                  <p className="mt-1 text-sm text-foreground/80">
-                    Telefon:&nbsp;
-                    <span className="font-semibold text-brand">
-                      (+90) 554-264-1999
-                    </span>
-                  </p>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    İstanbul, Kadıköy, Moda, Atatürk Caddesi No: 42
-                  </p>
+                  {hasRealAddress ? (
+                    <>
+                      {addressLine ? (
+                        <p className="mt-1 text-sm text-foreground/80">
+                          {addressLine}
+                        </p>
+                      ) : null}
+                      <p className="mt-0.5 text-sm text-muted-foreground">
+                        {[postalCode, city, country].filter(Boolean).join(", ")}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Adres bilgisi eklenmemiş.{" "}
+                      <Link
+                        href="/account/address"
+                        className="font-semibold text-price underline-offset-2 hover:underline"
+                      >
+                        Adres ekle
+                      </Link>
+                    </p>
+                  )}
+                  {phone ? (
+                    <p className="mt-1 text-sm text-foreground/80">
+                      Telefon:&nbsp;
+                      <span className="font-semibold text-brand">{phone}</span>
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -185,29 +284,41 @@ export default function CartPage() {
                 </div>
               ) : (
                 <div className="mt-5 space-y-4">
-                  {Object.entries(grouped).map(([name, vendorItems]) => {
-                    const open = storeOpen[name] ?? true
+                  {groups.map((group) => {
+                    const groupProducts = group.products ?? []
+                    const key = String(group.categoryId)
+                    const open = storeOpen[key] ?? true
+                    const headerLabel =
+                      group.categoryName?.trim() || `Kategori #${group.categoryId}`
+                    const itemCount = groupProducts.length
+                    const unitCount = groupProducts.reduce(
+                      (sum, it) => sum + it.quantity,
+                      0,
+                    )
                     return (
-                      <div key={name} className="rounded-2xl border border-border/60">
+                      <div
+                        key={key}
+                        className="rounded-2xl border border-border/60"
+                      >
                         <button
                           onClick={() =>
-                            setStoreOpen((s) => ({ ...s, [name]: !s[name] }))
+                            setStoreOpen((s) => ({ ...s, [key]: !s[key] }))
                           }
                           className="flex w-full items-center justify-between gap-4 px-5 py-4"
+                          aria-expanded={open}
                         >
                           <div className="flex items-center gap-3">
-                            <span className="grid size-10 place-items-center rounded-full bg-[#d8312a] text-white">
-                              <span className="font-heading text-sm font-bold tracking-tight">
-                                CART
-                              </span>
-                            </span>
+                            <CategoryIcon
+                              value={group.categoryIcon}
+                              alt={headerLabel}
+                              size={40}
+                            />
                             <div className="text-left">
                               <p className="font-heading text-base font-semibold text-brand">
-                                {name}
+                                {headerLabel}
                               </p>
                               <p className="text-sm text-muted-foreground">
-                                {vendorItems.length} ürün ·{" "}
-                                {vendorItems.reduce((s, it) => s + it.quantity, 0)} adet
+                                {itemCount} ürün · {unitCount} adet
                               </p>
                             </div>
                           </div>
@@ -229,7 +340,7 @@ export default function CartPage() {
                               className="overflow-hidden"
                             >
                               <div className="space-y-3 px-5 pb-5">
-                                {vendorItems.map((it) => (
+                                {groupProducts.map((it) => (
                                   <div
                                     key={it.cartItemId}
                                     className="flex items-center gap-4 rounded-2xl bg-muted/60 p-4"
@@ -249,11 +360,11 @@ export default function CartPage() {
                                       <p className="truncate font-heading text-base font-semibold text-brand">
                                         {it.productName ?? `Ürün #${it.productId}`}
                                       </p>
-                                      <p className="text-sm text-muted-foreground">
-                                        {cart?.currency ?? "TRY"} {it.unitPrice.toFixed(2)}
+                                      <p className="mt-1 text-sm text-muted-foreground">
+                                        {formatPrice(it.unitPrice, cart?.currency)}
                                       </p>
                                       <p className="mt-1 font-heading text-xl font-bold text-price">
-                                        {(it.lineTotal).toFixed(2)}
+                                        {formatPrice(it.lineTotal, cart?.currency)}
                                       </p>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -309,29 +420,13 @@ export default function CartPage() {
                 Sipariş özeti
               </h2>
 
-              <div className="mt-5 space-y-3">
-                {paymentOptions.map((opt) => (
-                  <label
-                    key={opt.id}
-                    className="flex cursor-pointer items-center gap-3"
-                  >
-                    <span
-                      className={`grid size-5 place-items-center rounded-full border-2 transition-colors ${
-                        payment === opt.id
-                          ? "border-[#d8312a]"
-                          : "border-muted-foreground/40"
-                      }`}
-                    >
-                      {payment === opt.id && (
-                        <span className="size-2.5 rounded-full bg-[#d8312a]" />
-                      )}
-                    </span>
-                    <span className="text-base text-foreground/85">{opt.label}</span>
-                  </label>
-                ))}
-              </div>
-
-              <div className="mt-6 flex items-center gap-3 rounded-full bg-muted/70 p-1.5 pl-5">
+              {/*
+                Promo kodu girişi şu an devre dışı — ileride yeniden
+                açılabilir. State (`promo`, `setPromo`) kasıtlı olarak
+                yorum satırının üstünde tutuldu; geri açıldığında JSX'i
+                buraya geri taşımak yeterli.
+              */}
+              {/* <div className="mt-6 flex items-center gap-3 rounded-full bg-muted/70 p-1.5 pl-5">
                 <input
                   type="text"
                   value={promo}
@@ -342,26 +437,26 @@ export default function CartPage() {
                 <button className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-lime transition-colors hover:bg-brand/90">
                   Uygula
                 </button>
-              </div>
+              </div> */}
 
               <div className="mt-6 space-y-3 border-t border-border pt-5 text-base">
                 <div className="flex items-center justify-between text-foreground/80">
                   <span>Ara toplam</span>
                   <span className="font-semibold text-price">
-                    {cart?.currency ?? "TRY"} {subtotal.toFixed(2)}
+                    {formatPrice(subtotal, cart?.currency)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-foreground/80">
                   <span>Teslimat ücreti</span>
                   <span className="font-semibold text-price">
-                    {cart?.currency ?? "TRY"} {shippingFee.toFixed(2)}
+                    {formatPrice(shippingFee, cart?.currency)}
                   </span>
                 </div>
                 {couponDiscount > 0 && (
                   <div className="flex items-center justify-between text-foreground/80">
                     <span>Kupon indirimi</span>
                     <span className="font-semibold text-price">
-                      -{couponDiscount.toFixed(2)}
+                      -{formatPrice(couponDiscount, cart?.currency)}
                     </span>
                   </div>
                 )}
@@ -369,7 +464,7 @@ export default function CartPage() {
                   <div className="flex items-center justify-between text-foreground/80">
                     <span>Vergiler</span>
                     <span className="font-semibold text-price">
-                      {taxes.toFixed(2)}
+                      {formatPrice(taxes, cart?.currency)}
                     </span>
                   </div>
                 )}
@@ -380,7 +475,7 @@ export default function CartPage() {
                   Toplam
                 </span>
                 <span className="font-heading text-2xl font-bold text-price">
-                  {cart?.currency ?? "TRY"} {total.toFixed(2)}
+                  {formatPrice(total, cart?.currency)}
                 </span>
               </div>
 
@@ -394,9 +489,6 @@ export default function CartPage() {
                 }`}
               >
                 Devam et
-                <span className="rounded-md bg-[#ffb3c7] px-2 py-0.5 font-black tracking-tight text-[#9b1248]">
-                  Klarna.
-                </span>
               </Link>
             </div>
           </div>

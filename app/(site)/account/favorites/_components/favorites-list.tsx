@@ -12,7 +12,7 @@ import {
   useFavoritesStore,
   type ListFavoritesResponse,
 } from "@/lib/favorites";
-import { useHasToken } from "@/hooks/use-has-token";
+import { useHasTokenStatus } from "@/hooks/use-has-token";
 
 /**
  * /account/favorites — kullanıcının favori ürünlerini listeler.
@@ -23,16 +23,17 @@ import { useHasToken } from "@/hooks/use-has-token";
  */
 export function FavoritesList() {
   const router = useRouter();
-  const hasToken = useHasToken();
+  const { hasToken, ready } = useHasTokenStatus();
 
-  // Giriş yapmamış kullanıcıları login'e at. useEffect kullanıyoruz ki
-  // ilk render'da hydration uyumsuzluğu olmasın (token yalnızca client'ta
-  // okunuyor).
+  // Giriş yapmamış kullanıcıları login'e at. `ready` beklenir: token cookie
+  // ilk client render'ında henüz okunmamışken (`hasToken` başlangıçta false)
+  // geçerli oturumu login'e atmamak için. useEffect hydration uyumsuzluğunu
+  // da önler (token yalnızca client'ta okunuyor).
   useEffect(() => {
-    if (!hasToken) {
+    if (ready && !hasToken) {
       router.replace("/login?next=/account/favorites");
     }
-  }, [hasToken, router]);
+  }, [ready, hasToken, router]);
 
   const query = useGetMyFavorites(hasToken);
 
@@ -41,7 +42,9 @@ export function FavoritesList() {
   // remount'unda query tekrar fire etmesin diye.
   useFavoritesStore((state) => state.ids);
 
-  if (!hasToken) {
+  // Token cookie henüz okunmadıysa (`!ready`) ya da oturum yoksa skeleton
+  // göster — ikinci durumda yukarıdaki effect login'e yönlendirir.
+  if (!ready || !hasToken) {
     return <FavoritesSkeleton />;
   }
 

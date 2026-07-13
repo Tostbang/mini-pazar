@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  BarChart3,
   BookOpen,
   CircleHelp,
   FolderTree,
+  Inbox,
   LayoutDashboard,
+  LayoutTemplate,
   Package,
   Settings,
   ShoppingCart,
@@ -41,16 +42,15 @@ const mainNav: NavItem[] = [
   { title: "Kategoriler", href: "/dash/categories", icon: FolderTree },
   { title: "Hakkımızda", href: "/dash/about", icon: BookOpen },
   { title: "SSS", href: "/dash/sss", icon: CircleHelp },
-  { title: "Mağaza Profili", href: "/dash/business-profile", icon: Store },
+  { title: "Anasayfa Kartları", href: "/dash/home-cards", icon: LayoutTemplate },
   { title: "Mağaza", href: "/dash/store", icon: Settings },
   { title: "Siparişler", href: "/dash/orders", icon: ShoppingCart },
   { title: "Müşteriler", href: "/dash/customers", icon: Users },
-  { title: "Raporlar", href: "/dash/analytics", icon: BarChart3 },
+  { title: "Destek Mesajları", href: "/dash/support-messages", icon: Inbox },
 ];
 
 const accountNav: NavItem[] = [
   { title: "Profil", href: "/dash/profile", icon: User },
-  { title: "Ayarlar", href: "/dash/settings", icon: Settings },
 ];
 
 function isItemActive(pathname: string, href: string) {

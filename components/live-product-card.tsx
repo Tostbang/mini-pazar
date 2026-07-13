@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
 import { FavoriteButton } from "@/components/favorite-button";
 import {
+  flattenCartItems,
   useAddCartItem,
   useGetMyCart,
   useRemoveCartItem,
@@ -37,6 +38,9 @@ export type LiveProduct = {
   name?: string | null;
   price?: number | null;
   imageUrl?: string | null;
+  categoryId?: number;
+  categoryName?: string | null;
+  categoryIcon?: string | null;
 };
 
 export function LiveProductCard({ product }: { product: LiveProduct }) {
@@ -45,9 +49,8 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
   const updateMutation = useUpdateCartItem();
   const removeMutation = useRemoveCartItem();
 
-  const cartItem = cartQuery.data?.cart.items?.find(
-    (it) => it.productId === product.productId,
-  );
+  const cartItems = flattenCartItems(cartQuery.data?.cart);
+  const cartItem = cartItems.find((it) => it.productId === product.productId);
   const qty = cartItem?.quantity ?? 0;
   const isPending =
     addMutation.isPending ||
@@ -63,6 +66,9 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
           productImageUrl: product.imageUrl ?? null,
           unitPrice: product.price ?? 0,
           stock: 999,
+          categoryId: product.categoryId ?? 0,
+          categoryName: product.categoryName ?? null,
+          categoryIcon: product.categoryIcon ?? null,
         },
       } as never,
       {
@@ -154,21 +160,25 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
         </p>
       </Link>
 
-      <div className="relative mt-4">
-        <svg
-          viewBox="0 0 100 24"
-          preserveAspectRatio="none"
-          className="block h-5 w-full"
-          aria-hidden
-        >
-          <path
-            d="M0 0 C30 18, 70 18, 100 0 L100 24 L0 24 Z"
-            fill={qty === 0 ? CREAM_BG : LIME_BG}
-          />
-        </svg>
+      <div
+        className={`relative mt-4 `}
+      >
+        <div className={`${qty === 0 ? "text-[#eef3e3]" : "text-lime"}`}>
+          <svg
+            viewBox="0 0 100 24"
+            preserveAspectRatio="none"
+            className="block h-5 w-full"
+            aria-hidden
+          >
+            <path
+              d="M0 0 C30 18, 70 18, 100 0 L100 24 L0 24 Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+
         <div
-          className="flex h-11 items-center justify-center  px-3 pb-2 rounded-b-2xl"
-          style={{ backgroundColor: qty === 0 ? CREAM_BG : LIME_BG }}
+          className={`flex h-11 items-center justify-center  px-3 pb-2 rounded-b-2xl  ${qty === 0 ? "bg-[#eef3e3]" : "bg-lime"}`}
         >
           <AnimatePresence mode="wait" initial={false}>
             {qty === 0 ? (
@@ -199,7 +209,7 @@ export function LiveProductCard({ product }: { product: LiveProduct }) {
                   disabled={isPending}
                   className="grid size-8 place-items-center rounded-full border-2 border-brand transition-colors disabled:opacity-50"
                 >
-                  <Minus className="size-6 text-brand" strokeWidth={3}  />
+                  <Minus className="size-6 text-brand" strokeWidth={3} />
                 </button>
                 <motion.span
                   key={qty}

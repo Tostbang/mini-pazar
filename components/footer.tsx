@@ -3,18 +3,9 @@ import { Mail, Phone, ShoppingBasket } from "lucide-react";
 import { baseUrl } from "@/lib/fetch";
 import { DEFAULT_PUBLIC_SETTINGS, PublicSiteSettings } from "@/lib/site-settings";
 import { fetchPublicSettings } from "@/lib/site-settings-server";
-// import {
-//   DEFAULT_PUBLIC_SETTINGS,
-//   fetchPublicSettings,
-//   type PublicSiteSettings,
-// } from "@/lib/site-settings";
+import type { components } from "@/lib/types/api";
 
-type AboutResponse = {
-  code?: string | null;
-  message?: string | null;
-  errors?: string[] | null;
-  about?: { title?: string | null } | null;
-};
+type AboutResponse = components["schemas"]["AboutResponse"];
 
 async function fetchHasAbout(): Promise<boolean> {
   try {
@@ -52,7 +43,10 @@ export function Footer({
   const linkColumns: { title: string; links: { label: string; href: string }[] }[] = [
     {
       title: "Şirket",
-      links: hasAbout ? [{ label: "Hakkımızda", href: "/about" }] : [],
+      links: [
+        { label: "İletişim", href: "/contact" },
+        ...(hasAbout ? [{ label: "Hakkımızda", href: "/about" }] : []),
+      ],
     },
     {
       title: "Hesabım",

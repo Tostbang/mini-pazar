@@ -7,6 +7,7 @@ import { ChevronRight, Package, RefreshCcw } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PaymentStatusBadge } from "@/components/payment-status-badge";
 import { useGetMyOrders, type OrderListItem } from "@/lib/orders";
 import {
   formatOrderDateOnly,
@@ -184,6 +185,7 @@ export function OrdersList() {
                       >
                         {getOrderStatusLabel(order.orderState)}
                       </Badge>
+                      <PaymentStatusBadge status={order.paymentStatus} />
                       <Badge variant="outline" className="text-foreground">
                         {getPaymentMethodLabel(order.paymentMethod)}
                       </Badge>

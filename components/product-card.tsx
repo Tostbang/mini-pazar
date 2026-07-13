@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
 import { getCartProductMeta, type Product } from "@/lib/products";
 import {
+  flattenCartItems,
   useAddCartItem,
   useGetMyCart,
   useRemoveCartItem,
@@ -23,7 +24,8 @@ export function ProductCard({ product }: { product: Product }) {
   const updateMutation = useUpdateCartItem();
   const removeMutation = useRemoveCartItem();
 
-  const cartItem = cartQuery.data?.cart.items?.find(
+  const cartItems = flattenCartItems(cartQuery.data?.cart);
+  const cartItem = cartItems.find(
     (it) => it.productId === getCartProductMeta(product).productId,
   );
   const qty = cartItem?.quantity ?? 0;
@@ -42,6 +44,9 @@ export function ProductCard({ product }: { product: Product }) {
           productImageUrl: meta.productImageUrl,
           unitPrice: meta.unitPrice,
           stock: meta.stock,
+          categoryId: meta.categoryId,
+          categoryName: meta.categoryName,
+          categoryIcon: meta.categoryIcon,
         },
       } as never,
       {

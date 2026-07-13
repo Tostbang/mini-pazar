@@ -16,6 +16,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PaymentStatusBadge } from "@/components/payment-status-badge";
 import { useGetOrderById } from "@/lib/orders";
 import {
   formatOrderDate,
@@ -26,7 +27,6 @@ import {
 import {
   getOrderStatusLabel,
   getPaymentMethodLabel,
-  getPaymentStatusLabel,
 } from "@/lib/types/enums";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { CancelOrderDialog } from "./cancel-order-dialog";
@@ -107,11 +107,9 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
             >
               {getOrderStatusLabel(order.orderState)}
             </Badge>
+            <PaymentStatusBadge status={order.paymentStatus} />
             <Badge variant="outline">
               {getPaymentMethodLabel(order.paymentMethod)}
-            </Badge>
-            <Badge variant="outline">
-              Ödeme: {getPaymentStatusLabel(order.paymentStatus)}
             </Badge>
           </div>
         </div>
@@ -236,13 +234,14 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
                 icon={<CreditCard className="size-5" />}
                 label="Ödeme yöntemi"
                 value={
-                  <span>
-                    <span className="block font-semibold text-foreground">
+                  <span className="flex flex-col gap-1.5">
+                    <span className="font-semibold text-foreground">
                       {getPaymentMethodLabel(order.paymentMethod)}
                     </span>
-                    <span className="block text-sm text-muted-foreground">
-                      {getPaymentStatusLabel(order.paymentStatus)}
-                    </span>
+                    <PaymentStatusBadge
+                      status={order.paymentStatus}
+                      className="self-start"
+                    />
                   </span>
                 }
               />

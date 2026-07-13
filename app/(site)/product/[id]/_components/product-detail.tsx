@@ -11,7 +11,6 @@ import {
   Truck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Header } from "@/components/header";
 import { Section } from "@/components/section";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCategories, type CategoryListItem } from "@/app/(site)/category/_services/queries";
@@ -36,16 +35,6 @@ function formatTRY(value: number | null | undefined) {
   }
 }
 
-/**
- * /product/[id] için tüm UI'ı çizer.
- *
- *  - Veri: `useGetProductById` (GET /api/List/GetByIdProduct/{id})
- *  - Kategori adı: `useGetCategories` içinden `categoryId` ile bulunur
- *
- * API'nin sağladığı alanlar görseldeki slotlara birebir bağlanır:
- *  - İndirim rozeti, satış sayacı gibi API'de OLMAYAN alanlar için
- *    placeholder gösterilir; uydurma veri gösterilmez.
- */
 export function ProductDetailView({ productId }: { productId: number }) {
   const productQuery = useGetProductById(productId);
   const categoriesQuery = useGetCategories();
@@ -61,9 +50,6 @@ export function ProductDetailView({ productId }: { productId: number }) {
     );
   }, [product, categoriesQuery.data?.categories]);
 
-  // `mounted` gate — ilk paint'te skeleton, ardından gerçek içerik. Bu,
-  // sessionStorage'dan cache rehydrate olan client ile boş cache'li server
-  // arasındaki olası farkı tolere eder.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -92,11 +78,6 @@ export function ProductDetailView({ productId }: { productId: number }) {
 
   return (
     <main className="min-h-screen bg-[#f4f4f1] px-3 pb-10 pt-3 sm:px-5 sm:pt-4">
-      {/* <div className="mx-auto max-w-[1320px]"> */}
-
-      {/*   <Header /> */}
-      {/* </div> */}
-
       <Section className="mx-auto max-w-[1320px]">
         <Link
           href="/"
@@ -161,7 +142,7 @@ export function ProductDetailView({ productId }: { productId: number }) {
                         href={`/category/${category.categoryId}`}
                         className="text-brand underline decoration-border underline-offset-2"
                       >
-                        {category.categoryName?.trim() ||
+                        {category?.categoryName?.trim() ||
                           `Kategori #${category.categoryId}`}
                       </Link>
                     ) : (
@@ -229,9 +210,6 @@ function GallerySection({
 }
 
 function PriceTag({ price }: { price: number | null | undefined }) {
-  // Mockup: büyük tam kısım + superscript ondalık. "₺" mockup'ta $ olarak
-  // gösterilmiş; Türkçe mağaza olduğu için ₺ kullanıyoruz ve mockup'taki
-  // sayı hissiyatını koruyoruz.
   const value = typeof price === "number" ? price : 0;
   const formatted = new Intl.NumberFormat("tr-TR", {
     minimumFractionDigits: 2,
@@ -289,7 +267,6 @@ function FeatureStrip({ stock }: { stock: number | null | undefined }) {
           )}
         </span>
       </div>
-      {/* "X satıldı" verisi API'de yok; stok bilgisi yeterli. */}
     </div>
   );
 }
@@ -301,9 +278,6 @@ function FeatureStrip({ stock }: { stock: number | null | undefined }) {
 function ProductDetailSkeleton() {
   return (
     <main className="min-h-screen bg-[#f4f4f1] px-3 pb-10 pt-3 sm:px-5 sm:pt-4">
-      <div className="mx-auto max-w-[1320px]">
-        <Header />
-      </div>
       <Section className="mx-auto max-w-[1320px]">
         <Skeleton className="h-5 w-40" />
         <div className="mt-4 rounded-[2rem] bg-card p-4 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.35)] sm:p-6 lg:p-10">
@@ -337,9 +311,6 @@ function ErrorState({
 }) {
   return (
     <main className="min-h-screen bg-[#f4f4f1] px-3 pb-10 pt-3 sm:px-5 sm:pt-4">
-      <div className="mx-auto max-w-[1320px]">
-        <Header />
-      </div>
       <Section className="mx-auto max-w-[1320px]">
         <Link
           href="/"
@@ -371,9 +342,6 @@ function ErrorState({
 function InvalidProductState() {
   return (
     <main className="min-h-screen bg-[#f4f4f1] px-3 pb-10 pt-3 sm:px-5 sm:pt-4">
-      {/* <div className="mx-auto max-w-[1320px]"> */}
-      {/*   <Header /> */}
-      {/* </div> */}
       <Section className="mx-auto max-w-[1320px]">
         <Link
           href="/"

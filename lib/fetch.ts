@@ -1,4 +1,4 @@
-import createFetchClient, { Middleware } from "openapi-fetch"
+import createFetchClient from "openapi-fetch"
 import createClient from "openapi-react-query"
 import type { paths } from "@/lib/types/api"
 import { deleteToken, getToken } from "./helpers"
@@ -6,12 +6,6 @@ import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 export const baseUrl = "https://marketapi20260604105905-ajfqchdfakgbhggm.canadacentral-01.azurewebsites.net"
 
-
-type baseApi = {
-  code?: string;
-  message?: string;
-  errors?: string[]
-};
 
 export class ApiError extends Error {
   code?: string;
@@ -41,11 +35,21 @@ export const customFetch = async (
     headers.set("Content-Type", "application/json");
   }
 
+  // Bypass the browser HTTP cache for reads. TanStack Query already owns
+  // the in-memory freshness layer (`staleTime` + `refetchOnMount`); letting
+  // the browser cache GET responses on top of that causes the storefront
+  // to keep showing the pre-update snapshot after a dashboard edit even
+  // when the user refreshes. Mutations and FormData bodies are unaffected.
+  const method = (init?.method ?? "GET").toUpperCase();
+  const isRead = method === "GET" || method === "HEAD";
+  const cacheDirective = isRead ? "no-store" : init?.cache;
+
   // 1. Perform the actual network request
   const response = await fetch(input, {
     ...init,
     headers,
     body: init?.body,
+    cache: cacheDirective,
   }).catch((err) => {
     if (isRedirectError(err)) throw err;
     throw new ApiError("Bağlantı hatası", { status: 0 });

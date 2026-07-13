@@ -48,6 +48,14 @@ const pending = new Map<number, Pending>();
 
 function getWorker(): Worker {
   if (workerInstance) return workerInstance;
+  // Worker is a browser-only global. During server-side prerendering the
+  // hook is still invoked (this module sits inside a client component tree
+  // that Next.js renders to HTML before hydration). Bail out so the
+  // prerender doesn't throw — the actual worker is spun up in the effect
+  // below once we are in the browser.
+  if (typeof Worker === "undefined") {
+    throw new Error("Background-removal worker is only available in the browser.");
+  }
   const worker = new Worker(
     new URL("../_workers/bg-removal.worker.ts", import.meta.url),
     { type: "module" },
@@ -81,15 +89,22 @@ function getWorker(): Worker {
 }
 
 export function useBackgroundRemoval(): BackgroundRemovalHandle {
-  // Touch the worker so it's instantiated on first render of the editor.
-  // React's strict-mode double-invocation is harmless here — getWorker() is
-  // idempotent.
+  // The worker is browser-only. We start with `null` so server-side renders
+  // (and the initial client render before effects run) stay Worker-free.
+  // It is created lazily on mount via the effect below.
   const workerRef = useRef<Worker | null>(null);
-  if (!workerRef.current) {
-    workerRef.current = getWorker();
-  }
 
   useEffect(() => {
+    if (!workerRef.current) {
+      try {
+        workerRef.current = getWorker();
+      } catch (error) {
+        // If the platform has no Worker support, leave the ref null. Any
+        // call to removeBackground/cancel will surface a clear error.
+        console.warn("[bg-removal] worker unavailable", error);
+      }
+    }
+
     // We intentionally do not terminate the worker on unmount: the model
     // stays cached in IndexedDB and the worker is cheap to keep around.
     // Returning a no-op cleanup avoids React's strict-mode teardown warning.

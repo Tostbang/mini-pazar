@@ -21,14 +21,20 @@ type CityAdvantageCard = NonNullable<
 export type { MainCard, FeaturedStoreCard, StayHomeCard, CityAdvantageCard };
 
 /**
- * Anasayfa sabit kart bölümlerini tek istekle getirir. refetchOnMount: true
- * ile sayfa her ziyaret edildiğinde taze veri çekilir; admin tarafında
- * yapılan bir güncelleme sonraki ziyarette anında yansır (sayfa yenilemeye
- * gerek kalmadan).
+ * Anasayfa sabit kart bölümlerini tek istekle getirir.
+ *
+ * `refetchOnMount: true` ile sayfa her ziyaret edildiğinde taze veri çekilir;
+ * `refetchOnWindowFocus: true` ile sekme öne çıktığında yeniden çekilir
+ * (admin tarafında düzenlenen bir kart diğer sekmedeyken focus alınca
+ * anında yansır); `staleTime: 0` ile veri hep stale sayılır, böylece
+ * dashboard'daki mutation'ın invalidate ettiği sorgu focus/mount ile
+ * taze veriye geçer.
  */
 export function useGetHomeCards() {
   return useQueryOP("get", "/api/Home/GetHomeCards", {
     refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 }
 

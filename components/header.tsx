@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   ShoppingBasket,
   Heart,
+  LayoutDashboard,
   Mail,
   CheckCircle2,
   CircleAlert,
@@ -34,7 +35,9 @@ const FALLBACK_SITE_NAME = "Mini Pazar";
 
 export function Header() {
   const cartQuery = useGetMyCart();
+  const profileQuery = useQueryOP("get", "/api/User/GetMyProfile");
   const totalItems = cartQuery.data?.cart.totalItems ?? 0;
+  const isAdmin = profileQuery.data?.user?.roleId === Role.Admin;
 
   // The cart query can hydrate from sessionStorage before the first React
   // render completes (see lib/query-persist.ts). If we render the badge
@@ -113,6 +116,24 @@ export function Header() {
 
         <div className="flex shrink-0 items-center gap-2.5">
           {/* <ThemeToggle /> */}
+          {/*
+            Admin-only shortcut to the dashboard. The button is hidden on
+            first paint and only appears after the profile query resolves
+            (client-side only), so SSR markup never disagrees with the
+            client tree — no hydration mismatch. TanStack Query
+            deduplicates the request with the same call inside the user
+            dropdown, so this adds zero extra network cost.
+          */}
+          {isAdmin && (
+            <Link
+              href="/dash"
+              aria-label="Mağaza paneli"
+              className="inline-flex items-center gap-1.5 rounded-full bg-card px-3.5 py-2 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted"
+            >
+              <LayoutDashboard className="size-4" />
+              Kontrol Paneli
+            </Link>
+          )}
           <Link
             href="/cart"
             aria-label="Sepet"

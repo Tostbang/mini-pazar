@@ -18,6 +18,9 @@ export type CartProductMeta = {
   productImageUrl: string | null
   unitPrice: number
   stock: number
+  categoryId: number
+  categoryName: string | null
+  categoryIcon: string | null
 }
 
 export const products: Record<string, Product> = {
@@ -314,6 +317,13 @@ export const products: Record<string, Product> = {
       productImageUrl: product.image,
       unitPrice: Number(`${product.dollars}.${product.cents}`),
       stock: 999,
+      // Static sample data doesn't carry category info — the optimistic
+      // cart hook falls back to the cached category list when these are
+      // zero/null. They are kept on the type so the call site stays
+      // uniform with the real product flow.
+      categoryId: 0,
+      categoryName: null,
+      categoryIcon: null,
     }
   }
 

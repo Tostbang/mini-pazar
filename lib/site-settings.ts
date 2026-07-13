@@ -51,6 +51,8 @@ export const DEFAULT_PUBLIC_SETTINGS: PublicSiteSettings = {
   footerText: null,
   contactEmail: null,
   contactPhone: null,
+  businessType: null,
+  address: null,
 };
 
 const HEX3 = /^#([0-9a-fA-F]{3})$/;

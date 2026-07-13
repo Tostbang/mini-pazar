@@ -41,9 +41,52 @@ export function isOrderCancellable(status: number | undefined | null) {
 }
 
 /**
+ * Badge variants for payment status — mirrors the OrderStatusBadge
+ * palette so the same colour always means the same intent (green-ish
+ * default = paid, amber-ish secondary = waiting, red destructive =
+ * failed/timeout/refund-required, neutral outline = unknown). The
+ * `PaymentStatus` numeric enum is the legacy encoding; the backend
+ * now emits string forms (PAID/WAITING_PAYMENT/FAILED/TIMEOUT/
+ * REFUND_REQUIRED per /api/Payment/get-payment-status) so the lookup
+ * here normalises both.
+ */
+export type PaymentStatusBadgeVariant =
+  | "default"
+  | "secondary"
+  | "destructive"
+  | "outline";
+
+const PAYMENT_STATUS_BADGE_VARIANTS: Record<string, PaymentStatusBadgeVariant> = {
+  // Numeric (legacy) — values 1/2/3 from the PaymentStatus enum.
+  "1": "secondary",
+  "2": "default",
+  "3": "destructive",
+  // Canonical string forms from the backend.
+  WAITING_PAYMENT: "secondary",
+  INIT: "secondary",
+  PAID: "default",
+  SUCCESS: "default",
+  FAILED: "destructive",
+  FAIL: "destructive",
+  TIMEOUT: "destructive",
+  REFUND_REQUIRED: "destructive",
+};
+
+export function getPaymentStatusVariant(
+  status: string | number | undefined | null,
+): PaymentStatusBadgeVariant {
+  if (status == null || status === "") return "outline";
+  return PAYMENT_STATUS_BADGE_VARIANTS[String(status).toUpperCase()] ?? "outline";
+}
+
+/**
  * Once an order has been paid, the customer must request a refund rather
  * than cancel — matches the backend rule that cancel only applies to
  * non-PAID orders.
+ *
+ * Accepts both the numeric enum (`PaymentStatus.SUCCESS`) and the
+ * canonical backend strings — "SUCCESS" (legacy) and "PAID" (current,
+ * per `/api/Payment/get-payment-status`).
  */
 export function isOrderPaid(paymentStatus: string | number | null | undefined) {
   if (paymentStatus == null || paymentStatus === "") return false;
@@ -53,7 +96,8 @@ export function isOrderPaid(paymentStatus: string | number | null | undefined) {
   if (Number.isFinite(numeric)) {
     return numeric === PaymentStatus.SUCCESS;
   }
-  return String(paymentStatus).toUpperCase() === "SUCCESS";
+  const upper = String(paymentStatus).toUpperCase();
+  return upper === "SUCCESS" || upper === "PAID";
 }
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("tr-TR", {

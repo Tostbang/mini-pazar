@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect } from "react";
-import { useGetPublicSiteSettings } from "@/app/(dash)/dash/settings/_services/queries";
+import { useGetPublicSiteSettings } from "@/app/(dash)/dash/store/_services/queries";
 import { useSiteSettingsStore } from "@/lib/store/site-settings-store";
 import {
   normalizeHex,

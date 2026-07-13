@@ -12,8 +12,7 @@ const segmentLabels: Record<string, string> = {
   store: "Mağaza",
   orders: "Siparişler",
   customers: "Müşteriler",
-  analytics: "Raporlar",
-  settings: "Ayarlar",
+  "support-messages": "Destek Mesajları",
 };
 
 export function Breadcrumb() {

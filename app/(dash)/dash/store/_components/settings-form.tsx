@@ -28,14 +28,17 @@ import {
   type SiteSettings,
   type SiteSettingsFormValues,
 } from "../_services/queries";
-import { ColorField } from "./color-field";
-import { ImageUploadField } from "./image-upload-field";
+import { ColorField } from "@/components/form-fields/color-field";
+import { ImageUploadField } from "@/components/form-fields/image-upload-field";
 
 const settingsSchema = z.object({
+  siteName: z.string().trim().max(160, "Mağaza adı en fazla 160 karakter olabilir."),
   siteTagline: z
     .string()
     .trim()
     .max(160, "Slogan en fazla 160 karakter olabilir."),
+  businessType: z.string().trim().max(120, "Sektör en fazla 120 karakter olabilir."),
+  address: z.string().trim().max(500, "Adres en fazla 500 karakter olabilir."),
   primaryColor: z.string().trim(),
   secondaryColor: z.string().trim(),
   primaryColorForeground: z.string().trim(),
@@ -78,7 +81,10 @@ type FormValues = z.infer<typeof settingsSchema>;
 
 function buildDefaults(settings: SiteSettings | undefined): FormValues {
   return {
+    siteName: settings?.siteName ?? "",
     siteTagline: settings?.siteTagline ?? "",
+    businessType: settings?.businessType ?? "",
+    address: settings?.address ?? "",
     primaryColor: settings?.primaryColor ?? "",
     secondaryColor: settings?.secondaryColor ?? "",
     primaryColorForeground: settings?.primaryColorForeground ?? "",
@@ -109,7 +115,10 @@ function buildDefaults(settings: SiteSettings | undefined): FormValues {
 
 function toPayload(values: FormValues): SiteSettingsFormValues {
   return {
+    siteName: values.siteName.trim() || null,
     siteTagline: values.siteTagline.trim() || null,
+    businessType: values.businessType.trim() || null,
+    address: values.address.trim() || null,
     primaryColor: values.primaryColor.trim() || null,
     secondaryColor: values.secondaryColor.trim() || null,
     primaryColorForeground: values.primaryColorForeground.trim() || null,
@@ -197,6 +206,62 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
             title="Mağaza bilgileri"
             description="Ziyaretçilere ve müşterilere gösterilen temel bilgileri buradan yönetin."
           />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Controller
+              control={control}
+              name="siteName"
+              render={({ field, fieldState }) => (
+                <Field
+                  label="Mağaza adı"
+                  description="Vitrinin başlığında görünecek isim."
+                  error={fieldState.error?.message}
+                >
+                  <Input
+                    {...field}
+                    value={field.value ?? ""}
+                    placeholder="Mini Pazar"
+                  />
+                </Field>
+              )}
+            />
+            <Controller
+              control={control}
+              name="businessType"
+              render={({ field, fieldState }) => (
+                <Field
+                  label="Sektör"
+                  description="Mağazanın faaliyet alanı (örn. Manav, Kasap)."
+                  error={fieldState.error?.message}
+                >
+                  <Input
+                    {...field}
+                    value={field.value ?? ""}
+                    placeholder="Manav"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+
+          <Controller
+            control={control}
+            name="address"
+            render={({ field, fieldState }) => (
+              <Field
+                label="Mağaza adresi"
+                description="İletişim ve fatura bilgilerinde kullanılır."
+                error={fieldState.error?.message}
+              >
+                <Textarea
+                  {...field}
+                  value={field.value ?? ""}
+                  placeholder="Atatürk Cad. No: 12, Kadıköy / İstanbul"
+                  rows={3}
+                />
+              </Field>
+            )}
+          />
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               control={control}

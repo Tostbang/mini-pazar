@@ -65,7 +65,7 @@ export function Hero() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-7 rounded-lg bg-secondary px-9 py-3.5 font-heading text-lg font-semibold text-brand"
+                className="mt-7 rounded-lg bg-lime px-9 py-3.5 font-heading text-lg font-semibold text-brand"
               >
                 {buttonName}
               </motion.button>
@@ -90,7 +90,7 @@ export function Hero() {
         </div>
 
         {/* Curved bottom edge */}
-        <div className="absolute z-0 w-full text-background">
+        <div className="absolute z-0 w-full text-brand">
           <svg
             viewBox="0 0 1440 60"
             preserveAspectRatio="none"
@@ -104,7 +104,7 @@ export function Hero() {
 	      Q720,50 10,0
 	      L0,0
 		Z"
-              fill="#064C4F"
+              fill="currentColor"
             />
           </svg>
         </div>

@@ -5,7 +5,6 @@ import {
   Compass,
   FolderTree,
   Package,
-  Settings,
   ShoppingCart,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -37,12 +36,6 @@ const quickLinks: QuickLink[] = [
     label: "Siparişler",
     description: "Siparişleri takip et",
     icon: ShoppingCart,
-  },
-  {
-    href: "/dash/settings",
-    label: "Ayarlar",
-    description: "Mağaza ayarlarını güncelle",
-    icon: Settings,
   },
 ];
 

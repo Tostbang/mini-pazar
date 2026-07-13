@@ -7,7 +7,6 @@ import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CART_QUERY_KEY } from "@/lib/cart";
 import { useIyzicoCallback } from "../_services/queries";
-import { Header } from "@/components/header";
 
 type Status = "loading" | "success" | "error";
 
@@ -52,8 +51,6 @@ export function IyzicoCallbackCard({ token }: { token: string | undefined }) {
 
   return (
     <main className="flex min-h-screen flex-col bg-background">
-      <Header />
-
       <div className="flex flex-1 items-center justify-center px-4 py-10">
         <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-[0_20px_50px_-30px_rgba(0,0,0,0.35)]">
           {status === "loading" && (

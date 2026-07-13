@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useQueryOP } from "@/lib/fetch";
 import { useProfileStore } from "@/lib/store/profile-store";
-import { BusinessProfileGate } from "@/app/(dash)/dash/business-profile/_components/business-profile-gate";
 
 export function DashProviders({ children }: { children: React.ReactNode }) {
   const setProfile = useProfileStore((state) => state.setProfile);
@@ -44,5 +43,5 @@ export function DashProviders({ children }: { children: React.ReactNode }) {
       });
   }, []);
 
-  return <BusinessProfileGate>{children}</BusinessProfileGate>;
+  return <>{children}</>;
 }

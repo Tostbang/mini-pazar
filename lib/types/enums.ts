@@ -92,10 +92,34 @@ export const PaymentStatus = {
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];
 
+// Numeric fallback labels (legacy encoding). Wording matches the string
+// table below so the customer always sees the same Turkish phrase
+// regardless of whether the backend returned a number or a string.
 export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
   [PaymentStatus.INIT]: "Ödeme Bekleniyor",
   [PaymentStatus.SUCCESS]: "Ödendi",
-  [PaymentStatus.FAIL]: "Başarısız",
+  [PaymentStatus.FAIL]: "Ödeme Başarısız",
+};
+
+/**
+ * String forms the backend can return — per
+ * `/api/Payment/get-payment-status` docs: WAITING_PAYMENT, PAID, FAILED,
+ * TIMEOUT, REFUND_REQUIRED. The legacy INIT/SUCCESS/FAIL strings are
+ * also included so old payloads don't leak through untranslated.
+ *
+ * Wording is plain Turkish for non-technical users (the target audience
+ * is the shop owner on the dashboard and the customer on the orders
+ * page) — no jargon, no English.
+ */
+const PAYMENT_STATUS_STRING_LABELS: Record<string, string> = {
+  WAITING_PAYMENT: "Ödeme Bekleniyor",
+  PAID: "Ödendi",
+  FAILED: "Ödeme Başarısız",
+  TIMEOUT: "Ödeme Süresi Doldu",
+  REFUND_REQUIRED: "İade Gerekli",
+  INIT: "Ödeme Bekleniyor",
+  SUCCESS: "Ödendi",
+  FAIL: "Ödeme Başarısız",
 };
 
 export function getPaymentStatusLabel(status: string | number | undefined | null) {
@@ -104,12 +128,6 @@ export function getPaymentStatusLabel(status: string | number | undefined | null
   if (Number.isFinite(numeric) && PAYMENT_STATUS_LABELS[numeric as PaymentStatus]) {
     return PAYMENT_STATUS_LABELS[numeric as PaymentStatus];
   }
-  // Backend bazen string ("INIT"/"SUCCESS"/"FAIL") da döndürebilir.
-  const upper = String(status).toUpperCase();
-  if (upper === "INIT") return PAYMENT_STATUS_LABELS[PaymentStatus.INIT];
-  if (upper === "SUCCESS") return PAYMENT_STATUS_LABELS[PaymentStatus.SUCCESS];
-  if (upper === "FAIL" || upper === "FAILED") {
-    return PAYMENT_STATUS_LABELS[PaymentStatus.FAIL];
-  }
-  return String(status);
+  // Look up the uppercase form so callers can pass either case.
+  return PAYMENT_STATUS_STRING_LABELS[String(status).toUpperCase()] ?? String(status);
 }

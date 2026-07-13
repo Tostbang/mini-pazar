@@ -40,9 +40,9 @@ import {
   ORDER_STATUS_LABELS,
   ORDER_STATUS_OPTIONS,
   getPaymentMethodLabel,
-  getPaymentStatusLabel,
 } from "@/lib/types/enums";
 import { OrderStatusBadge } from "./_components/order-status-badge";
+import { PaymentStatusBadge } from "@/components/payment-status-badge";
 import {
   useGetAdminOrders,
   type OrderListItem,
@@ -307,8 +307,8 @@ function OrdersTable({ orders }: { orders: OrderListItem[] }) {
             <TableCell className="text-sm">
               {getPaymentMethodLabel(order.paymentMethod)}
             </TableCell>
-            <TableCell className="text-sm">
-              {getPaymentStatusLabel(order.paymentStatus)}
+            <TableCell>
+              <PaymentStatusBadge status={order.paymentStatus} />
             </TableCell>
             <TableCell>
               <OrderStatusBadge status={order.orderState} />

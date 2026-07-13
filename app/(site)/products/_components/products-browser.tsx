@@ -29,7 +29,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { LiveProductCard, type LiveProduct } from "@/components/live-product-card";
-import { Header } from "@/components/header";
 import { Section } from "@/components/section";
 import { cn } from "@/lib/utils";
 import { useGetCategories, type CategoryListItem } from "@/app/(site)/category/_services/queries";
@@ -187,8 +186,6 @@ export function ProductsBrowser({ initialFilters }: { initialFilters?: InitialFi
   return (
     <main className="min-h-screen bg-background pb-16">
       <div className="max-w-[1320px] mx-auto">
-        <Header />
-
         <Section>
           <div className="mb-6 flex flex-col gap-2">
             <h1 className="font-intro text-3xl font-extrabold sm:text-4xl">Tüm Ürünler</h1>

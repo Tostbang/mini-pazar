@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SettingsForm } from "../settings/_components/settings-form";
-import { useGetSiteSettings } from "../settings/_services/queries";
+import { SettingsForm } from "./_components/settings-form";
+import { useGetSiteSettings } from "./_services/queries";
 
 export default function StorePage() {
   const { data, isLoading, isError, refetch, isFetching } = useGetSiteSettings();

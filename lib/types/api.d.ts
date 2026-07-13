@@ -3,7 +3,7 @@
  * Do not edit manually. Run `npm run sync-api` to regenerate.
  *
  * Generated from: https://marketapi20260604105905-ajfqchdfakgbhggm.canadacentral-01.azurewebsites.net/swagger/v1/swagger.json
- * Generated at: 2026-07-08T12:27:07.661Z
+ * Generated at: 2026-07-10T13:06:08.860Z
  */
 export interface paths {
     "/api/Admin/GetMyProfile": {
@@ -683,88 +683,6 @@ export interface paths {
                 };
             };
         };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/CreateOrUpdateBusinessProfile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Firma/shop profilini oluşturur veya günceller (tek kayıt). Ad, sektör, adres, telefon, açıklama, IsOpen. */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["CreateOrUpdateBusinessProfileRequest"];
-                    "text/json": components["schemas"]["CreateOrUpdateBusinessProfileRequest"];
-                    "application/*+json": components["schemas"]["CreateOrUpdateBusinessProfileRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["CreateOrUpdateBusinessProfileResponse"];
-                        "application/json": components["schemas"]["CreateOrUpdateBusinessProfileResponse"];
-                        "text/json": components["schemas"]["CreateOrUpdateBusinessProfileResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/Admin/GetBusinessProfileForAdmin": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Firma profilini admin paneli için getirir. Public'ten farklı olarak tüm mağazaları (IsOpen=false dahil) gösterir. */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["BusinessProfileResponse"];
-                        "application/json": components["schemas"]["BusinessProfileResponse"];
-                        "text/json": components["schemas"]["BusinessProfileResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1838,44 +1756,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/List/GetBusinessProfile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Onaylı ve açık firma profilini getirir. Public vitrin için. OwnerUserId, shopName, businessType, address, phone, isOpen. */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["BusinessProfileResponse"];
-                        "application/json": components["schemas"]["BusinessProfileResponse"];
-                        "text/json": components["schemas"]["BusinessProfileResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/List/GetAllCategory": {
         parameters: {
             query?: never;
@@ -2013,7 +1893,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Sepetten kapıda ödeme siparişi oluşturur. Stok anında düşer, sepet temizlenir. Admin onayı ile PAID olur. */
+        /** Sepetten kapıda ödeme siparişi oluşturur. Teslimat bilgileri kullanıcının profilinden alınır; body yalnızca opsiyonel Notes taşır. Stok anında düşer, sepet temizlenir. Admin onayı ile PAID olur. */
         post: {
             parameters: {
                 query?: never;
@@ -2023,9 +1903,9 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["CreateOrderRequest"];
-                    "text/json": components["schemas"]["CreateOrderRequest"];
-                    "application/*+json": components["schemas"]["CreateOrderRequest"];
+                    "application/json": components["schemas"]["CreateCashOnDeliveryRequest"];
+                    "text/json": components["schemas"]["CreateCashOnDeliveryRequest"];
+                    "application/*+json": components["schemas"]["CreateCashOnDeliveryRequest"];
                 };
             };
             responses: {
@@ -3152,6 +3032,88 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/SupportMessage/UserSend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Kullanıcı: site genelinden admine destek mesajı gönderir (anonim). Body: { email, title, message }. */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CreateSupportMessageRequest"];
+                    "text/json": components["schemas"]["CreateSupportMessageRequest"];
+                    "application/*+json": components["schemas"]["CreateSupportMessageRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["CreateSupportMessageResponse"];
+                        "application/json": components["schemas"]["CreateSupportMessageResponse"];
+                        "text/json": components["schemas"]["CreateSupportMessageResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/SupportMessage/AdminGetAll": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Admin: kullanıcılardan gelen tüm destek mesajlarını listeler (en yeni üstte). */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["GetAllSupportMessageResponse"];
+                        "application/json": components["schemas"]["GetAllSupportMessageResponse"];
+                        "text/json": components["schemas"]["GetAllSupportMessageResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/User/GetMyProfile": {
         parameters: {
             query?: never;
@@ -3653,28 +3615,9 @@ export interface components {
             /** Format: int64 */
             categoryId: number;
             categoryName: string | null;
-            /** Format: int64 */
-            shopId: number;
-            shopName: string | null;
             /** Format: int32 */
             totalSold: number;
             isFavorite: boolean;
-        };
-        BusinessProfileModel: {
-            /** Format: int64 */
-            shopId: number;
-            shopName: string | null;
-            businessType: string | null;
-            address: string | null;
-            phone: string | null;
-            description: string | null;
-            isOpen: boolean;
-        };
-        BusinessProfileResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            profile: components["schemas"]["BusinessProfileModel"];
         };
         CampaignCardDto: {
             title: string | null;
@@ -3692,6 +3635,13 @@ export interface components {
             orderId: number;
             orderState: components["schemas"]["OrderStatus"];
             paymentStatus: string | null;
+        };
+        CartCategoryGroupModel: {
+            /** Format: int64 */
+            categoryId: number;
+            categoryName: string | null;
+            categoryIcon: string | null;
+            products: components["schemas"]["CartItemModel"][] | null;
         };
         CartItemModel: {
             /** Format: int64 */
@@ -3712,7 +3662,7 @@ export interface components {
         CartModel: {
             /** Format: int64 */
             cartId: number;
-            items: components["schemas"]["CartItemModel"][] | null;
+            categoryGroups: components["schemas"]["CartCategoryGroupModel"][] | null;
             /** Format: int32 */
             totalItems: number;
             /** Format: double */
@@ -3774,20 +3724,8 @@ export interface components {
             errors: string[] | null;
             contacts: components["schemas"]["ContactListItem"][] | null;
         };
-        CreateOrUpdateBusinessProfileRequest: {
-            shopName: string | null;
-            businessType: string | null;
-            address: string | null;
-            phone: string | null;
-            description: string | null;
-            isOpen: boolean;
-        };
-        CreateOrUpdateBusinessProfileResponse: {
-            code: string | null;
-            message: string | null;
-            errors: string[] | null;
-            /** Format: int64 */
-            shopId: number | null;
+        CreateCashOnDeliveryRequest: {
+            notes: string | null;
         };
         CreateOrderRequest: {
             paymentMethod: components["schemas"]["PaymentMethod"];
@@ -3800,7 +3738,6 @@ export interface components {
             shippingCountry: string | null;
             billingAddress: string | null;
             notes: string | null;
-            clientIp: string | null;
         };
         CreateOrderResponse: {
             code: string | null;
@@ -3819,6 +3756,20 @@ export interface components {
             paymentMethod: components["schemas"]["PaymentMethod"];
             checkoutFormToken: string | null;
             paymentPageUrl: string | null;
+        };
+        CreateSupportMessageRequest: {
+            name: string | null;
+            surname: string | null;
+            email: string | null;
+            title: string | null;
+            message: string | null;
+        };
+        CreateSupportMessageResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            /** Format: int64 */
+            supportMessageId: number;
         };
         CreateSupportRequest: {
             category: string | null;
@@ -3896,6 +3847,12 @@ export interface components {
             errors: string[] | null;
             /** Format: int32 */
             remainingSeconds: number | null;
+        };
+        GetAllSupportMessageResponse: {
+            code: string | null;
+            message: string | null;
+            errors: string[] | null;
+            items: components["schemas"]["SupportMessageModel"][] | null;
         };
         GetAllSupportResponse: {
             code: string | null;
@@ -4282,6 +4239,8 @@ export interface components {
             footerText: string | null;
             contactEmail: string | null;
             contactPhone: string | null;
+            businessType: string | null;
+            address: string | null;
         };
         PublicSupportResponse: {
             code: string | null;
@@ -4302,9 +4261,6 @@ export interface components {
             /** Format: int64 */
             categoryId: number;
             categoryName: string | null;
-            /** Format: int64 */
-            shopId: number;
-            shopName: string | null;
             /** Format: int32 */
             totalSold: number;
             isFavorite: boolean;
@@ -4393,6 +4349,8 @@ export interface components {
             footerText: string | null;
             contactEmail: string | null;
             contactPhone: string | null;
+            businessType: string | null;
+            address: string | null;
         };
         SliderCreateRequest: {
             title: string | null;
@@ -4443,7 +4401,6 @@ export interface components {
             callbackUrl: string | null;
             idempotencyKey: string | null;
             notes: string | null;
-            clientIp: string | null;
         };
         StartPackagePaymentResponse: {
             code: string | null;
@@ -4480,6 +4437,19 @@ export interface components {
             /** Format: int32 */
             displayOrder: number;
             isActive: boolean;
+        };
+        SupportMessageModel: {
+            /** Format: int64 */
+            supportMessageId: number;
+            name: string | null;
+            surname: string | null;
+            email: string | null;
+            title: string | null;
+            message: string | null;
+            /** Format: int64 */
+            userId: number;
+            /** Format: date-time */
+            createdDate: string;
         };
         TimeSeriesPoint: {
             /** Format: date-time */
@@ -4611,6 +4581,7 @@ export interface components {
             userId: number;
         };
         UpdateSiteSettingsRequest: {
+            siteName: string | null;
             siteTagline: string | null;
             primaryColor: string | null;
             secondaryColor: string | null;
@@ -4645,6 +4616,8 @@ export interface components {
             footerText: string | null;
             contactEmail: string | null;
             contactPhone: string | null;
+            businessType: string | null;
+            address: string | null;
         };
         UpdateSiteSettingsResponse: {
             code: string | null;
