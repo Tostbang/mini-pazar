@@ -128,6 +128,9 @@ export function getPaymentStatusLabel(status: string | number | undefined | null
   if (Number.isFinite(numeric) && PAYMENT_STATUS_LABELS[numeric as PaymentStatus]) {
     return PAYMENT_STATUS_LABELS[numeric as PaymentStatus];
   }
-  // Look up the uppercase form so callers can pass either case.
-  return PAYMENT_STATUS_STRING_LABELS[String(status).toUpperCase()] ?? String(status);
+  // Look up the uppercase form so callers can pass either case. Unknown
+  // values fall through to a Turkish placeholder rather than the raw
+  // English status — the panel ships in TR only and must never display
+  // a backend enum verbatim.
+  return PAYMENT_STATUS_STRING_LABELS[String(status).toUpperCase()] ?? "Bilinmiyor";
 }

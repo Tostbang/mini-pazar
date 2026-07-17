@@ -7,7 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   LogIn,
   LogOut,
-  Menu,
   Settings,
   ShoppingBag,
   ShoppingBasket,
@@ -20,6 +19,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { HeaderSearch } from "@/components/header-search";
+import { MobileNav } from "@/components/mobile-nav";
 import { useGetMyCart } from "@/lib/cart";
 import { useQueryOP, useMutationOP } from "@/lib/fetch";
 import { deleteToken } from "@/lib/helpers";
@@ -60,12 +60,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 px-3 pt-3   sm:px-6 sm:pt-4 max-w-[1320px] mx-auto">
       <div className=" flex flex-wrap items-center gap-3  rounded-1.5xl bg-brand px-4 py-3 text-brand-foreground shadow-lg sm:gap-5 sm:px-6 sm:py-5">
-        <button
-          aria-label="Menüyü aç"
-          className="grid size-9 shrink-0 place-items-center rounded-full transition-colors hover:bg-white/10"
-        >
-          <Menu className="size-5" />
-        </button>
+        <MobileNav />
 
         <Link href="/" className="flex shrink-0 items-center gap-2">
           {logoUrl ? (

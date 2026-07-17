@@ -97,11 +97,36 @@ export const mdxComponents: MDXComponents = {
     </p>
   ),
   a: ({ children, href, ...props }) => {
-    const isExternal = typeof href === "string" && /^https?:\/\//.test(href);
+    const rawHref = typeof href === "string" ? href.trim() : "";
+
+    // Geçersiz / placeholder href'leri bağlantı olarak render etme.
+    // Yaygın MDX hataları: `[metin](#)`, `<a>metin</a>` (href'siz),
+    // `[metin](javascript:void(0))`. Bunlar bağlantı gibi görünür ama
+    // tıklandığında hiçbir şey yapmaz.
+    const isPlaceholder =
+      !rawHref ||
+      rawHref === "#" ||
+      rawHref.startsWith("javascript:") ||
+      rawHref.startsWith("data:");
+
+    if (isPlaceholder) {
+      return (
+        <span
+          className="font-medium text-muted-foreground"
+          data-missing-href
+          title="Bağlantı adresi eksik — yönetici panelinden düzeltilmelidir."
+          {...props}
+        >
+          {children}
+        </span>
+      );
+    }
+
+    const isExternal = /^https?:\/\//.test(rawHref);
     if (isExternal) {
       return (
         <a
-          href={href}
+          href={rawHref}
           target="_blank"
           rel="noopener noreferrer"
           className="font-medium text-foreground underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground"
@@ -113,7 +138,7 @@ export const mdxComponents: MDXComponents = {
     }
     return (
       <Link
-        href={href ?? "#"}
+        href={rawHref}
         className="font-medium text-foreground underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground"
         {...props}
       >

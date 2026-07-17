@@ -8,6 +8,8 @@ const STARTER_TEMPLATE = `## Bölüm başlığı
 
 Bu alana **kalın**, *italik* ve [bağlantı](https://example.com) yazabilirsiniz.
 
+CTA örnekleri: [Ücretsiz Başla](/register) · [Örnek Mağazalar](/)
+
 - Sıralı olmayan liste öğesi
 - Bir diğer öğe
 

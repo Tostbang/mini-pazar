@@ -5,6 +5,9 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Türkçe karşılıkları yan menüdeki başlıklarla (app-sidebar.tsx) hizalı tut.
+// Bilinmeyen segmentler olduğu gibi URL'de görünür — yeni bir dashboard rotası
+// eklenirse buraya da Türkçe etiket eklenmeli.
 const segmentLabels: Record<string, string> = {
   dash: "Panel",
   profile: "Profil",
@@ -12,6 +15,10 @@ const segmentLabels: Record<string, string> = {
   store: "Mağaza",
   orders: "Siparişler",
   customers: "Müşteriler",
+  categories: "Kategoriler",
+  about: "Hakkımızda",
+  sss: "SSS",
+  "home-cards": "Anasayfa Kartları",
   "support-messages": "Destek Mesajları",
 };
 

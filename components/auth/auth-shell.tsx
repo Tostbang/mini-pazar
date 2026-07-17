@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 
 export interface AuthFormHeaderProps {
@@ -76,8 +75,6 @@ export interface AuthShellProps {
 export function AuthShell({ children }: AuthShellProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
-
       <main className="relative flex min-h-[calc(100vh-80px)] flex-col bg-background text-foreground">
         <div
           aria-hidden

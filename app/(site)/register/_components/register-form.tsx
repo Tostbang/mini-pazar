@@ -21,16 +21,50 @@ import {
 } from "@/components/auth/auth-shell";
 import { useRegister } from "../_services/mutations";
 
+// Ad / soyad: yalnızca harf (Türkçe karakterler dahil), tire ve boşluk.
+// Rakam ve özel karakter kabul edilmez. Unicode letter sınıfı Türkçe
+// harfleri ve gelecekteki karakterleri doğru yakalar.
+const namePattern = /^[\p{L}][\p{L}\s'-]*$/u;
+
 const formSchema = z
   .object({
-    firstName: z.string().trim().min(2, "Ad en az 2 karakter olmalıdır."),
-    lastName: z.string().trim().min(2, "Soyad en az 2 karakter olmalıdır."),
-    email: z.string().email("Lütfen geçerli bir e-posta adresi girin."),
+    firstName: z
+      .string()
+      .trim()
+      .min(2, "Ad en az 2 karakter olmalıdır.")
+      .max(80, "Ad en fazla 80 karakter olabilir.")
+      .regex(
+        namePattern,
+        "Ad yalnızca harf içerebilir; rakam ve özel karakter kullanılamaz.",
+      ),
+    lastName: z
+      .string()
+      .trim()
+      .min(2, "Soyad en az 2 karakter olmalıdır.")
+      .max(80, "Soyad en fazla 80 karakter olabilir.")
+      .regex(
+        namePattern,
+        "Soyad yalnızca harf içerebilir; rakam ve özel karakter kullanılamaz.",
+      ),
+    email: z.email("Lütfen geçerli bir e-posta adresi girin."),
     phone: z
       .string()
       .trim()
-      .min(10, "Telefon numarası en az 10 karakter olmalıdır.")
-      .regex(/^[0-9+\s()-]+$/, "Geçerli bir telefon numarası giriniz."),
+      .min(1, "Telefon numarası zorunludur.")
+      .max(20, "Telefon numarası en fazla 20 karakter olabilir.")
+      .regex(
+        /^[0-9+\s()-]+$/,
+        "Telefon numarası yalnızca rakam, +, -, (, ) ve boşluk içerebilir.",
+      )
+      .refine(
+        (value) => {
+          // Biçim karakterlerini at; yalnızca rakam sayısı 10-15 aralığında
+          // olmalı (TR 10 hane + uluslararası ek ülke kodu).
+          const digits = value.replace(/\D/g, "");
+          return digits.length >= 10 && digits.length <= 15;
+        },
+        "Telefon numarası 10 ile 15 hane arasında olmalıdır.",
+      ),
     password: z.string().min(6, "Şifre en az 6 karakter olmalıdır."),
     confirmPassword: z.string().min(6, "Şifre tekrar alanı zorunludur."),
   })
@@ -130,6 +164,8 @@ export function RegisterForm() {
           label="Telefon"
           control={control}
           autoComplete="tel"
+          inputMode="tel"
+          maxLength={20}
           placeholder="+90 555 000 00 00"
           startIcon={<Phone />}
           className={inputClassName}

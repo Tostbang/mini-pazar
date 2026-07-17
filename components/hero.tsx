@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Section } from "@/components/section";
 import { useGetHomeCards } from "@/lib/home-cards";
@@ -14,6 +15,11 @@ const FALLBACK_DESCRIPTION =
 const FALLBACK_BUTTON = "Şimdi incele";
 const FALLBACK_IMAGE = "/products/grocery-bag.png";
 
+// Ana kart CTA'sının yönlendirme hedefi. MainCardDto'da yalnızca buttonName
+// yapılandırılabilir; hedef URL backend tarafında henüz yok. Ürünler
+// sayfasına yönlendirmek için kullanılır.
+const CTA_HREF = "/products";
+
 export function Hero() {
   // Same hydration-safe pattern used by CategoryPills: server has no
   // persisted cache, so a straight isLoading branch would render the
@@ -22,6 +28,7 @@ export function Hero() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  const router = useRouter();
   const tagline =
     useSiteSettingsStore((state) => state.settings?.siteTagline?.trim()) ||
     FALLBACK_HEADING;
@@ -65,6 +72,8 @@ export function Hero() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
+                onClick={() => router.push(CTA_HREF)}
+                aria-label={`${buttonName} - ürünler sayfasına git`}
                 className="mt-7 rounded-lg bg-lime px-9 py-3.5 font-heading text-lg font-semibold text-brand"
               >
                 {buttonName}

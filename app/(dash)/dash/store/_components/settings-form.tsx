@@ -356,8 +356,8 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
 
         <TabsContent value="branding" className="mt-6 flex flex-col gap-6">
           <SectionHeader
-            title="Logo ve favicon"
-            description="Mağazanızın görsel kimliğini oluşturan logoyu ve favicon'u yükleyin."
+            title="Logo ve site simgesi"
+            description="Mağazanızın görsel kimliğini oluşturan logoyu ve site simgesini yükleyin."
           />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_220px]">
             <Controller
@@ -365,7 +365,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
               name="logoUrl"
               render={({ field }) => (
                 <ImageUploadField
-                  label="Logo"
+                  label="Mağaza Logosu"
                   description="Önerilen: yatay, şeffaf arka plan (PNG/SVG)."
                   value={field.value ?? ""}
                   onChange={field.onChange}
@@ -379,7 +379,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
               name="faviconUrl"
               render={({ field }) => (
                 <ImageUploadField
-                  label="Favicon"
+                  label="Site Simgesi"
                   description="32x32 px önerilir."
                   value={field.value ?? ""}
                   onChange={field.onChange}

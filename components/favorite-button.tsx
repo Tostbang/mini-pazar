@@ -3,7 +3,6 @@
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { useHasToken } from "@/hooks/use-has-token";
 import {
   useAddFavorite,
@@ -98,15 +97,13 @@ export function FavoriteButton({
   }
 
   return (
-    <Button
+    <button
       type="button"
       onClick={handleClick}
       disabled={disabled}
       aria-pressed={isFavorite}
-      variant="outline"
-      size="lg"
       className={cn(
-        "min-w-48 rounded-full border bg-card px-6 text-lg font-semibold transition-colors",
+        "inline-flex min-w-48 items-center justify-center gap-2 rounded-full border bg-card px-6 py-4 text-lg font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60",
         isFavorite
           ? "border-rose-200 text-rose-600 hover:bg-rose-50"
           : "border-brand/20 text-brand hover:bg-brand/5",
@@ -119,6 +116,6 @@ export function FavoriteButton({
         strokeWidth={2}
       />
       {isFavorite ? "Favorilerden kaldır" : "Favorilere ekle"}
-    </Button>
+    </button>
   );
 }
